@@ -29,6 +29,23 @@ App({
               }
             }
           })
+        } else {
+          // Pop up a window asked for access to username and photo
+          wx.authorize({
+            scope: 'scope.userInfo',
+            success: res =>{
+              // The user allow the access
+              // Get user info (this part is the same as the if part above)
+              wx.getUserInfo({
+                success: res => {
+                  this.globalData.userInfo = res.userInfo
+                  if (this.userInfoReadyCallback) {
+                    this.userInfoReadyCallback(res)
+                  }
+                }
+              })
+            }
+          })
         }
       }
     })
