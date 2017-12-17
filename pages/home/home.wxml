@@ -1,1 +1,71 @@
+<view class="page">
+  <view class="page__bd">
+    <view class="weui-article">
+      <view class="weui-article__section">
+        <view class="weui-article__title">MWHeart</view>
 
+        <!-- Brief Description -->
+        <view class="weui-article__section">
+          <view class="weui-article__h3">Event Description</view>
+          <view class="weui-article__p">{{eventDescription}}</view>
+        </view>
+
+        <!-- Time and Location -->
+        <view class="weui-article__section">
+          <view class="weui-article__h3">Time</view>
+          <view class="weui-article__p">{{time}}</view>
+          <view class="weui-article__h3">Location</view>
+          <view class="weui-article__p">{{location}}</view>
+        </view>
+
+        <!-- Bonus Description -->
+        <view class="weui-article__section">
+          <view class="weui-article__h3">Bonus</view>
+          <view class="weui-article__p">{{bonusDescription}}</view>
+          <view class="weui-article__p" wx:for="{{bonusArray}}" wx:key="unique">
+            {{index}}: {{item.msg}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">MWHeart</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__bd">
+
+         <!-- Brief Description -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Event Description</view>
+          <view class="weui-media-box__desc">{{eventDescription}}</view>
+        </view>
+
+       <!-- Time and Location -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Time</view>
+          <view class="weui-media-box__desc">{{time}}</view>
+          <!-- New Line -->
+          <text>\n</text>
+          <view class="weui-media-box__title weui-media-box__title_in-text">Location</view>
+          <view class="weui-media-box__desc">{{location}}</view>
+        </view>
+
+        <!-- Bonus Description -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Bonus</view>
+          <view class="weui-media-box__desc">{{bonusDescription}}</view>
+          <view class="weui-media-box__desc" wx:for="{{bonusArray}}" wx:key="unique">
+            {{index}}: {{item.msg}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
