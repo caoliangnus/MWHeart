@@ -1,10 +1,11 @@
 //app.js
+
+//Initialize Bmob cloud server
+var Bmob = require('utils/bmob.js');
+Bmob.initialize("dd7e3fb3803d26291a1867bd44df6986", "0efefcfe6a0c92f7abf501a7d44dbd75");
+
 App({
   onLaunch: function () {
-    // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
 
     // 登录
     wx.login({
@@ -33,7 +34,7 @@ App({
           // Pop up a window asked for access to username and photo
           wx.authorize({
             scope: 'scope.userInfo',
-            success: res =>{
+            success: res => {
               // The user allow the access
               // Get user info (this part is the same as the if part above)
               wx.getUserInfo({
