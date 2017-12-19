@@ -13,12 +13,12 @@
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell">
         <view class="weui-cell__bd">Full Name: </view>
-        <view class="weui-cell__ft">Victor Tan</view>
+        <view class="weui-cell__ft">{{realName}}</view>
       </view>
 
       <view class="weui-cell">
         <view class="weui-cell__bd">Phone: </view>
-        <view class="weui-cell__ft">98765432</view>
+        <view class="weui-cell__ft">{{phone}}</view>
       </view>
     </view>
 
