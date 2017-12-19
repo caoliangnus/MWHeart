@@ -15,15 +15,15 @@ App({
         success: function (res) {
           user.loginWithWeapp(res.code).then(function (user) {
             var openid = user.get("authData").weapp.openid;
-            console.log(user, 'user', user.id, res);
-
+            console.log("First Time: " + user, 'user', user.id, res);
+            console.log(user.get("nickName"));
             if (user.get("nickName")) {
 
-              // 第二次访问
-              console.log(user.get("nickName"), 'res.get("nickName")');
-
+              // 第二次登录，打印用户之前保存的昵称
+              console.log("Second Time: " + user.get("nickName"), 'res.get("nickName")');
+              //更新openid
               wx.setStorageSync('openid', openid)
-            } else {
+            } else { //注册成功的情况
 
               //保存用户其他信息
               wx.getUserInfo({

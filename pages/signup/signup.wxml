@@ -35,6 +35,8 @@
               <view class="weui-agree__checkbox-icon">
                 <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
               </view>
+              I agree to the
+              <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
             </view>
           </label>
         </checkbox-group>
