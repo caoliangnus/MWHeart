@@ -49,10 +49,30 @@
 
       <view class="weui-btn-area">
         <!-- Passed isSuccess back to Admin Page -->
-        <navigator url='/pages/admin/admin/admin?isSuccess=true' open-type="navigate">
-          <button class="weui-btn" type="primary" formType="submit">Create Event</button>
-        </navigator>
+         <navigator url='/pages/admin/admin/admin' open-type="navigateBack"> 
+          <button class="weui-btn" type="primary" formType="submit">{{buttonText}}</button>
+         </navigator> 
       </view>
     </view>
   </form>
+
+  <view class="page__bd" wx:if="{{isUpdateEvent}}">
+      <!-- Manage Volunteer List-->
+      <view class="weui-btn-area">
+        <navigator url='/pages/admin/userlist/userlist?isVolunteerList=true' open-type="navigate">
+          <button class="weui-btn" type="primary">Manager Volunteer List</button>
+        </navigator>
+      </view>
+
+      <!-- Manage Waiting List-->
+      <view class="weui-btn-area">
+        <navigator url='/pages/admin/userlist/userlist?isWaitingList=true' open-type="navigate">
+          <button class="weui-btn" type="primary">Manager Waiting List</button>
+        </navigator>
+      </view>
+  </view>
+
 </view>
+
+
+      

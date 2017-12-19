@@ -28,68 +28,83 @@ Page({
     deadlineDate: "",
     fullDeadlineDate: "",
 
-    time: "1pm - 3pm"
+    time: "1pm - 3pm",
+    buttonText: "Create New Event",
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    //Default Deadline is Wednesday
     var deadlineDate = new Date(new Date().setDate(saturday.getDate() - 3))
     var fullDeadlineDate = util.formatDate(deadlineDate);
     this.setData({
       deadlineDate: deadlineDate,
       fullDeadlineDate: fullDeadlineDate,
     })
+
+    var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
+
+    if (isUpdateEvent) {
+      this.setData({
+        isUpdateEvent: isUpdateEvent,
+        buttonText: "Update Event",
+      })
+      console.log("Update Event is ready")
+    } else {
+      console.log("Create Event is ready")
+    }
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+    console.log("Event is ready" + ". Window opened: " + getCurrentPages().length);
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    
+
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    
+
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    
+
   },
 
   bindDateChange: function (e) {
@@ -121,11 +136,10 @@ Page({
       });
     }, 3000);
   },
-
   //Submit form
   submitForm: function (e) {
     var that = this;
-    
+
     console.log(e.detail.value);
 
     // Event information
@@ -135,7 +149,14 @@ Page({
     var deadline = e.detail.value.deadline;
     var fullDeadline = util.formatDate(new Date(deadline));
     var time = e.detail.value.time;
-  }
+
+    var pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2];
+    prevPage.setData({
+      isSuccess: true
+    })
+  },
+
 
 
 })

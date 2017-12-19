@@ -17,7 +17,8 @@ Page({
         realName: getApp().globalData.realName,
         phone: getApp().globalData.phone
     })
-
   },
-
+  onShow: function () {
+    console.log("Me is ready" + ". Window opened: " + getCurrentPages().length);
+  }
 })
