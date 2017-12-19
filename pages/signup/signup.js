@@ -58,6 +58,7 @@ Page({
     });
     console.log("Agree condition set to: " + this.data.isAgree)
   }, 
+  
   //Hide panel when tapped outside
   tapNotice: function (e) {
     if (e.target.id == 'notice') {

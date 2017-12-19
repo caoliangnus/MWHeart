@@ -8,3 +8,8 @@
   padding: 100rpx 0;
   box-sizing: border-box;
 } 
+
+.page_container {
+  padding-left: 50rpx;
+  padding-right: 50rpx;
+}
