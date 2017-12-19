@@ -49,7 +49,7 @@
 
       <view class="weui-btn-area">
         <!-- Passed isSuccess back to Admin Page -->
-        <navigator url='/pages/admin/admin/admin?isSuccess=true' open-type="navigate">
+        <navigator url='/pages/admin/admin/admin?isSuccess=true' open-type="redirectTo">
           <button class="weui-btn" type="primary" formType="submit">Create Event</button>
         </navigator>
       </view>
