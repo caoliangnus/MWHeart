@@ -4,20 +4,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isSuccess: false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (this.data.isSuccess) {
-      wx.showToast({
-        title: '已完成',
-        icon: 'success',
-        duration: 1500
-      });
-    }
+
   },
 
   /**

@@ -140,11 +140,6 @@ Page({
   submitForm: function (e) {
     var t = this;
     createEvent(t, e)
-    var pages = getCurrentPages();
-    var prevPage = pages[pages.length - 2];
-    prevPage.setData({
-      isSuccess: true
-    })
   },
 })
 
