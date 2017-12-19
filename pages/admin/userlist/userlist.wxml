@@ -54,9 +54,9 @@
             </view>
           </view>
         </view>
-        <view class="weui-btn-sp">
+        <view class="weui-btn-area">
           <button class="weui-btn" type="default" bindtap="noneWindows">取消</button>
-          <button loading="{{isLoading}}" class="weui-btn" type="default" formType="submit">提交</button>
+          <button class="weui-btn" type="default" formType="submit">提交</button>
         </view>
       </form>
     </view>

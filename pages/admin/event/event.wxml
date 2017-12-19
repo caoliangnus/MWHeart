@@ -39,40 +39,47 @@
         <!-- Time -->
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
-            <view class="weui-label">时间</view>
+            <view class="weui-label">Time</view>
           </view>
           <view class="weui-cell__bd">
             <input name="time" class="weui-input" value='{{time}}' />
+          </view>
+        </view>
+
+        <!-- Limit -->
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Limit</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name="limit" class="weui-input" value='{{limit}}' />
           </view>
         </view>
       </view>
 
       <view class="weui-btn-area">
         <!-- Passed isSuccess back to Admin Page -->
-         <navigator url='/pages/admin/admin/admin' open-type="navigateBack"> 
+        <navigator url='/pages/admin/admin/admin' open-type="navigateBack">
           <button class="weui-btn" type="primary" formType="submit">{{buttonText}}</button>
-         </navigator> 
+        </navigator>
       </view>
     </view>
   </form>
 
   <view class="page__bd" wx:if="{{isUpdateEvent}}">
-      <!-- Manage Volunteer List-->
-      <view class="weui-btn-area">
-        <navigator url='/pages/admin/userlist/userlist?isVolunteerList=true&date={{date}}' open-type="navigate">
-          <button class="weui-btn" type="primary">Manager Volunteer List</button>
-        </navigator>
-      </view>
+    <!-- Manage Volunteer List-->
+    <view class="weui-btn-area">
+      <navigator url='/pages/admin/userlist/userlist?isVolunteerList=true&date={{date}}' open-type="navigate">
+        <button class="weui-btn" type="primary">Manager Volunteer List</button>
+      </navigator>
+    </view>
 
-      <!-- Manage Waiting List-->
-      <view class="weui-btn-area">
-        <navigator url='/pages/admin/userlist/userlist?isWaitingList=true' open-type="navigate">
-          <button class="weui-btn" type="primary">Manager Waiting List</button>
-        </navigator>
-      </view>
+    <!-- Manage Waiting List-->
+    <view class="weui-btn-area">
+      <navigator url='/pages/admin/userlist/userlist?isWaitingList=true' open-type="navigate">
+        <button class="weui-btn" type="primary">Manager Waiting List</button>
+      </navigator>
+    </view>
   </view>
 
 </view>
-
-
-      

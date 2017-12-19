@@ -1,4 +1,6 @@
-var util = require('../../../utils/util.js')
+var util = require('../../../utils/util.js');
+var Bmob = require('../../../utils/bmob.js');
+var common = require('../../../utils/common.js');
 
 /**
  * Get next Saturday Date
@@ -24,13 +26,11 @@ Page({
   data: {
     date: getNextSaturday(),
     fullDate: util.formatDate(saturday),
-
     deadlineDate: "",
     fullDeadlineDate: "",
-
     time: "1pm - 3pm",
+    limit: 16,
     buttonText: "Create New Event",
-
   },
 
   /**
@@ -138,25 +138,47 @@ Page({
   },
   //Submit form
   submitForm: function (e) {
-    var that = this;
-
-    console.log(e.detail.value);
-
-    // Event information
-    var title = e.detail.value.title;
-    var date = e.detail.value.date;
-    var fullDate = util.formatDate(new Date(date));
-    var deadline = e.detail.value.deadline;
-    var fullDeadline = util.formatDate(new Date(deadline));
-    var time = e.detail.value.time;
-
+    var t = this;
+    createEvent(t, e)
     var pages = getCurrentPages();
     var prevPage = pages[pages.length - 2];
     prevPage.setData({
       isSuccess: true
     })
   },
-
-
-
 })
+
+function createEvent(t, e) {
+  // Event information
+  var title = e.detail.value.title;
+  var date = e.detail.value.date;
+  var fullDate = util.formatDate(new Date(date));
+  var deadline = e.detail.value.deadline;
+  var fullDeadline = util.formatDate(new Date(deadline));
+  var time = e.detail.value.time;
+  var limit = Number(e.detail.value.limit);
+
+  console.log(e.detail.value);
+
+  //Bmob Create Event
+  var Event = Bmob.Object.extend("event");
+  var event = new Event();
+
+  event.save({
+    date: date,
+    fullDate: fullDate,
+    deadline: deadline,
+    fullDeadline: fullDeadline,
+    time: time,
+    limit: limit
+  }, {
+      success: function (result) {
+        common.showTip('Event successfully created ');
+        console.log("Event successfully created")
+      },
+      error: function (result, error) {
+        common.showTip('failed to create event ');
+        console.log("failed to create event", error)
+      }
+    });
+}

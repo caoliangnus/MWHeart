@@ -18,23 +18,23 @@ App({
             console.log(user, 'user', user.id, res);
 
             // Store user info to cloud
-              wx.getUserInfo({
-                success: function (result) {
-                  var U = Bmob.Object.extend("user");
-                  var u = new U();
-                  u.save({
-                    openid: openid
-                  }, {
-                      success: function (result) {
-                        console.log("saved openid to cloud")
-                      },
-                      error: function (result, error) {
-                        console.log("failed to save (user id alr exited)", error)
-                      }
-                    });
+            wx.getUserInfo({
+              success: function (result) {
+                var U = Bmob.Object.extend("user");
+                var u = new U();
+                u.save({
+                  openid: openid
+                }, {
+                    success: function (result) {
+                      console.log("saved openid to cloud")
+                    },
+                    error: function (result, error) {
+                      console.log("failed to save (user id alr exited)", error)
+                    }
+                  });
 
-                }
-              });
+              }
+            });
 
           }, function (err) {
             console.log(err, 'errr');
