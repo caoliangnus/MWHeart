@@ -54,6 +54,7 @@ Page({
       isAgree: !!e.detail.value.length
     });
   }, 
+  
   //Hide panel when tapped outside
   tapNotice: function (e) {
     if (e.target.id == 'notice') {
