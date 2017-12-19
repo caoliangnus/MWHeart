@@ -1,7 +1,7 @@
 //app.js
 
 //Initialize Bmob cloud server
-var Bmob = require('utils/bmob.js');
+var Bmob = require('/utils/bmob.js')
 Bmob.initialize("dd7e3fb3803d26291a1867bd44df6986", "0efefcfe6a0c92f7abf501a7d44dbd75");
 
 App({

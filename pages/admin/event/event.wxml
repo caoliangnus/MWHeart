@@ -1,0 +1,58 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <form bindsubmit='submitForm'>
+    <view class="page__bd">
+      <view class="weui-cells__title">Event Form</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Title</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name="title" class="weui-input" value='MWHeart' />
+          </view>
+        </view>
+
+        <!-- Date -->
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Date</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker name="date" mode="date" value="{{date}}" start="2017-11-18" end="2024-12-31" bindchange="bindDateChange">
+              <view class="weui-input">{{fullDate}}</view>
+            </picker>
+          </view>
+        </view>
+
+        <!-- Deadline -->
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Deadline</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker name="deadline" mode="date" value="{{deadlineDate}}" start="2017-11-18" end="2024-12-31" bindchange="bindDeadlineChange">
+              <view class="weui-input">{{fullDeadlineDate}}</view>
+            </picker>
+          </view>
+        </view>
+
+        <!-- Time -->
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">时间</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name="time" class="weui-input" value='{{time}}' />
+          </view>
+        </view>
+      </view>
+
+      <view class="weui-btn-area">
+        <!-- Passed isSuccess back to Admin Page -->
+        <navigator url='/pages/admin/admin/admin?isSuccess=true' open-type="navigate">
+          <button class="weui-btn" type="primary" formType="submit">Create Event</button>
+        </navigator>
+      </view>
+    </view>
+  </form>
+</view>

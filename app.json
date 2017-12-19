@@ -2,7 +2,9 @@
   "pages":[
     "pages/signup/signup",
     "pages/home/home",
-    "pages/me/me"
+    "pages/me/me",
+    "pages/admin/admin/admin",
+    "pages/admin/event/event"
   ],
   "window":{
     "backgroundTextStyle":"light",

@@ -1,0 +1,21 @@
+<view class="page">
+  <!-- New Line -->
+  <text>\n</text>
+  <view class="page__bd page__bd_spacing">
+    <navigator url='/pages/admin/event/event' open-type="navigate">
+      <button class="weui-btn" type="default">Create Event</button>
+    </navigator>
+
+    <!-- New Line -->
+    <text>\n</text>
+    <navigator url='/pages/admin/event/event' open-type="navigate">
+      <button class="weui-btn" type="default">Manager All User List</button>
+    </navigator>
+
+    <!-- New Line -->
+    <text>\n</text>
+    <navigator url='/pages/admin/event/event' open-type="navigate">
+      <button class="weui-btn" type="default">Update/Delete Event</button>
+    </navigator>
+  </view>
+</view>
