@@ -11,8 +11,6 @@ Page({
     cipHour: 44
   },
   onLoad: function () {
-    console.log("Me is ready")
-    
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -47,5 +45,9 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+
+  onShow:function(){
+    console.log("Me is ready" + ". Window opened: " + getCurrentPages().length);
   }
 })

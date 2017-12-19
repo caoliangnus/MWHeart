@@ -26,6 +26,7 @@
       </view>
 
       <!-- *****Terms of service***** -->
+       <!-- Before Sign Up -->
       <checkbox-group bindchange="bindAgreeChange" wx:if="{{!isSignedUp}}">
         <label class="weui-agree" for="weuiAgree">
           <view class="weui-agree__text">
@@ -39,15 +40,17 @@
         </label>
       </checkbox-group>
 
-      <!-- Switch to Quit -->
+      <!--After signup: Update Status -->
       <label class="weui-agree" for="weuiAgree" wx:else>
         <view class="weui-agree__text">You have successfully signed up</view>
       </label>
 
      <!-- ***** Submit or Quit Button ***** -->
+     <!-- Before Sign Up: Button set to SignUp-->
       <view class="weui-form-preview__ft" wx:if="{{!isSignedUp}}">
         <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="updateStatus" disabled="{{!isAgree}}">Sign Up</button>
       </view>
+      <!-- After Sign Up: Button set to Quit-->
       <view class="weui-form-preview__ft" wx:else>
         <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="updateStatus">Quit</button>
       </view>
@@ -55,7 +58,7 @@
   </view>
 </view>
 
-<!-- ***** popup panel to display Terms of service *****-->
+<!-- ***** popup Notice panel to display Terms of service *****-->
 <view class="notice" id="notice" wx:if="{{notice_status}}" bindtap="tapNotice">
   <view class="box">
     <view class="box-hd">

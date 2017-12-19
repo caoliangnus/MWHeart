@@ -1,10 +1,6 @@
 var util = require('../../utils/util.js');
-
-// Initialize cloud server Bmob
-var Bmob = require('../../utils/bmob.js');
-
-//get app instance
-const app = getApp()
+var Bmob = require('../../utils/bmob.js');  // Initialize cloud server Bmob
+const app = getApp(); //get app instance
 
 Page({
 
@@ -13,7 +9,7 @@ Page({
     time: "1pm-3pm",
     deadLine: "",
     isAgree: false,
-    isSignedUp: false
+    isSignedUp: false,
   },
 
   onLoad: function (options) {
@@ -30,11 +26,11 @@ Page({
   },
 
   onReady: function () {
-    console.log("SignUp is Ready")
+    
   },
 
   onShow: function () {
-
+    console.log("SignUp is ready" + ". Window opened: " + getCurrentPages().length);
   },
 
   onPullDownRefresh: function () {
@@ -50,13 +46,13 @@ Page({
   },
 
   /**
-   * Display panel on Agree terms and conditions
+   * Methods below are used for Notice panel
    */
+  //Agree checkbox
   bindAgreeChange: function (e) {
     this.setData({
       isAgree: !!e.detail.value.length
     });
-    console.log("Agree condition set to: " + this.data.isAgree)
   }, 
   //Hide panel when tapped outside
   tapNotice: function (e) {
@@ -64,26 +60,24 @@ Page({
       this.hideNotice();
     }
   },
-
   //Show panel when tapped "Terms of Service"
   showNotice: function (e) {
     this.setData({
       'notice_status': true
     });
   },
-
   hideNotice: function (e) {
     this.setData({
       'notice_status': false
     });
   },
 
+
   /**
    * Update SignUp status
    */
   updateStatus: function (e) {
     var isSignedUp = !this.data.isSignedUp;
-    console.log(isSignedUp);
     this.setData({
       isSignedUp: isSignedUp
     })

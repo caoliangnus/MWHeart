@@ -3,8 +3,11 @@
     "pages/signup/signup",
     "pages/home/home",
     "pages/me/me",
+    "pages/user/user",
     "pages/admin/admin/admin",
-    "pages/admin/event/event"
+    "pages/admin/event/event",
+    "pages/admin/userlist/userlist"
+    
   ],
   "window":{
     "backgroundTextStyle":"light",

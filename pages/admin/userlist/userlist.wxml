@@ -1,0 +1,17 @@
+<view class="page">
+  <view class="page__hd">
+      <block wx:for="{{userList}}" wx:for-item="userItem" wx:key="">
+       <template is="userCell" data="{{...userItem}}" />
+   </block>
+  </view>
+</view>
+
+
+<template name="userCell">
+    <view class="weui-cells weui-cells_after-title">
+      <navigator url="/pages/user/user" class="weui-cell weui-cell_access" hover-class="weui-cell_active" open-type="navigate">
+        <view class="weui-cell__bd">{{id}}. {{name}}</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access">{{status}}</view>
+      </navigator>
+    </view>
+</template>
