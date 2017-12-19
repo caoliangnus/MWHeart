@@ -33,7 +33,7 @@ App({
                   var nickName = userInfo.nickName;
                   var avatarUrl = userInfo.avatarUrl;
 
-                  var u = Bmob.Object.extend("_User");
+                  var u = Bmob.Object.extend("user");
                   var query = new Bmob.Query(u);
                   // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
                   query.get(user.id, {
@@ -58,17 +58,19 @@ App({
             console.log(err, 'errr');
           });
 
+
+
         }
       });
     }
 
+    this.getUserRealNameAndPhone();
     this.getUserInfo(function (userInfo) {
       console.log(userInfo)
     })
 
-
-
   },
+  
   getUserInfo: function (cb) {
     var that = this
     if (this.globalData.userInfo) {
@@ -88,7 +90,28 @@ App({
       })
     }
   },
+
+  getUserRealNameAndPhone: function () {
+    var that = this
+    // Get user real name and phone number
+    var u = Bmob.Object.extend("_User");
+    var query = new Bmob.Query(u);
+    query.first({
+      success: function (object) {
+        // 查询成功
+        console.log(object)
+        that.globalData.realName = object.get('realName')
+        that.globalData.phone = object.get('phone')
+        console.log(that.globalData.realName, that.globalData.phone)
+      },
+      error: function (error) {
+        console.log("查询失败: " + error.code + " " + error.message);
+      }
+    });
+  },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    realName: null,
+    phone: null
   }
 })
