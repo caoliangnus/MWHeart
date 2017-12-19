@@ -80,4 +80,34 @@
       </view>
     </view>
   </view>
+
+   <!-- ***** display past event ***** -->
+  <!-- <view class="weui-form-preview">
+      <view class="activity" wx:for="{{eventList}}" wx:key="id">
+        <view class="list_header">
+          <view class="list_header_left">
+            <image mode="aspectFill" src="{{item.publisherPic}}" wx:if="publisherPic"></image>
+            <view>{{item.publisherName}}</view>
+          </view>
+          <view class="content-date list_header_right">
+            <image src="/static/images/calendar.png"></image>
+            <text>{{item.pubtime}}</text>
+            <image src="/static/images/comments.png"></image>
+            <text class="">{{item.commentnum}}</text>
+            <image src="/static/images/home-like.png"></image>
+            <text class="">{{item.likenum}}</text>
+          </view>
+        </view>
+        <view class="horizontal">
+          <view class="tag tag_{{item.acttype}}">{{item.acttypename}}</view>
+          <text class="title">{{ item.title }}</text>
+        </view>
+        <image mode="aspectFill" class="photo" src="{{item.actPic}}" wx:if="{{item.actPic}}" data-actid="{{item.id}}" data-pubid='{{item.publisherId}}' bindtap="click_activity"></image>
+        <text class="intro">{{item.content}}</text>
+        <text class="time">有效时间：{{ item.endtime }}</text>
+        <text class="location">活动地点：{{ item.address }}</text>
+
+      </view> -->
+<!--       
+    </view> -->
 </view>

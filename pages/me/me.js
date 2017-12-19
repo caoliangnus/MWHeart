@@ -6,12 +6,16 @@ const app = getApp()
 Page({
   data: {
     userInfo: {},
-    cipHour : 40
+    cipHour : 40,
+    realName : null,
+    phone : null
   },
   onLoad: function () {
     var that = this
       that.setData({
-        userInfo: getApp().globalData.userInfo
+        userInfo: getApp().globalData.userInfo,
+        realName: getApp().globalData.realName,
+        phone: getApp().globalData.phone
     })
 
   },
