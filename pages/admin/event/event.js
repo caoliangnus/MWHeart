@@ -1,6 +1,8 @@
 var util = require('../../../utils/util.js');
 var Bmob = require('../../../utils/bmob.js');
 var common = require('../../../utils/common.js');
+const app = getApp(); //get app instance
+var that;
 
 /**
  * Get next Saturday Date
@@ -24,36 +26,75 @@ Page({
    * 页面的初始数据
    */
   data: {
-    date: getNextSaturday(),
-    fullDate: util.formatDate(saturday),
-    deadline: "",
-    fullDeadline: "",
-    time: "1pm - 3pm",
-    limit: 16,
-    buttonText: "Create New Event",
+    statusArray: ['Not Yet', 'Ongoing', 'Closed'],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    //Default Deadline is Wednesday
-    var deadline = new Date(new Date().setDate(saturday.getDate() - 3))
-    var fullDeadline = util.formatDate(deadline);
-    this.setData({
-      deadline: deadline,
-      fullDeadline: fullDeadline,
-    })
-
+    that = this;
     var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
 
     if (isUpdateEvent) {
-      this.setData({
-        isUpdateEvent: isUpdateEvent,
-        buttonText: "Update Event",
-      })
-      console.log("Update Event is ready")
+      // getEvent(this);
+      var Event = Bmob.Object.extend("event");
+      var event = new Bmob.Query(Event);
+      var today = util.formatTime(new Date());
+
+      //Select Upcoming event
+      event.equalTo("date", { "$gte": { "__type": "Date", "iso": today } });
+      event.ascending('date');
+
+      event.first({
+        success: function (results) {
+          console.log(results);
+          app.globalData.eventDetail = results;
+          var detail = app.globalData.eventDetail.attributes;
+          console.log(detail);
+          that.setData({
+            isUpdateEvent: isUpdateEvent,
+            uniqueID: app.globalData.eventDetail.objectId,
+            date: detail.date,
+            fullDate: detail.fullDate,
+            deadline: detail.deadline,
+            fullDeadline: detail.fullDeadline,
+            time: detail.time,
+            limit: detail.limit,
+            eventStatus: detail.eventStatus,
+            buttonText: "Update Event",
+            formText: "modifyForm",
+          })
+
+        },
+        error: function (error) {
+          console.log("查询失败: " + error.code + " " + error.message);
+        }
+      });
+
+      wx.setNavigationBarTitle({
+        title: "Update Event",
+        success: function (res) {
+          console.log("Update Event is ready")
+        }
+      });
+
     } else {
+      /**Create Event Page */
+      //Default Deadline is Wednesday
+      var deadline = new Date(new Date().setDate(getNextSaturday().getDate() - 3))
+      var fullDeadline = util.formatDate(deadline);
+      this.setData({
+        date: getNextSaturday(),
+        fullDate: util.formatDate(saturday),
+        deadline: deadline,
+        fullDeadline: fullDeadline,
+        time: "1pm - 3pm",
+        limit: 16,
+        eventStatus: 0,
+        buttonText: "Create New Event",
+        formText: "submitForm",
+      })
       console.log("Create Event is ready")
     }
   },
@@ -107,6 +148,14 @@ Page({
 
   },
 
+  //For Event Status 
+  onPickerChange: function (e) {
+    var eventStatus = e.detail.value
+    this.setData({
+      eventStatus: eventStatus
+    })
+  },
+
   bindDateChange: function (e) {
     var date = new Date(e.detail.value);
     var fulldate = util.formatDate(date);
@@ -141,6 +190,15 @@ Page({
     var t = this;
     createEvent(t, e)
   },
+
+  modifyForm: function (e) {
+    var t = this;
+    var nowId = t.data.uniqueID;
+    that.setData({
+      nowId: nowId,
+    })
+    modifyEvent(t, e)
+  },
 })
 
 function createEvent(t, e) {
@@ -151,6 +209,7 @@ function createEvent(t, e) {
   var fullDeadline = util.formatDate(new Date(deadline));
   var time = e.detail.value.time;
   var limit = Number(e.detail.value.limit);
+  var eventStatus = Number(e.detail.value.eventStatus)
 
   console.log(e.detail.value);
 
@@ -164,7 +223,8 @@ function createEvent(t, e) {
     deadline: deadline,
     fullDeadline: fullDeadline,
     time: time,
-    limit: limit
+    limit: limit,
+    eventStatus: eventStatus
   }, {
       success: function (result) {
         common.showTip('Event successfully created ');
@@ -175,4 +235,69 @@ function createEvent(t, e) {
         console.log("failed to create event", error)
       }
     });
+}
+
+/*
+* Get Event Detail from Bmob
+*/
+function getEvent(t, k) {
+  that = t;
+  var Event = Bmob.Object.extend("event");
+  var event = new Bmob.Query(Event);
+  var today = util.formatTime(new Date());
+
+  //Select Upcoming event
+  event.equalTo("date", { "$gte": { "__type": "Date", "iso": today } });
+  event.ascending('date');
+
+  event.first({
+    success: function (results) {
+      console.log(results);
+      app.globalData.eventDetail = results.attributes;
+      that.setData({
+        event: results,
+      })
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+}
+
+function modifyEvent(t, e) {
+  var that = t;
+
+  // Event information
+  var date = new Date((e.detail.value.date));
+  var fullDate = util.formatDate(new Date(date));
+  var deadline = new Date((e.detail.value.deadline));
+  var fullDeadline = util.formatDate(new Date(deadline));
+  var time = e.detail.value.time;
+  var limit = Number(e.detail.value.limit);
+  var eventStatus = Number(e.detail.value.eventStatus)
+
+  var Event = Bmob.Object.extend("event");
+  var event = new Bmob.Query(Event);
+
+  // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
+  event.get(that.data.nowId, {
+    success: function (result) {
+      // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
+      result.set('date', date);
+      result.set('fullDate', fullDate);
+      result.set('deadline', deadline);
+      result.set('fullDeadline', fullDeadline);
+      result.set('time', time);
+      result.set('limit', limit);
+      result.set('eventStatus', eventStatus);
+      result.save();
+
+      common.showTip('Event successfully updated ');
+      console.log("Event successfully updated")
+    },
+    error: function (object, error) {
+      common.showTip('Event updated Fail');
+      console.log("Event updated Fail")
+    }
+  });
 }

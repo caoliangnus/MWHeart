@@ -8,12 +8,28 @@ Page({
   data: {
     isAgree: false,
     isSignedUp: false,
-    event: "",
-    isSubmitingUserInfo: false
+    event : "",
+    windowHeight:"",
+    windowWidth:"",
+        isSubmitingUserInfo: false,
   },
+
 
   onLoad: function (options) {
     that = this;
+    //Get userInfo
+    that.setData({
+      userInfo: getApp().globalData.userInfo
+    }),
+
+      wx.getSystemInfo({
+        success: (res) => {
+          that.setData({
+            windowHeight: res.windowHeight,
+            windowWidth: res.windowWidth
+          })
+        }
+      })
   },
 
   onReady: function () {
@@ -64,7 +80,21 @@ Page({
       'notice_status': false
     });
   },
-
+  /**
+   * Update SignUp status
+   */
+  updateStatus: function (e) {
+    var isSignedUp = !this.data.isSignedUp;
+    this.setData({
+      isSignedUp: isSignedUp
+    })
+  },
+  togglePopup() {
+    this.setData({
+      showPopup: !this.data.showPopup
+    })
+  },
+  
   sighUpBtnClick: function (e) {
     // Show pop up for user to fill in info if is new user
     checkNewUser(this);
@@ -75,7 +105,7 @@ Page({
 
   },
 
-  // Sumbit button clicked when submitting 
+  // Sumbit button clicked when submitting
   // user real name and phone number
   // Register a new user in cloud
   submitUserInfo: function (e) {

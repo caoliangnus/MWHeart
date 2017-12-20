@@ -6,7 +6,7 @@ Bmob.initialize("dd7e3fb3803d26291a1867bd44df6986", "0efefcfe6a0c92f7abf501a7d44
 
 App({
   onLaunch: function () {
-     
+
     this.getOpenId();
     this.getUserInfo();
 
@@ -77,6 +77,7 @@ App({
     realName: null,
     phone: null,
     openid: null,
-    objectId: null
+    objectId: null,
+    eventDetail: null,
   }
 })
