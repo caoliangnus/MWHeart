@@ -9,14 +9,13 @@ Page({
     isAgree: false,
     isSignedUp: false,
     event : "",
+    openid : null,
+    isSubmitingUserInfo : false,
+    isSubmitedUserInfo : false
   },
 
   onLoad: function (options) {
     that = this;
-    //Get userInfo
-    that.setData({
-      userInfo: getApp().globalData.userInfo
-    })
   },
 
   onReady: function () {
@@ -26,7 +25,6 @@ Page({
   onShow: function () {
     getEvent(this);
     console.log("SignUp is ready" + ". Window opened: " + getCurrentPages().length);
-    
   },
 
   onPullDownRefresh: function () {
@@ -69,18 +67,86 @@ Page({
     });
   },
 
-  /**
-   * Update SignUp status
-   */
-  updateStatus: function (e) {
-    var isSignedUp = !this.data.isSignedUp;
-    this.setData({
-      isSignedUp: isSignedUp
-    })
+  sighUpBtnClick: function (e) {
+    isRealNameAndPhoneInBmob(this);
   },
+
+  quitBtnClick: function(e) {
+
+  },
+
+  // Sumbit button clicked when submitting 
+  // user real name and phone number
+  submitUserInfo: function (e) {
+    var realName = e.detail.value.realName;
+    var phone = e.detail.value.phone;
+
+    if (isInvalidRealName(realName)) {
+      wx.showModal({
+        title: 'Invalid name',
+        content: 'Please enter your name in Pinyin. e.g. Chen Xiaoman',
+        confirmText: 'OK',
+        showCancel: false
+      })
+    } else if (isInvalidPhone(phone)) {
+      wx.showModal({
+        title: 'Invalid phone number',
+        content: 'Please enter valid phone number.',
+        confirmText: 'OK',
+        showCancel: false
+      })
+    } else {
+      
+      that.setData({ isSubmitingUserInfo: false })
+    }
+    
+  },
+
+  cancelBtnClick : function (e) {
+    that.setData({ isSubmitingUserInfo: false })
+  }
 
 })
 
+function isInvalidRealName(realName) {
+  return true;
+}
+
+function isInvalidPhone(phone) {
+  return true
+}
+
+// Check whether user needs to sumbit name and phone
+function isRealNameAndPhoneInBmob(t) {
+  that = t;
+  var User = Bmob.Object.extend("user");
+  var user = new Bmob.Query(User);
+  
+  //Select user with that openid
+  user.equalTo("openid", getApp().globalData.openid);
+  console.log(getApp().globalData.openid)
+  user.first({
+    success: function (results) {
+      var phone = results.get('phone')
+      var realName = results.get('realName')
+      console.log("phone is empty?", phone == '');
+      console.log("realName is empty?", realName == '');
+      if (phone == '' || realName == '') {
+        // User needs to key in real name and phone number
+        that.setData({ isSubmitingUserInfo : true})
+      } else {
+        wx.showToast({
+          title: 'Signed up!',
+          icon: 'success',
+          duration: 2000
+        })
+      }
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+}
 
 /*
 * Get Event Detail from Bmob

@@ -90,6 +90,6 @@ App({
     userInfo: null,
     realName: null,
     phone: null,
-    openid : null
+    openid: null
   }
 })
