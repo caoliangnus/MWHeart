@@ -51,13 +51,16 @@
       </view>
 
       <!-- Event Status -->
-      <view class="weui-cell weui-cell_input">
-        <view class="weui-cell__hd">
-          <view class="weui-label">Event Status</view>
-        </view>
-
-        <view class="weui-cell__bd">
-           <view class="weui-input" bindtap='openStatus'>{{eventStatus}}</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Status</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="selector" data-name="single" bindchange="onPickerChange" range="{{statusArray}}">
+              <view class="weui-input">{{statusArray[eventStatus.single]}}</view>
+            </picker>
+          </view>
         </view>
       </view>
 

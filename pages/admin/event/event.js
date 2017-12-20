@@ -30,10 +30,9 @@ Page({
     fullDeadline: "",
     time: "1pm - 3pm",
     limit: 16,
-    eventStatus:"Not Yet",
     buttonText: "Create New Event",
-
-    itemList:[],
+    statusArray: ['Not Yet', 'Ongoing', 'Closed'],
+    eventStatus:{single:"0"},
   },
 
   /**
@@ -54,8 +53,15 @@ Page({
       this.setData({
         isUpdateEvent: isUpdateEvent,
         buttonText: "Update Event",
-      })
-      console.log("Update Event is ready")
+      }),
+
+      wx.setNavigationBarTitle({
+        title: "Update Event",
+        success: function (res) {
+          console.log("Update Event is ready")
+        }
+      });
+      
     } else {
       console.log("Create Event is ready")
     }
@@ -109,18 +115,15 @@ Page({
   onShareAppMessage: function () {
 
   },
-  openStatus: function () {
-    wx.showActionSheet({
-      itemList: ['Not Yet', 'On going', 'Closed'],
-      success: function (res) {
-        var eventStatus = itemList[2];
-        if (!res.cancel) {
-          this.setData({
-            eventStatus: eventStatus
-          })
-        }
-      }
-    });
+
+  //For Event Status 
+  onPickerChange: function (e) {
+    var fieldName = e.currentTarget.dataset.name
+    var data = {}
+    data[fieldName] = e.detail.value
+    this.setData({
+      eventStatus: data
+    })
   },
 
   bindDateChange: function (e) {
