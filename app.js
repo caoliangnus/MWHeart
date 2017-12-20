@@ -5,12 +5,16 @@ var Bmob = require('/utils/bmob.js')
 Bmob.initialize("dd7e3fb3803d26291a1867bd44df6986", "0efefcfe6a0c92f7abf501a7d44dbd75");
 
 App({
-  data: {
-    id: null
-  },
   onLaunch: function () {
-    var user = new Bmob.User();//开始注册用户
+     
+    this.getOpenId();
+    this.getUserInfo();
+
+  },
+
+  getOpenId: function() {
     var that = this;
+    var user = new Bmob.User();
 
     wx.login({
       success: function (res) {
@@ -18,35 +22,13 @@ App({
           var openid = user.get("authData").weapp.openid;
           that.globalData.openid = openid;
 
-          // Get real name and phone if there is any
-          that.getUserRealNameAndPhone();
-
-          // Store user info to cloud
-          wx.getUserInfo({
-            success: function (result) {
-              var U = Bmob.Object.extend("user");
-              var u = new U();
-              u.save({
-                openid: openid
-              }, {
-                  success: function (result) {
-                    console.log("saved openid to cloud")
-                  },
-                  error: function (result, error) {
-                    console.log("failed to save (user id alr exited)", error.message)
-                  }
-                });
-            }
-          });
+          console.log("openid: " + that.globalData.openid);
 
         }, function (err) {
           console.log(err, 'errr');
         });
       }
     });
-
-    this.getUserInfo();
-
   },
 
   getUserInfo: function (cb) {
@@ -77,9 +59,13 @@ App({
     query.equalTo("openid", openid);
     query.find({
       success: function (results) {
+        // There is such a user
+        // Otherwise this user is not stored to clound yet
+        if (results.length == 1) {
         that.globalData.realName = results[0].get('realName')
         that.globalData.phone = results[0].get('phone')
         console.log("realName: " + that.globalData.realName, " phone: " + that.globalData.phone)
+        }
       },
       error: function (error) {
         console.log("failed to query realName and phone" + error.code + " " + error.message);
@@ -90,6 +76,7 @@ App({
     userInfo: null,
     realName: null,
     phone: null,
-    openid: null
+    openid: null,
+    objectId: null
   }
 })
