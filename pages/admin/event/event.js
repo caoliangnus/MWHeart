@@ -26,8 +26,8 @@ Page({
   data: {
     date: getNextSaturday(),
     fullDate: util.formatDate(saturday),
-    deadlineDate: "",
-    fullDeadlineDate: "",
+    deadline: "",
+    fullDeadline: "",
     time: "1pm - 3pm",
     limit: 16,
     buttonText: "Create New Event",
@@ -38,11 +38,11 @@ Page({
    */
   onLoad: function (options) {
     //Default Deadline is Wednesday
-    var deadlineDate = new Date(new Date().setDate(saturday.getDate() - 3))
-    var fullDeadlineDate = util.formatDate(deadlineDate);
+    var deadline = new Date(new Date().setDate(saturday.getDate() - 3))
+    var fullDeadline = util.formatDate(deadline);
     this.setData({
-      deadlineDate: deadlineDate,
-      fullDeadlineDate: fullDeadlineDate,
+      deadline: deadline,
+      fullDeadline: fullDeadline,
     })
 
     var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
@@ -117,11 +117,11 @@ Page({
   },
 
   bindDeadlineChange: function (e) {
-    var deadlineDate = new Date(e.detail.value);
-    var fullDeadlineDate = util.formatDate(deadlineDate);
+    var deadline = new Date(e.detail.value);
+    var fullDeadline = util.formatDate(deadline);
     this.setData({
-      deadlineDate: deadlineDate,
-      fullDeadlineDate: fullDeadlineDate
+      deadline: deadline,
+      fullDeadline: fullDeadline
     })
   },
 
@@ -145,10 +145,9 @@ Page({
 
 function createEvent(t, e) {
   // Event information
-  var title = e.detail.value.title;
-  var date = e.detail.value.date;
+  var date = new Date((e.detail.value.date));
   var fullDate = util.formatDate(new Date(date));
-  var deadline = e.detail.value.deadline;
+  var deadline = new Date((e.detail.value.deadline));
   var fullDeadline = util.formatDate(new Date(deadline));
   var time = e.detail.value.time;
   var limit = Number(e.detail.value.limit);

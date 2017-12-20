@@ -14,15 +14,19 @@
         <view class="weui-form-preview__bd">
           <view class="weui-form-preview__item">
             <view class="weui-form-preview__label">Date</view>
-            <view class="weui-form-preview__value">{{date}}</view>
+            <view class="weui-form-preview__value">{{event.fullDate}}</view>
           </view>
           <view class="weui-form-preview__item">
             <view class="weui-form-preview__label">Time</view>
-            <view class="weui-form-preview__value">{{time}}</view>
+            <view class="weui-form-preview__value">{{event.time}}</view>
           </view>
           <view class="weui-form-preview__item">
             <view class="weui-form-preview__label">Deadline</view>
-            <view class="weui-form-preview__value">{{deadLine}}</view>
+            <view class="weui-form-preview__value">{{event.fullDeadline}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+            <view class="weui-form-preview__label">Limit</view>
+            <view class="weui-form-preview__value">{{event.limit}}</view>
           </view>
         </view>
 
@@ -97,7 +101,7 @@
     </view>
   </view>
 
-   <!-- ***** display past event ***** -->
+  <!-- ***** display past event ***** -->
   <!-- <view class="weui-form-preview">
       <view class="activity" wx:for="{{eventList}}" wx:key="id">
         <view class="list_header">
@@ -124,6 +128,6 @@
         <text class="location">活动地点：{{ item.address }}</text>
 
       </view> -->
-<!--       
+  <!--       
     </view> -->
 </view>
