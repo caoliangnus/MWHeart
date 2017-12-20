@@ -1,28 +1,21 @@
 var util = require('../../utils/util.js');
 var Bmob = require('../../utils/bmob.js');  // Initialize cloud server Bmob
 const app = getApp(); //get app instance
+var that;
 
 Page({
 
   data: {
-    date: "",
-    time: "1pm-3pm",
-    deadLine: "",
     isAgree: false,
     isSignedUp: false,
-    peventList : []
+    event : "",
   },
 
   onLoad: function (options) {
-
-    //Set formated Date
-    var date = util.formatDate(new Date());
-
-    //DeadLine is 2 days before eventDay
-    var deadLine = util.formatDate(new Date(new Date().setDate(new Date().getDate() - 2)));
-    this.setData({
-      date: date,
-      deadLine: deadLine
+    that = this;
+    //Get userInfo
+    that.setData({
+      userInfo: getApp().globalData.userInfo
     })
   },
 
@@ -31,7 +24,9 @@ Page({
   },
 
   onShow: function () {
+    getEvent(this);
     console.log("SignUp is ready" + ". Window opened: " + getCurrentPages().length);
+    
   },
 
   onPullDownRefresh: function () {
@@ -86,3 +81,27 @@ Page({
   },
 
 })
+
+
+/*
+* Get Event Detail from Bmob
+*/
+function getEvent(t, k) {
+  that = t;
+  var Event = Bmob.Object.extend("event");
+  var event = new Bmob.Query(Event);
+
+  event.descending('date');
+
+  event.first({
+    success: function (results) {
+      console.log(results);
+      that.setData({
+        event: results,
+      })
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+}

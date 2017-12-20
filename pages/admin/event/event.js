@@ -1,4 +1,6 @@
-var util = require('../../../utils/util.js')
+var util = require('../../../utils/util.js');
+var Bmob = require('../../../utils/bmob.js');
+var common = require('../../../utils/common.js');
 
 /**
  * Get next Saturday Date
@@ -24,13 +26,11 @@ Page({
   data: {
     date: getNextSaturday(),
     fullDate: util.formatDate(saturday),
-
-    deadlineDate: "",
-    fullDeadlineDate: "",
-
+    deadline: "",
+    fullDeadline: "",
     time: "1pm - 3pm",
+    limit: 16,
     buttonText: "Create New Event",
-
   },
 
   /**
@@ -38,11 +38,11 @@ Page({
    */
   onLoad: function (options) {
     //Default Deadline is Wednesday
-    var deadlineDate = new Date(new Date().setDate(saturday.getDate() - 3))
-    var fullDeadlineDate = util.formatDate(deadlineDate);
+    var deadline = new Date(new Date().setDate(saturday.getDate() - 3))
+    var fullDeadline = util.formatDate(deadline);
     this.setData({
-      deadlineDate: deadlineDate,
-      fullDeadlineDate: fullDeadlineDate,
+      deadline: deadline,
+      fullDeadline: fullDeadline,
     })
 
     var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
@@ -117,11 +117,11 @@ Page({
   },
 
   bindDeadlineChange: function (e) {
-    var deadlineDate = new Date(e.detail.value);
-    var fullDeadlineDate = util.formatDate(deadlineDate);
+    var deadline = new Date(e.detail.value);
+    var fullDeadline = util.formatDate(deadline);
     this.setData({
-      deadlineDate: deadlineDate,
-      fullDeadlineDate: fullDeadlineDate
+      deadline: deadline,
+      fullDeadline: fullDeadline
     })
   },
 
@@ -138,25 +138,41 @@ Page({
   },
   //Submit form
   submitForm: function (e) {
-    var that = this;
-
-    console.log(e.detail.value);
-
-    // Event information
-    var title = e.detail.value.title;
-    var date = e.detail.value.date;
-    var fullDate = util.formatDate(new Date(date));
-    var deadline = e.detail.value.deadline;
-    var fullDeadline = util.formatDate(new Date(deadline));
-    var time = e.detail.value.time;
-
-    var pages = getCurrentPages();
-    var prevPage = pages[pages.length - 2];
-    prevPage.setData({
-      isSuccess: true
-    })
+    var t = this;
+    createEvent(t, e)
   },
-
-
-
 })
+
+function createEvent(t, e) {
+  // Event information
+  var date = new Date((e.detail.value.date));
+  var fullDate = util.formatDate(new Date(date));
+  var deadline = new Date((e.detail.value.deadline));
+  var fullDeadline = util.formatDate(new Date(deadline));
+  var time = e.detail.value.time;
+  var limit = Number(e.detail.value.limit);
+
+  console.log(e.detail.value);
+
+  //Bmob Create Event
+  var Event = Bmob.Object.extend("event");
+  var event = new Event();
+
+  event.save({
+    date: date,
+    fullDate: fullDate,
+    deadline: deadline,
+    fullDeadline: fullDeadline,
+    time: time,
+    limit: limit
+  }, {
+      success: function (result) {
+        common.showTip('Event successfully created ');
+        console.log("Event successfully created")
+      },
+      error: function (result, error) {
+        common.showTip('failed to create event ');
+        console.log("failed to create event", error)
+      }
+    });
+}
