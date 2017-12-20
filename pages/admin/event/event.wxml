@@ -33,6 +33,7 @@
           <view class="weui-cell__hd">
             <view class="weui-label">Time</view>
           </view>
+
           <view class="weui-cell__bd">
             <input name="time" class="weui-input" value='{{time}}' />
           </view>
@@ -46,6 +47,17 @@
           <view class="weui-cell__bd">
             <input name="limit" class="weui-input" value='{{limit}}' />
           </view>
+        </view>
+      </view>
+
+      <!-- Event Status -->
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">Event Status</view>
+        </view>
+
+        <view class="weui-cell__bd">
+           <view class="weui-input" bindtap='openStatus'>{{eventStatus}}</view>
         </view>
       </view>
 

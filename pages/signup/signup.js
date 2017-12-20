@@ -9,14 +9,26 @@ Page({
     isAgree: false,
     isSignedUp: false,
     event : "",
-  },
+    windowHeight:"",
+    windowWidth:"",
+  }, 
+  
 
   onLoad: function (options) {
     that = this;
     //Get userInfo
     that.setData({
       userInfo: getApp().globalData.userInfo
-    })
+    }),
+
+      wx.getSystemInfo({
+        success: (res) => {
+          that.setData({
+            windowHeight: res.windowHeight,
+            windowWidth: res.windowWidth
+          })
+        }
+      })
   },
 
   onReady: function () {
@@ -77,6 +89,11 @@ Page({
     this.setData({
       isSignedUp: isSignedUp
     })
+  }, 
+  togglePopup() {
+    this.setData({
+      showPopup: !this.data.showPopup
+    });
   },
 
 })

@@ -30,7 +30,10 @@ Page({
     fullDeadline: "",
     time: "1pm - 3pm",
     limit: 16,
+    eventStatus:"Not Yet",
     buttonText: "Create New Event",
+
+    itemList:[],
   },
 
   /**
@@ -105,6 +108,19 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  openStatus: function () {
+    wx.showActionSheet({
+      itemList: ['Not Yet', 'On going', 'Closed'],
+      success: function (res) {
+        var eventStatus = itemList[2];
+        if (!res.cancel) {
+          this.setData({
+            eventStatus: eventStatus
+          })
+        }
+      }
+    });
   },
 
   bindDateChange: function (e) {
