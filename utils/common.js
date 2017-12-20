@@ -12,7 +12,7 @@ function showTip(sms, icon, fun, t) {
 
 function showModal(c,t,fun) {
     if(!t)
-        t='提示'
+        t='Notice'
     wx.showModal({
         title: t,
         content: c,

@@ -12,4 +12,8 @@
 .page_container {
   padding-left: 50rpx;
   padding-right: 50rpx;
+  padding-top :50rpx;
+  padding-bottom: 50rpx;
 }
+
+@import '/style/weui.wxss';

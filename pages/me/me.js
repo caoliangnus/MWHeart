@@ -12,6 +12,8 @@ Page({
   },
   onLoad: function () {
     var that = this
+    console.log(getApp().globalData.userInfo)
+    console.log(getApp().globalData.openid)
       that.setData({
         userInfo: getApp().globalData.userInfo,
         realName: getApp().globalData.realName,

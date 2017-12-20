@@ -49,7 +49,7 @@
           <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
               <view class="weui-cell__bd">
-                <input class="weui-input" name="name" value="{{nowStatus}}"/>
+                <input class="weui-input" name="status" value="{{nowStatus}}"/>
               </view>
             </view>
           </view>
