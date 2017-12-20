@@ -69,7 +69,6 @@ Page({
     });
   },
 
-
   /**
    * Update SignUp status
    */
@@ -90,8 +89,11 @@ function getEvent(t, k) {
   that = t;
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
+  var today = util.formatTime(new Date());
 
-  event.descending('date');
+  //Select Upcoming event
+  event.equalTo("date", { "$gte": { "__type": "Date", "iso": today } });
+  event.ascending('date');
 
   event.first({
     success: function (results) {
