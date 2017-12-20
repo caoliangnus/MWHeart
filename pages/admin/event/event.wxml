@@ -1,5 +1,5 @@
 <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
-  <form bindsubmit='submitForm'>
+  <form bindsubmit="{{formText}}">
     <view class="page__bd">
       <view class="weui-cells__title">Event Form</view>
       <view class="weui-cells weui-cells_after-title">
@@ -57,8 +57,8 @@
             <view class="weui-label">Status</view>
           </view>
           <view class="weui-cell__bd">
-            <picker mode="selector" data-name="single" bindchange="onPickerChange" range="{{statusArray}}">
-              <view class="weui-input">{{statusArray[eventStatus.single]}}</view>
+            <picker mode="selector" name="eventStatus" value="{{eventStatus}}" bindchange="onPickerChange" range="{{statusArray}}">
+              <view class="weui-input">{{statusArray[eventStatus]}}</view>
             </picker>
           </view>
         </view>
