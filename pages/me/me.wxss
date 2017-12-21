@@ -61,4 +61,36 @@
     background-color: rgb(247,247,250);
 }
 
+.back_img{
+  background-size:cover;
+  -webkit-filter: blur(10px); /* Chrome, Opera */
+  -moz-filter: blur(10px);
+  -ms-filter: blur(10px);    
+  filter: blur(10px); 
+  z-index:0;
+  position:relative;
+}
 
+.login_info{
+  z-index: 999;
+  position:absolute;
+}
+.login_form{
+  border-radius:5px;
+  margin-left:8%;
+  background-color: rgba(255,255,255);
+}
+
+
+.notice {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  display: center;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}

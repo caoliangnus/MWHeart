@@ -1,9 +1,9 @@
 <view class="page_container">
   <view class="page">
     <view class="userinfo">
-        <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-        <text class="userinfo-point">MWHeart Hour: {{cipHour}}</text>
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      <text class="userinfo-point">MWHeart Hour: {{cipHour}}</text>
     </view>
 
     <!-- New Line -->
@@ -30,10 +30,48 @@
         <view class="weui-cell__bd">About</view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
-      <navigator url="/pages/admin/admin/admin" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-        <view class="weui-cell__bd">Admin Page</view>
+      <view class="weui-cell weui-cell_access">
+        <view class="weui-cell__bd" bindtap='adminBtnClick'>Admin Page</view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-      </navigator>
+      </view>
     </view>
   </view>
 </view>
+
+
+<view class="notice" id="notice" wx:if="{{showAdminLogIn}}">
+  <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{errorMsg}}</view>
+  <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="back_img">
+  </view>
+  <view style="position:absolute;top:{{windowHeight * 0.06}}px;">
+    <image src="../../images/meBack.jpg" style="width: {{windowWidth * 0.4}}px;height:{{windowWidth * 0.4}}px; margin-left:{{windowWidth * 0.5 - 80}}px;border-radius:{{windowWidth * 0.2}}px;"></image>
+  </view>
+  <form bindsubmit="formSubmit" bindreset="formReset">
+    <view class="login_info" style="top:{{windowHeight * 0.35}}px;width: {{windowWidth * 0.92}}px;">
+      <view class="weui-cells weui-cells_after-title login_form">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Admin</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="Enter Admin ID" type="text" maxlength="20" value="{{account}}" focus="true" name="account" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Password</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder="Enter Admin Password" type="password" maxlength="10" value="{{password}}" name="password" />
+          </view>
+        </view>
+        <view class="weui-btn-area">
+           <button class="weui-btn" type="primary" formType="submit">Login</button>
+           <button class="weui-btn" type="primary" bindtap="cancelBtnClick">Cancel</button>
+        </view>
+      </view>
+    </view>
+  </form>
+</view>
+
+

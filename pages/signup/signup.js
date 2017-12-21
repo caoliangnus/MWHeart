@@ -8,10 +8,10 @@ Page({
   data: {
     isAgree: false,
     isSignedUp: false,
-    event : "",
-    windowHeight:"",
-    windowWidth:"",
-        isSubmitingUserInfo: false,
+    event: "",
+    isSubmitingUserInfo: false,
+    windowHeight: "",
+    windowWidth: "",
   },
 
 
@@ -80,21 +80,7 @@ Page({
       'notice_status': false
     });
   },
-  /**
-   * Update SignUp status
-   */
-  updateStatus: function (e) {
-    var isSignedUp = !this.data.isSignedUp;
-    this.setData({
-      isSignedUp: isSignedUp
-    })
-  },
-  togglePopup() {
-    this.setData({
-      showPopup: !this.data.showPopup
-    })
-  },
-  
+
   sighUpBtnClick: function (e) {
     // Show pop up for user to fill in info if is new user
     checkNewUser(this);
@@ -105,9 +91,11 @@ Page({
 
   },
 
-  // Sumbit button clicked when submitting
-  // user real name and phone number
-  // Register a new user in cloud
+  /**
+   * Sumbit button clicked when submitting
+   * user real name and phone number
+   *  Register a new user in cloud
+   */
   submitUserInfo: function (e) {
     var realName = e.detail.value.realName;
     var phone = e.detail.value.phone;
@@ -150,9 +138,7 @@ Page({
             console.log("failed to create new user" + error.message)
           }
         });
-
     }
-
   },
 
   cancelBtnClick: function (e) {
@@ -205,7 +191,7 @@ function checkNewUser(t) {
 function signUpUser(t, k) {
 
   // Signed up successfully
-  that.setData({isSignedUp: true})
+  that.setData({ isSignedUp: true })
   wx.showToast({
     title: 'Signed up!',
     icon: 'success',
