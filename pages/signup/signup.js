@@ -9,9 +9,7 @@ Page({
     isAgree: false,
     isSignedUp: false,
     event: "",
-    isSubmitingUserInfo: false,
-    windowHeight: "",
-    windowWidth: "",
+    isSubmitingUserInfo: false
   },
 
 
@@ -20,16 +18,7 @@ Page({
     //Get userInfo
     that.setData({
       userInfo: getApp().globalData.userInfo
-    }),
-
-      wx.getSystemInfo({
-        success: (res) => {
-          that.setData({
-            windowHeight: res.windowHeight,
-            windowWidth: res.windowWidth
-          })
-        }
-      })
+    })
   },
 
   onReady: function () {
@@ -88,7 +77,7 @@ Page({
   },
 
   quitBtnClick: function (e) {
-
+    //Todo
   },
 
   /**
@@ -142,7 +131,6 @@ Page({
   },
 
   cancelBtnClick: function (e) {
-    //Todo
     that.setData({ isSubmitingUserInfo: false })
   }
 

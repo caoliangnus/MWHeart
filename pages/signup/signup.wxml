@@ -1,68 +1,66 @@
-<view class="page_container">
-  <view class="page">
-    <view class="page__hd">
-      <view class="page__desc">Upcoming Event</view>
-    </view>
-    <view class="page__bd">
-      <view class="weui-form-preview">
-        <view class="weui-form-preview__hd">
-          <view class="weui-form-preview__item">
-            <view class="weui-form-preview__label">Event Name</view>
-            <view class="weui-form-preview__value_in-hd">MWH</view>
-          </view>
-        </view>
-        <view class="weui-form-preview__bd">
-          <view class="weui-form-preview__item">
-            <view class="weui-form-preview__label">Date</view>
-            <view class="weui-form-preview__value">{{event.fullDate}}</view>
-          </view>
-          <view class="weui-form-preview__item">
-            <view class="weui-form-preview__label">Time</view>
-            <view class="weui-form-preview__value">{{event.time}}</view>
-          </view>
-          <view class="weui-form-preview__item">
-            <view class="weui-form-preview__label">Deadline</view>
-            <view class="weui-form-preview__value">{{event.fullDeadline}}</view>
-          </view>
-          <view class="weui-form-preview__item">
-            <view class="weui-form-preview__label">Limit</view>
-            <view class="weui-form-preview__value">{{event.limit}}</view>
-          </view>
-        </view>
+<view class="page">
+  <view class="page__desc">Upcoming Event</view>
 
-        <!-- *****Terms of service***** -->
-        <!-- Before Sign Up -->
-        <checkbox-group bindchange="bindAgreeChange" wx:if="{{!isSignedUp}}">
-          <label class="weui-agree" for="weuiAgree">
-            <view class="weui-agree__text">
-              <checkbox class="weui-agree__checkbox" id="weuiAgree" value="agree" checked="{{isAgree}}" />
-              <view class="weui-agree__checkbox-icon">
-                <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
-              </view>
-              I agree to the
-              <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
-            </view>
-          </label>
-        </checkbox-group>
-
-        <!--After signup: Update Status -->
-        <label class="weui-agree" for="weuiAgree" wx:else>
-          <view class="weui-agree__text">You have successfully signed up</view>
-        </label>
-
-        <!-- ***** Submit or Quit Button ***** -->
-        <!-- Before Sign Up: Button set to SignUp-->
-        <view class="weui-form-preview__ft" wx:if="{{!isSignedUp}}">
-          <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="sighUpBtnClick" disabled="{{!isAgree}}">Sign Up</button>
-        </view>
-        <!-- After Sign Up: Button set to Quit-->
-        <view class="weui-form-preview__ft" wx:else>
-          <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="default" bindtap="quitBtnClick">Quit</button>
+  <view class="page__bd">
+    <view class="weui-form-preview">
+      <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">Event Name</view>
+          <view class="weui-form-preview__value_in-hd">MWH</view>
         </view>
       </view>
+      <view class="weui-form-preview__bd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">Date</view>
+          <view class="weui-form-preview__value">{{event.fullDate}}</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">Time</view>
+          <view class="weui-form-preview__value">{{event.time}}</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">Deadline</view>
+          <view class="weui-form-preview__value">{{event.fullDeadline}}</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">Limit</view>
+          <view class="weui-form-preview__value">{{event.limit}} people</view>
+        </view>
+      </view>
+
+      <!-- *****Terms of service***** -->
+      <!-- Before Sign Up -->
+      <checkbox-group bindchange="bindAgreeChange" wx:if="{{!isSignedUp}}">
+        <label class="weui-agree" for="weuiAgree">
+          <view class="weui-agree__text">
+            <checkbox class="weui-agree__checkbox" id="weuiAgree" value="agree" checked="{{isAgree}}" />
+            <view class="weui-agree__checkbox-icon">
+              <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
+            </view>
+            I agree to the
+            <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
+          </view>
+        </label>
+      </checkbox-group>
+
+      <!--After signup: Update Status -->
+      <label class="weui-agree" for="weuiAgree" wx:else>
+        <view class="weui-agree__text">You have successfully signed up.
+          <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
+        </view>
+      </label>
+
+      <!-- ***** Submit or Quit Button ***** -->
+      <!-- Before Sign Up: Button set to SignUp-->
+      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="sighUpBtnClick" disabled="{{!isAgree}}" wx:if="{{!isSignedUp}}">Sign Up</button>
+
+      <!-- After Sign Up: Button set to Quit-->
+      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="default" bindtap="quitBtnClick" wx:else>Quit</button>
     </view>
+
   </view>
 </view>
+
 
 <!-- ***** popup Notice panel to display Terms of service *****-->
 
@@ -99,7 +97,7 @@
             <text>发起内容应该在法律允许的范围内，如果发起内容违反了相关的法律法规，一经发现，本软件有权限对该发起进行删除操作</text>
           </view>
           <view class="weui-btn-area">
-            <button class="weui-btn" type="default" bindtap="hideNotice">确定</button>
+            <button class="weui-btn" type="primary" bindtap="hideNotice">确定</button>
           </view>
         </view>
       </view>
@@ -108,10 +106,10 @@
 </view>
 
 <!-- Sumbit User information Panel -->
-<view class="notice" id="notice" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}">
+<view class="notice" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}">
   <view class='box'>
     <view class="weui-mask"></view>
-     <view class="page_container">
+    <view class="page_container">
       <view class="page__hd">
         <view class="page__desc">Please fill in your information</view>
       </view>
@@ -143,5 +141,5 @@
         </form>
       </view>
     </view>
-   </view>
+  </view>
 </view>

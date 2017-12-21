@@ -48,32 +48,58 @@
             <input name="limit" class="weui-input" value='{{limit}}' />
           </view>
         </view>
-      </view>
+      
 
       <!-- Event Status -->
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell weui-cell_input">
-          <view class="weui-cell__hd">
-            <view class="weui-label">Status</view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">Status</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker mode="selector" name="eventStatus" value="{{eventStatus}}" bindchange="onPickerChange" range="{{statusArray}}">
+            <view class="weui-input">{{statusArray[eventStatus]}}</view>
+          </picker>
+        </view>
+      </view>
+      </view>
+
+      <!-- upload event picture area -->
+      <view class="page-body" wx:if="{{isUpdateEvent}}">
+        <view class="weui-btn-area">
+          <loading hidden="{{!loading}}">
+            Uploading...
+          </loading>
+          <view class="weui-panel weui-panel_access">
+            <view class="weui-panel__bd">
+              <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+                <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+                  <image class="weui-media-box__thumb" src="{{picUrl}}" />
+                </view>
+                <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                  <view class="weui-media-box__desc" wx:if="{{picUrl != null}}">{{picUrl}}</view>
+                  <view class="weui-media-box__desc" wx:else>Uploaded image display</view>
+                </view>
+              </navigator>
+            </view>
           </view>
-          <view class="weui-cell__bd">
-            <picker mode="selector" name="eventStatus" value="{{eventStatus}}" bindchange="onPickerChange" range="{{statusArray}}">
-              <view class="weui-input">{{statusArray[eventStatus]}}</view>
-            </picker>
+          <view>
+            <button type="default" bindtap="upPic" wx:if="{{picUrl == null}}">Upload Event Image</button>
+            <button type="default" bindtap="delPic" wx:else>Delete Event Image</button>
           </view>
         </view>
       </view>
 
-      <view class="weui-btn-area">
-        <!-- Passed isSuccess back to Admin Page -->
-        <navigator url='/pages/admin/admin/admin' open-type="navigateBack">
-          <button class="weui-btn" type="primary" formType="submit">{{buttonText}}</button>
-        </navigator>
+        <view class="weui-btn-area">
+          <!-- Passed isSuccess back to Admin Page -->
+          <navigator url='/pages/admin/admin/admin' open-type="navigateBack">
+            <button class="weui-btn" type="primary" formType="submit">{{buttonText}}</button>
+          </navigator>
+        </view>
       </view>
-    </view>
   </form>
 
   <view class="page__bd" wx:if="{{isUpdateEvent}}">
+
     <!-- Manage Volunteer List-->
     <view class="weui-btn-area">
       <navigator url='/pages/admin/userlist/userlist?isVolunteerList=true&date={{date}}' open-type="navigate">

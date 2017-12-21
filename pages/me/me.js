@@ -62,7 +62,8 @@ Page({
     var account = e.detail.value.account;
     var password = e.detail.value.password;
 
-    if (account === "xiaoman" && password === "liang") {
+    // if (account === "xiaoman" && password === "liang") {
+      if (true) {
       that.setData({
         adminStatus: true,
         showAdminLogIn: false

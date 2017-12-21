@@ -3,6 +3,7 @@ var Bmob = require('../../../utils/bmob.js');
 var common = require('../../../utils/common.js');
 const app = getApp(); //get app instance
 var that;
+var file;
 
 /**
  * Get next Saturday Date
@@ -27,6 +28,8 @@ Page({
    */
   data: {
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
+    picUrl: null,
+    loading: false
   },
 
   /**
@@ -35,7 +38,6 @@ Page({
   onLoad: function (options) {
     that = this;
     var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
-
     if (isUpdateEvent) {
       // getEvent(this);
       var Event = Bmob.Object.extend("event");
@@ -100,52 +102,10 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
     console.log("Event is ready" + ". Window opened: " + getCurrentPages().length);
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
   },
 
   //For Event Status 
@@ -199,6 +159,14 @@ Page({
     })
     modifyEvent(t, e)
   },
+
+  upPic: function (e) {
+    upPic(this);
+  },
+
+  delPic: function (e) {
+    delPic(this);
+  }
 })
 
 function createEvent(t, e) {
@@ -275,6 +243,7 @@ function modifyEvent(t, e) {
   var time = e.detail.value.time;
   var limit = Number(e.detail.value.limit);
   var eventStatus = Number(e.detail.value.eventStatus)
+  var picFile = file
 
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
@@ -290,6 +259,7 @@ function modifyEvent(t, e) {
       result.set('time', time);
       result.set('limit', limit);
       result.set('eventStatus', eventStatus);
+      result.set('pic', picFile);
       result.save();
 
       common.showTip('Event successfully updated ');
@@ -300,4 +270,70 @@ function modifyEvent(t, e) {
       console.log("Event updated Fail")
     }
   });
+}
+
+function delPic(t) {//图片删除
+  var that = t;
+  var path = that.data.picUrl;
+  var s = new Bmob.Files.del(path).then(function (res) {
+    if (res.msg == "ok") {
+      console.log('Event image deleted');
+      common.showTip("Deleted");
+      that.setData({
+        picUrl: null
+      })
+      file = null;
+    }
+  }, function (error) {
+    console.log(error)
+  }
+  );
+
+
+}
+
+function upPic(t) {
+  var that = t;
+  wx.chooseImage({
+    count: 1,
+    sourceType: 'album',
+    success: function (res) {
+      wx.showNavigationBarLoading()
+      that.setData({
+        loading: true
+      })
+      var tempFilePaths = res.tempFilePaths;
+      console.log(tempFilePaths)
+      var url;
+      if (tempFilePaths.length > 0) {
+        // Set file name to date.png
+        var extension = /\.([^.]*)$/.exec(tempFilePaths[0]);
+        if (extension) {
+          extension = extension[1].toLowerCase();
+        }
+        var newDate = new Date();
+        var newDateStr = newDate.toLocaleDateString();
+        var name = newDateStr + "." + extension;
+
+        // Upload file
+        file = new Bmob.File(name, tempFilePaths);
+        file.save().then(function (res) {
+          url = res.url();
+          console.log("Upload image successfully: " + name)
+          // Set data
+          that.setData({
+            loading: false,
+            picUrl: url
+          })
+        }, function (error) {
+          console.log(error);
+        })
+
+        
+        console.log(that.data.picUrl)
+      }
+      
+
+    }
+  })
 }
