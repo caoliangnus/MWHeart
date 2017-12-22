@@ -24,6 +24,7 @@ App({
               console.log("***** AppPage: Start login WeChat and load UserInfo *****");
               console.log(result);
               console.log("openid: " + that.globalData.openid);
+              that.getUserRealNameAndPhone();
               console.log("***** AppPage:End login WeChat and load UserInfo *****");
             },
             error: function (error) {

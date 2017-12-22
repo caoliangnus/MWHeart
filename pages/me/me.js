@@ -22,8 +22,8 @@ Page({
     console.log("***** MePage: End loading user info *****");
     that.setData({
       userInfo: getApp().globalData.userInfo,
-      realName: getApp().globalData.realName,
-      phone: getApp().globalData.phone,
+      realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
+      phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
       showAdminLogIn: false,
     }),
 
@@ -39,6 +39,11 @@ Page({
   onShow: function () {
     console.log("***** Start opening Page *****");
     console.log("Me Page is ready" + ". Window opened: " + getCurrentPages().length);
+    that.setData({
+      realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
+      phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone
+    })
+    console.log(this.data.realname, this.data.phone)
     console.log("***** End opening Page *****");
   },
 
