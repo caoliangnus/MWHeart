@@ -10,7 +10,7 @@
 
           <view class="weui-media-box__info__meta weui-media-box__info__operate">
             <button class="del weui-btn mini-btn" type="default" size="mini" catchtap="deleteUser" data-id="{{item.objectId}}">delete</button>
-            <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="toModifyUser" data-id="{{item.objectId}}" data-name="{{item.realName}}" data-status="{{item.phone}}">edit</button>
+            <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="toModifyUser" data-id="{{item.objectId}}" data-name="{{item.realName}}" data-phone="{{item.phone}}">edit</button>
           </view>
         </view>
       </navigator>
@@ -18,30 +18,6 @@
   </view>
 </view>
 
-
-
-<!-- <block wx:for="{{userList}}" wx:for-item="userItem" wx:key=""> 
- <template is="userCell" data="{{...userItem}}" /> 
-</block> -->
-
-<!-- <template name="userCellCL">
-  <view class="weui-cells weui-cells_after-title">
-    <view class="weui-cell">
-      <view class="weui-cell__bd">{{realName}}</view>
-      <view class="weui-cell__ft">{{phone}}</view>
-
-      <text decode="{{true}}" space="{{true}}">&nbsp;&nbsp;</text>
-
-      <view class="weui-media-box__info__meta weui-media-box__info__operate">
-        <button class="weui-btn mini-btn" type="default" size="mini" catchtap="deleteUser" data-id="{{id}}">delete</button>
-
-        <text decode="{{true}}" space="{{true}}">&nbsp;</text>
-
-        <button class="weui-btn mini-btn" type="default" size="mini" catchtap="toModifyUser" data-id="{{id}}" data-name="{{name}}" data-status="{{status}}">edit</button>
-      </view>
-    </view>
-  </view>
-</template> -->
 
 <!-- Modify User Panel -->
 <view class="notice" id="notice" style="opacity: 1;" wx:if="{{isModifyUser}}">
@@ -62,18 +38,18 @@
             </view>
           </view>
 
-          <view class="weui-cells__title">Status</view>
+          <view class="weui-cells__title">Phone</view>
           <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
               <view class="weui-cell__bd">
-                <input class="weui-input" name="status" value="{{nowStatus}}" />
+                <input class="weui-input" name="phone" value="{{nowPhone}}" />
               </view>
             </view>
           </view>
         </view>
         <view class="weui-btn-area">
-          <button class="weui-btn" type="default" bindtap="noneWindows">取消</button>
-          <button class="weui-btn" type="default" formType="submit">提交</button>
+          <button class="weui-btn" type="default" bindtap="noneWindows">Cancel</button>
+          <button class="weui-btn" type="default" formType="submit">Submit</button>
         </view>
       </form>
     </view>
