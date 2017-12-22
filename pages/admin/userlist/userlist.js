@@ -1,5 +1,6 @@
 var userDataList = require("../../../utils/fakeData.js");
-
+var util = require("../../../utils/util.js")
+var common = require("../../../utils/common.js")
 var Bmob = require('../../../utils/bmob.js');
 var app = getApp();
 var that;
@@ -11,7 +12,6 @@ Page({
    */
   data: {
     userInfo: {},
-    userList: userDataList.dataList,
     eventDate:"",
     isLoading: false,
     isModifyUser: false
@@ -26,6 +26,8 @@ Page({
     that.setData({
       userInfo: getApp().globalData.userInfo
     })
+
+    getList(this);
 
     //Update Data
     var isAllUserList = options.isAllUserList=="true"?true:false;
@@ -55,7 +57,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    //getList(this);
+    getList(this);
     console.log("List is ready" + ". Window opened: " + getCurrentPages().length);
   },
 
@@ -111,7 +113,7 @@ Page({
           var Diary = Bmob.Object.extend("user");
           //创建查询对象，入口参数是对象类的实例
           var query = new Bmob.Query(Diary);
-          query.equalTo("id", id);
+          query.equalTo("objectId", id);
           query.destroyAll({
             success: function () {
               common.showTip('Delete User Success');
@@ -146,26 +148,22 @@ Page({
 
 })
 
+
+
 /*
-* 获取数据
+* Get Event Detail from Bmob
 */
 function getList(t, k) {
   that = t;
-  var Diary = Bmob.Object.extend("user");
-  var query = new Bmob.Query(Diary);
-
-  query.equalTo("name", k);
-
-  query.descending('createdAt');
-  query.include("own")
-  // 查询所有数据
-  query.limit(that.data.limit);
-  query.find({
+  var User = Bmob.Object.extend("user");
+  var user = new Bmob.Query(User);
+  user.ascending('updatedAt');
+  user.find({
     success: function (results) {
-      // 循环处理查询到的数据
       console.log(results);
+      app.globalData.userList = results;
       that.setData({
-        userList: results
+        userList: results,
       })
     },
     error: function (error) {
@@ -173,6 +171,8 @@ function getList(t, k) {
     }
   });
 }
+
+
 
 function modify(t, e) {
   var that = t;
