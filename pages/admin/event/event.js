@@ -40,6 +40,9 @@ Page({
   onLoad: function (options) {
     that = this;
 
+    this.setData({
+      loading: true
+    })
     //To determine CreateEvent Page or UpdateEvent Page
     var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
 
@@ -75,7 +78,8 @@ Page({
         duration: "2",
         eventStatus: 0,
         buttonText: "Create New Event",
-        formText: "submitForm"
+        formText: "submitForm",
+        loading: false,
       })
 
     }
@@ -200,6 +204,9 @@ function createEvent(t, e) {
   } else if (!isValidDuration(duration)) {
     Show.showAlert(t, "warn", 'Duration must be positive integer');
   } else {
+    this.setData({
+      loading: true
+    })
     console.log("***** EventPage: End Validing Event Information *****");
     console.log("***** EventPage: Start uploading EventInfo to Bmob *****");
     //Bmob Create Event
@@ -216,6 +223,9 @@ function createEvent(t, e) {
       eventStatus: eventStatus
     }, {
         success: function (result) {
+          this.setData({
+            loading: false
+          })
           wx.navigateBack({
             delta: 1
           })
@@ -243,6 +253,7 @@ function getEvent(t, k) {
     success: function (results) {
       console.log("***** EventPage: Start loading Specific Event from BMOB *****");
       console.log(results);
+      console.log(results.pic);
       console.log("***** EventPage: End loading Specific Event from BMOB *****");
       app.globalData.eventDetail = results;
       var detail = app.globalData.eventDetail.attributes;
@@ -256,7 +267,8 @@ function getEvent(t, k) {
         limit: detail.limit,
         duration: detail.duration,
         eventStatus: detail.eventStatus,
-        formText: "modifyForm"
+        formText: "modifyForm",
+        loading: false,
       })
 
       // Get pic url if the event image is not null
@@ -272,7 +284,9 @@ function getEvent(t, k) {
 
 function modifyEvent(t, e) {
   var that = t;
-
+  this.setData({
+    loading: true
+  })
   // Event information
   var date = new Date((e.detail.value.date));
   var fullDate = util.formatDate(new Date(date));
@@ -335,6 +349,9 @@ function modifyEvent(t, e) {
         }
         
         result.save();
+        this.setData({
+          loading: false
+        })
         wx.navigateBack({
           delta: 1
         })  

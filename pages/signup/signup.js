@@ -6,6 +6,7 @@ var that;
 Page({
 
   data: {
+    loading: false,
     isAgree: false,
     isSignedUp: false,
     event: "",
@@ -15,7 +16,10 @@ Page({
 
   onLoad: function (options) {
     that = this;
-
+    this.setData({
+      loading: true
+    })
+    getEvent(this);
     getEventList(this);
 
     //Get userInfo
@@ -225,6 +229,7 @@ function getEvent(t, k) {
       console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
         event: results,
+        
       })
     },
     error: function (error) {
@@ -254,6 +259,7 @@ function getEventList(t, k) {
       app.globalData.eventList = results;
       that.setData({
         eventList: results,
+        loading: false,
       })
     },
     error: function (error) {

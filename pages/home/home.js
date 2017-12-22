@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    loading: false,
     eventDescription: "Moral Welfare House是NUS Volunteer Action Committee" +
     "旗下的一个volunteer project",
     bonusDescription: "参与活动认真积极的同学下学期可升级为project director，" + 
@@ -31,7 +32,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      loading: true
+    })
   },
 
   /**
@@ -46,6 +49,9 @@ Page({
    */
   onShow: function () {
     console.log("Home is ready" + ". Window opened: " + getCurrentPages().length);
+    this.setData({
+      loading: false
+    })
   },
 
   /**

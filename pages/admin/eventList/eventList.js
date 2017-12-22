@@ -11,7 +11,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    
+    loading: false
   },
 
   /**
@@ -19,10 +19,8 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    wx.showToast({
-      title: 'Loading',
-      icon: 'loading',
-      duration: 1500
+    this.setData({
+      loading:true
     })
     getEventList(this);
   },
@@ -98,6 +96,7 @@ function getEventList(t, k) {
       app.globalData.eventList = results;
       that.setData({
         eventList: results,
+        loading: false
       })
     },
     error: function (error) {

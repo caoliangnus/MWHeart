@@ -14,7 +14,7 @@ Page({
   data: {
     userInfo: {},
     eventDate: "",
-    isLoading: false,
+    loading: false,
     isModifyUser: false
   },
 
@@ -23,10 +23,8 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    wx.showToast({
-      title: 'Loading',
-      icon: 'loading',
-      duration: 1500
+    this.setData({
+      loading: true
     })
     //Get userInfo
     that.setData({
@@ -176,6 +174,7 @@ function getList(t, k) {
       app.globalData.userList = results;
       that.setData({
         userList: results,
+        loading: false,
       })
     },
     error: function (error) {
@@ -204,6 +203,9 @@ function modify(t, e) {
     else {
       console.log("*****UserListPage: End validing Edited UserInfo *****");
 
+      this.setData({
+        loading: true
+      })
       var Diary = Bmob.Object.extend("user");
       var query = new Bmob.Query(Diary);
       // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
@@ -216,7 +218,8 @@ function modify(t, e) {
           common.showTip('Success', 'success', function () {
             that.onShow();
             that.setData({
-              isModifyUser: false
+              isModifyUser: false,
+              loading: false,
             })
             console.log("*****UserListPage: End uploading Edited UserInfo to Bmob *****");
           });

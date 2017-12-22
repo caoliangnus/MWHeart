@@ -1,3 +1,6 @@
+<loading hidden="{{!loading}}">
+  loading...
+</loading>
 <view class="page">
   <view class="weui-panel__bd">
     <block wx:if="{{userList.length > 0}}">
