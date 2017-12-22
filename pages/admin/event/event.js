@@ -3,7 +3,7 @@ var Bmob = require('../../../utils/bmob.js');
 var common = require('../../../utils/common.js');
 const app = getApp(); //get app instance
 var that;
-var file;
+var file = null;
 
 /**
  * Get next Saturday Date
@@ -29,6 +29,7 @@ Page({
   data: {
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
     picUrl: null,
+    oldPicUrl: null,
     loading: false
   },
 
@@ -37,7 +38,8 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
+    // var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
+    var isUpdateEvent = true;
     if (isUpdateEvent) {
       // getEvent(this);
       var Event = Bmob.Object.extend("event");
@@ -65,8 +67,13 @@ Page({
             limit: detail.limit,
             eventStatus: detail.eventStatus,
             buttonText: "Update Event",
-            formText: "modifyForm",
+            formText: "modifyForm"
           })
+
+          // Get pic url if the event image is not null
+          if (detail.pic) {
+            that.setData({ picUrl: detail.pic._url })
+          }
 
         },
         error: function (error) {
@@ -95,7 +102,7 @@ Page({
         limit: 16,
         eventStatus: 0,
         buttonText: "Create New Event",
-        formText: "submitForm",
+        formText: "submitForm"
       })
       console.log("Create Event is ready")
     }
@@ -161,11 +168,11 @@ Page({
   },
 
   upPic: function (e) {
-    upPic(this);
+    upPic(this, e);
   },
 
   delPic: function (e) {
-    delPic(this);
+    delPic(this, e);
   }
 })
 
@@ -259,10 +266,33 @@ function modifyEvent(t, e) {
       result.set('time', time);
       result.set('limit', limit);
       result.set('eventStatus', eventStatus);
-      result.set('pic', picFile);
+
+      // Handle pic file
+      if (file) {
+        // There is a uploaded new pic
+        console.log("not empty")
+        result.set('pic', file);
+      } else {
+        // No new uploaded pic
+        console.log("empty")
+        var path = that.data.oldPicUrl;
+
+        // Need to delete old pic
+        if (path) {
+          var s = new Bmob.Files.del(path).then(function (res) {
+            if (res.msg == "ok") {
+              console.log("Cloud storage pic deleted")
+            }
+          }, function (error) {
+            console.log(error)
+          }
+          );
+          result.unset("pic");
+        }
+      }
       result.save();
 
-      common.showTip('Event successfully updated ');
+      common.showTip('Updated');
       console.log("Event successfully updated")
     },
     error: function (object, error) {
@@ -273,26 +303,16 @@ function modifyEvent(t, e) {
 }
 
 function delPic(t) {//图片删除
-  var that = t;
-  var path = that.data.picUrl;
-  var s = new Bmob.Files.del(path).then(function (res) {
-    if (res.msg == "ok") {
-      console.log('Event image deleted');
-      common.showTip("Deleted");
-      that.setData({
-        picUrl: null
-      })
-      file = null;
-    }
-  }, function (error) {
-    console.log(error)
-  }
-  );
-
-
+  console.log('Event image deleted');
+  common.showTip("Deleted");
+  that.setData({
+    oldPicUrl: that.data.picUrl,
+    picUrl: null
+  })
+  file = null;
 }
 
-function upPic(t) {
+function upPic(t, e) {
   var that = t;
   wx.chooseImage({
     count: 1,
@@ -325,14 +345,12 @@ function upPic(t) {
             loading: false,
             picUrl: url
           })
+
         }, function (error) {
           console.log(error);
         })
-
-        
-        console.log(that.data.picUrl)
       }
-      
+
 
     }
   })
