@@ -20,43 +20,4 @@
   </view>
 </view>
 
-
-<!-- Modify User Panel -->
-<view class="notice" id="notice" style="opacity: 1;" wx:if="{{isModifyUser}}">
-  <view class='box'>
-    <view class="weui-mask"></view>
-    <view class="weui-dialog weui-skin_android">
-      <view class="weui-dialog__hd">
-        <strong class="weui-dialog__title">Edit User</strong>
-      </view>
-      <form bindsubmit="modifyUser">
-        <view class="weui-dialog__bd">
-          <view class="weui-cells__title">Name</view>
-          <view class="weui-cells weui-cells_after-title">
-            <view class="weui-cell weui-cell_input">
-              <view class="weui-cell__bd">
-                <input class="weui-input" name="name" value="{{nowName}}" />
-              </view>
-            </view>
-          </view>
-
-          <view class="weui-cells__title">Phone</view>
-          <view class="weui-cells weui-cells_after-title">
-            <view class="weui-cell weui-cell_input">
-              <view class="weui-cell__bd">
-                <input class="weui-input" name="phone" value="{{nowPhone}}" />
-              </view>
-            </view>
-          </view>
-        </view>
-        <view class="weui-btn-area">
-          <button class="weui-btn" type="default" bindtap="noneWindows">Cancel</button>
-          <button class="weui-btn" type="default" formType="submit">Submit</button>
-        </view>
-      </form>
-    </view>
-  </view>
-</view>
-
-
 <include src="../../../utils/alert/alert.wxml" />

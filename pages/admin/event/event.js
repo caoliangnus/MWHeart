@@ -51,6 +51,7 @@ Page({
       this.setData({
         isUpdateEvent: isUpdateEvent,
         buttonText: "Update Event",
+        objectId: objectId,
       })
 
       getEvent(this, objectId);
@@ -147,7 +148,36 @@ Page({
 
   delPic: function (e) {
     delPic(this);
-  }
+  },
+
+  //Delete User After clicked Delete Button
+  deleteEvent: function (event) {
+    var id = that.data.objectId;
+    wx.showModal({
+      title: 'Alert',
+      content: 'Delete Event？',
+      success: function (res) {
+        if (res.confirm) {
+          //delete user
+          var Event = Bmob.Object.extend("event");
+          //创建查询对象，入口参数是对象类的实例
+          var event = new Bmob.Query(Event);
+          event.equalTo("objectId", id);
+          event.destroyAll({
+            success: function () {
+              wx.navigateBack({
+                delta: 1
+              })
+              common.showTip('Success');
+            },
+            error: function (err) {
+              common.showTip('Fail', 'loading');
+            }
+          });
+        }
+      }
+    })
+  },
 })
 
 function createEvent(t, e) {
