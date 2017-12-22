@@ -19,7 +19,11 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-
+    wx.showToast({
+      title: 'Loading',
+      icon: 'loading',
+      duration: 1500
+    })
     getEventList(this);
   },
 

@@ -305,7 +305,9 @@ function modifyEvent(t, e) {
         }
         
         result.save();
-        common.showTip('Success', 'success');     
+        wx.navigateBack({
+          delta: 1
+        })  
         console.log("***** EventPage: End uploading EventInfo to BMOB *****");
 
       },
