@@ -1,4 +1,5 @@
-<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+<include src="../../../utils/alert/alert.wxml" />
+<view class="page">
   <form bindsubmit="{{formText}}">
     <view class="page__bd">
       <view class="weui-cells__title">Event Form</view>
@@ -55,7 +56,7 @@
             <view class="weui-label">Duration</view>
           </view>
           <view class="weui-cell__bd">
-            <input name="limit" class="weui-input" value='{{duration}}' />
+            <input name="duration" class="weui-input" value='{{duration}}' />
           </view>
         </view>
       
@@ -100,10 +101,7 @@
       </view>
 
         <view class="weui-btn-area">
-          <!-- Passed isSuccess back to Admin Page -->
-          <navigator url='/pages/admin/admin/admin' open-type="navigateBack">
-            <button class="weui-btn" type="primary" formType="submit">{{buttonText}}</button>
-          </navigator>
+          <button class="weui-btn" type="primary" formType="submit">{{buttonText}}</button>
         </view>
       </view>
   </form>
@@ -126,3 +124,4 @@
   </view>
 
 </view>
+
