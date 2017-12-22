@@ -46,6 +46,7 @@ Page({
     /**
      * Update Event Page
      */
+
     if (isUpdateEvent) {
       getEvent(this);
       var Event = Bmob.Object.extend("event");
