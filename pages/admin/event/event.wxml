@@ -48,6 +48,16 @@
             <input name="limit" class="weui-input" value='{{limit}}' />
           </view>
         </view>
+
+        <!-- Duration -->
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Duration</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name="limit" class="weui-input" value='{{duration}}' />
+          </view>
+        </view>
       
 
       <!-- Event Status -->
