@@ -1,6 +1,7 @@
 var util = require('../../../utils/util.js');
 var Bmob = require('../../../utils/bmob.js');
 var common = require('../../../utils/common.js');
+var Show = require("../../../utils/alert/alert.js");
 const app = getApp(); //get app instance
 var that;
 var file = null;
@@ -38,9 +39,16 @@ Page({
    */
   onLoad: function (options) {
     that = this;
+
+    //To determine CreateEvent Page or UpdateEvent Page
     var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
+
+    /**
+     * Update Event Page
+     */
+
     if (isUpdateEvent) {
-      // getEvent(this);
+      getEvent(this);
       var Event = Bmob.Object.extend("event");
       var event = new Bmob.Query(Event);
       var today = util.formatTime(new Date());
@@ -99,8 +107,8 @@ Page({
         deadline: deadline,
         fullDeadline: fullDeadline,
         time: "1pm - 3pm",
-        limit: 16,
-        duration: 2,
+        limit: "16",
+        duration: "2",
         eventStatus: 0,
         buttonText: "Create New Event",
         formText: "submitForm"
@@ -188,31 +196,46 @@ function createEvent(t, e) {
   var duration = Number(e.detail.value.duration);
   var eventStatus = Number(e.detail.value.eventStatus)
 
-  console.log(e.detail.value);
+  console.log("Event: " + e.detail.value);
 
-  //Bmob Create Event
-  var Event = Bmob.Object.extend("event");
-  var event = new Event();
-
-  event.save({
-    date: date,
-    fullDate: fullDate,
-    deadline: deadline,
-    fullDeadline: fullDeadline,
-    time: time,
-    limit: limit,
-    duration: duration,
-    eventStatus: eventStatus
-  }, {
-      success: function (result) {
-        common.showTip('Event successfully created ');
-        console.log("Event successfully created")
-      },
-      error: function (result, error) {
-        common.showTip('failed to create event ');
-        console.log("failed to create event", error)
-      }
-    });
+  //Valid Event information
+  if (!isValidDeadline(date, deadline)) {
+    console.log("DEADLINE: " + deadline);
+    Show.showAlert(t, "warn", 'Deadline must before the actual Date');
+  } else if (!isValidLimit(limit)) {
+    console.log("LIMIT: " + limit);
+    Show.showAlert(t, "warn", 'Limit must be positive integer');
+  } else if (!isValidDuration(duration)) {
+    console.log("Duration: " + duration);
+    Show.showAlert(t, "warn", 'Duration must be positive integer');
+  } else {
+    console.log("Start Creating Event: ");
+    //Bmob Create Event
+    var Event = Bmob.Object.extend("event");
+    var event = new Event();
+    event.save({
+      date: date,
+      fullDate: fullDate,
+      deadline: deadline,
+      fullDeadline: fullDeadline,
+      time: time,
+      limit: limit,
+      duration: duration,
+      eventStatus: eventStatus
+    }, {
+        success: function (result) {
+          wx.navigateBack({
+            delta: 1
+          })
+          common.showTip('Event successfully created ');
+          console.log("Event successfully created")
+        },
+        error: function (result, error) {
+          common.showTip('failed to create event ');
+          console.log("failed to create event", error)
+        }
+      });
+  }
 }
 
 /*
@@ -256,55 +279,69 @@ function modifyEvent(t, e) {
   var eventStatus = Number(e.detail.value.eventStatus)
   var picFile = file
 
-  var Event = Bmob.Object.extend("event");
-  var event = new Bmob.Query(Event);
+  //Valid Event information
+  if (!isValidDeadline(date, deadline)) {
+    console.log("DEADLINE: " + deadline);
+    Show.showAlert(t, "warn", 'Deadline must before the actual Date');
+  } else if (!isValidLimit(limit)) {
+    console.log("LIMIT: " + limit);
+    Show.showAlert(t, "warn", 'Limit must be positive integer');
+  } else if (!isValidDuration(duration)) {
+    console.log("Duration: " + duration);
+    Show.showAlert(t, "warn", 'Duration must be positive integer');
+  } else {
+    var Event = Bmob.Object.extend("event");
+    var event = new Bmob.Query(Event);
 
-  // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
-  event.get(that.data.nowId, {
-    success: function (result) {
-      // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
-      result.set('date', date);
-      result.set('fullDate', fullDate);
-      result.set('deadline', deadline);
-      result.set('fullDeadline', fullDeadline);
-      result.set('time', time);
-      result.set('limit', limit);
-      result.set('duration', duration);
-      result.set('eventStatus', eventStatus);
+    // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
+    event.get(that.data.nowId, {
+      success: function (result) {
+        // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
+        result.set('date', date);
+        result.set('fullDate', fullDate);
+        result.set('deadline', deadline);
+        result.set('fullDeadline', fullDeadline);
+        result.set('time', time);
+        result.set('limit', limit);
+        result.set('duration', duration);
+        result.set('eventStatus', eventStatus);
 
-      // Handle pic file
-      if (file) {
-        // There is a uploaded new pic
-        console.log("not empty")
-        result.set('pic', file);
-      } else {
-        // No new uploaded pic
-        console.log("empty")
-        var path = that.data.oldPicUrl;
+        // Handle pic file
+        if (file) {
+          // There is a uploaded new pic
+          console.log("not empty")
+          result.set('pic', file);
+        } else {
+          // No new uploaded pic
+          console.log("empty")
+          var path = that.data.oldPicUrl;
 
-        // Need to delete old pic
-        if (path) {
-          var s = new Bmob.Files.del(path).then(function (res) {
-            if (res.msg == "ok") {
-              console.log("Cloud storage pic deleted")
+          // Need to delete old pic
+          if (path) {
+            var s = new Bmob.Files.del(path).then(function (res) {
+              if (res.msg == "ok") {
+                console.log("Cloud storage pic deleted")
+              }
+            }, function (error) {
+              console.log(error)
             }
-          }, function (error) {
-            console.log(error)
+            );
+            result.unset("pic");
           }
-          );
-          result.unset("pic");
         }
-      }
-      result.save();
+        result.save();
 
-      common.showTip('Updated');
-      console.log("Event successfully updated")
-    },
-    error: function (object, error) {
-      common.showTip('Event updated Fail');
-      console.log("Event updated Fail")
-    }
-  });
+        common.showTip('Updated');
+        console.log("Event successfully updated")
+      },
+      error: function (object, error) {
+        common.showTip('Event updated Fail');
+        console.log("Event updated Fail")
+      }
+    });
+  }
+
+  
 }
 
 function delPic(t) {//图片删除
@@ -359,4 +396,20 @@ function upPic(t, e) {
 
     }
   })
+}
+
+function isValidDeadline(date, deadline) {
+  //Deadline must before date
+  return date >= deadline;
+}
+
+function isValidLimit(limit) {
+  //limit must be a positive integer
+  return Number.isInteger(limit) && limit >= 0;
+}
+
+function isValidDuration(duration) {
+  //duration must be a positive integer
+  console.log("validDUration: " + duration);
+  return Number.isInteger(duration) && duration >= 0;
 }

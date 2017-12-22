@@ -79,5 +79,6 @@ App({
     openid: null,
     objectId: null,
     eventDetail: null,
+    userList: null,
   }
 })
