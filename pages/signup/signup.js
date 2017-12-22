@@ -19,6 +19,16 @@ Page({
     that.setData({
       userInfo: getApp().globalData.userInfo
     })
+
+    //This is for Scroll view in Terms of Service
+    wx.getSystemInfo({
+      success: (res) => {
+        that.setData({
+          windowHeight: res.windowHeight,
+          windowWidth: res.windowWidth
+        })
+      }
+    })
   },
 
   onReady: function () {
