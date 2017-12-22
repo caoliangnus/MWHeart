@@ -278,55 +278,69 @@ function modifyEvent(t, e) {
   var eventStatus = Number(e.detail.value.eventStatus)
   var picFile = file
 
-  var Event = Bmob.Object.extend("event");
-  var event = new Bmob.Query(Event);
+  //Valid Event information
+  if (!isValidDeadline(date, deadline)) {
+    console.log("DEADLINE: " + deadline);
+    Show.showAlert(t, "warn", 'Deadline must before the actual Date');
+  } else if (!isValidLimit(limit)) {
+    console.log("LIMIT: " + limit);
+    Show.showAlert(t, "warn", 'Limit must be positive integer');
+  } else if (!isValidDuration(duration)) {
+    console.log("Duration: " + duration);
+    Show.showAlert(t, "warn", 'Duration must be positive integer');
+  } else {
+    var Event = Bmob.Object.extend("event");
+    var event = new Bmob.Query(Event);
 
-  // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
-  event.get(that.data.nowId, {
-    success: function (result) {
-      // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
-      result.set('date', date);
-      result.set('fullDate', fullDate);
-      result.set('deadline', deadline);
-      result.set('fullDeadline', fullDeadline);
-      result.set('time', time);
-      result.set('limit', limit);
-      result.set('duration', duration);
-      result.set('eventStatus', eventStatus);
+    // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
+    event.get(that.data.nowId, {
+      success: function (result) {
+        // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
+        result.set('date', date);
+        result.set('fullDate', fullDate);
+        result.set('deadline', deadline);
+        result.set('fullDeadline', fullDeadline);
+        result.set('time', time);
+        result.set('limit', limit);
+        result.set('duration', duration);
+        result.set('eventStatus', eventStatus);
 
-      // Handle pic file
-      if (file) {
-        // There is a uploaded new pic
-        console.log("not empty")
-        result.set('pic', file);
-      } else {
-        // No new uploaded pic
-        console.log("empty")
-        var path = that.data.oldPicUrl;
+        // Handle pic file
+        if (file) {
+          // There is a uploaded new pic
+          console.log("not empty")
+          result.set('pic', file);
+        } else {
+          // No new uploaded pic
+          console.log("empty")
+          var path = that.data.oldPicUrl;
 
-        // Need to delete old pic
-        if (path) {
-          var s = new Bmob.Files.del(path).then(function (res) {
-            if (res.msg == "ok") {
-              console.log("Cloud storage pic deleted")
+          // Need to delete old pic
+          if (path) {
+            var s = new Bmob.Files.del(path).then(function (res) {
+              if (res.msg == "ok") {
+                console.log("Cloud storage pic deleted")
+              }
+            }, function (error) {
+              console.log(error)
             }
-          }, function (error) {
-            console.log(error)
+            );
+            result.unset("pic");
           }
-          );
-          result.unset("pic");
         }
-      }
-      result.save();
+        result.save();
 
-      common.showTip('Updated');
-      console.log("Event successfully updated")
-    },
-    error: function (object, error) {
-      common.showTip('Event updated Fail');
-      console.log("Event updated Fail")
-    }
-  });
+        common.showTip('Updated');
+        console.log("Event successfully updated")
+      },
+      error: function (object, error) {
+        common.showTip('Event updated Fail');
+        console.log("Event updated Fail")
+      }
+    });
+  }
+
+  
 }
 
 function delPic(t) {//图片删除
