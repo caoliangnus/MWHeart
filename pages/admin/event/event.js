@@ -65,6 +65,7 @@ Page({
             fullDeadline: detail.fullDeadline,
             time: detail.time,
             limit: detail.limit,
+            duration: detail.duration,
             eventStatus: detail.eventStatus,
             buttonText: "Update Event",
             formText: "modifyForm"
@@ -100,6 +101,7 @@ Page({
         fullDeadline: fullDeadline,
         time: "1pm - 3pm",
         limit: 16,
+        duration: 2,
         eventStatus: 0,
         buttonText: "Create New Event",
         formText: "submitForm"
@@ -168,11 +170,11 @@ Page({
   },
 
   upPic: function (e) {
-    upPic(this, e);
+    upPic(this);
   },
 
   delPic: function (e) {
-    delPic(this, e);
+    delPic(this);
   }
 })
 
@@ -184,6 +186,7 @@ function createEvent(t, e) {
   var fullDeadline = util.formatDate(new Date(deadline));
   var time = e.detail.value.time;
   var limit = Number(e.detail.value.limit);
+  var duration = Number(e.detail.value.duration);
   var eventStatus = Number(e.detail.value.eventStatus)
 
   console.log(e.detail.value);
@@ -199,6 +202,7 @@ function createEvent(t, e) {
     fullDeadline: fullDeadline,
     time: time,
     limit: limit,
+    duration: duration,
     eventStatus: eventStatus
   }, {
       success: function (result) {
@@ -249,6 +253,7 @@ function modifyEvent(t, e) {
   var fullDeadline = util.formatDate(new Date(deadline));
   var time = e.detail.value.time;
   var limit = Number(e.detail.value.limit);
+  var duration = Number(e.detail.value.duration);
   var eventStatus = Number(e.detail.value.eventStatus)
   var picFile = file
 
@@ -265,6 +270,7 @@ function modifyEvent(t, e) {
       result.set('fullDeadline', fullDeadline);
       result.set('time', time);
       result.set('limit', limit);
+      result.set('duration', duration);
       result.set('eventStatus', eventStatus);
 
       // Handle pic file
