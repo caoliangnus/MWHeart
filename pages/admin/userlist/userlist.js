@@ -1,6 +1,7 @@
 var userDataList = require("../../../utils/fakeData.js");
 var util = require("../../../utils/util.js")
 var common = require("../../../utils/common.js")
+var Show = require("../../../utils/alert/alert.js");
 var Bmob = require('../../../utils/bmob.js');
 var app = getApp();
 var that;
@@ -183,11 +184,12 @@ function modify(t, e) {
   var modyPhone = e.detail.value.phone;
   var thatName = that.data.nowName;
   var thatPhone = that.data.nowPhone;
-  console.log(thatName);
-  console.log(thatPhone);
+
   if ((modyName != thatName || modyPhone != thatPhone)) {
     if (modyName == "" || modyPhone == "") {
-      common.showTip('Name or Phone can not be empty', 'isLoading');
+      Show.showAlert(that, "warn", 'Name or Phone can not be empty');
+    }else if(!isPhoneValid(modyPhone)){
+      Show.showAlert(that,"warn" ,'Phone must be 8 digits only');
     }
     else {
       console.log(modyName, modyPhone)
@@ -201,7 +203,7 @@ function modify(t, e) {
           result.set('realName', modyName);
           result.set('phone', modyPhone);
           result.save();
-          common.showTip('User Updated', 'success', function () {
+          common.showTip('User Updated successfully', 'success', function () {
             that.onShow();
             that.setData({
               isModifyUser: false
@@ -215,12 +217,17 @@ function modify(t, e) {
     }
   }
   else if (modyName == "" || modyPhone == "") {
-    common.showTip('标题或内容不能为空', 'isLoading');
+    Show.showAlert(that, "warn", 'Name or Phone can not be empty');
   }
   else {
     that.setData({
       isModifyUser: false
     })
-    common.showTip('修改成功', 'isLoading');
+    common.showTip('User Updated successfully', 'success');
   }
+}
+
+function isPhoneValid(phoneNum){
+  //Phone length must be 8 and must be num only
+  return Number.isInteger(phoneNum) && phoneNum.length === 8
 }

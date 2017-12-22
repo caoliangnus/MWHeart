@@ -1,3 +1,5 @@
+
+
 <view class="page">
   <view class="weui-panel__bd">
     <block wx:if="{{userList.length > 0}}">
@@ -15,6 +17,13 @@
         </view>
       </navigator>
     </block>
+    <block wx:else>
+            <view class="weui-media-box weui-media-box_text">
+              <view class="weui-media-box__title weui-media-box__title_in-text">
+                暂无内容，请点击右下角添加</view>
+              <view class="weui-media-box__desc"></view>
+            </view>
+          </block>
   </view>
 </view>
 
@@ -55,3 +64,6 @@
     </view>
   </view>
 </view>
+
+
+<include src="../../../utils/alert/alert.wxml" />

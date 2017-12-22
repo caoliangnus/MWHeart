@@ -1,0 +1,6 @@
+<view wx:if="{{isAlert}}" style="position:fixed;margin: auto;left: 0;right: 0;top: 0;bottom: 0;width: 70%;height: 25%;background-color: rgba(66, 66, 66, 0.9); text-align: center;border-radius: 10rpx;z-index:9999">
+  <icon type="{{iconType}}" color="White" size="45" style="margin-top:5%;"></icon>
+  <view style="color:white; width:80%;margin-left:10%;margin-top:5%">
+    {{alertLable}}
+  </view>
+</view>

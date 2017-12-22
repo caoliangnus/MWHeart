@@ -38,10 +38,15 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    // var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
-    var isUpdateEvent = true;
+
+    //To determine CreateEvent Page or UpdateEvent Page
+    var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
+
+    /**
+     * Update Event Page
+     */
     if (isUpdateEvent) {
-      // getEvent(this);
+      getEvent(this);
       var Event = Bmob.Object.extend("event");
       var event = new Bmob.Query(Event);
       var today = util.formatTime(new Date());
