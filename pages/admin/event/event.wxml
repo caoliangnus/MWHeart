@@ -111,14 +111,14 @@
     <!-- Manage Volunteer List-->
     <view class="weui-btn-area">
       <navigator url='/pages/admin/userlist/userlist?isVolunteerList=true&date={{date}}' open-type="navigate">
-        <button class="weui-btn" type="primary">Manager Volunteer List</button>
+        <button class="weui-btn" type="primary">Manage Volunteer List</button>
       </navigator>
     </view>
 
     <!-- Manage Waiting List-->
     <view class="weui-btn-area">
       <navigator url='/pages/admin/userlist/userlist?isWaitingList=true' open-type="navigate">
-        <button class="weui-btn" type="primary">Manager Waiting List</button>
+        <button class="weui-btn" type="primary">Manage Waiting List</button>
       </navigator>
     </view>
   </view>

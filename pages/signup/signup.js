@@ -37,7 +37,9 @@ Page({
 
   onShow: function () {
     getEvent(this);
-    console.log("SignUp is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** Start opening Page *****");
+    console.log("SignUp Page is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** End opening Page *****");
   },
 
   onPullDownRefresh: function () {
@@ -212,7 +214,9 @@ function getEvent(t, k) {
 
   event.first({
     success: function (results) {
+      console.log("***** SignUpPage: Start loading UpComing Event from BMOB *****");
       console.log(results);
+      console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
         event: results,
       })
@@ -221,4 +225,5 @@ function getEvent(t, k) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });
+  
 }

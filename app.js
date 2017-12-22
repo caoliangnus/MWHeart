@@ -21,9 +21,10 @@ App({
         user.loginWithWeapp(res.code).then(function (user) {
           var openid = user.get("authData").weapp.openid;
           that.globalData.openid = openid;
-
+          console.log("***** AppPage: Start login WeChat and load UserInfo *****");
+          console.log(user);
           console.log("openid: " + that.globalData.openid);
-
+          console.log("***** AppPage:End login WeChat and load UserInfo *****");
         }, function (err) {
           console.log(err, 'errr');
         });
@@ -80,5 +81,6 @@ App({
     objectId: null,
     eventDetail: null,
     userList: null,
+    eventList: null,
   }
 })

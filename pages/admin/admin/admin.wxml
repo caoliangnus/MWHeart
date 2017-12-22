@@ -9,7 +9,7 @@
 
     <!-- New Line -->
     <text>\n</text>
-    <navigator url='/pages/admin/event/event?isUpdateEvent=true' open-type="navigate">
+    <navigator url='/pages/admin/eventList/eventList' open-type="navigate">
       <button class="weui-btn" type="default">Update/Delete Event</button>
     </navigator>
 

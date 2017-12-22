@@ -6,7 +6,8 @@
     "pages/user/user",
     "pages/admin/admin/admin",
     "pages/admin/event/event",
-    "pages/admin/userlist/userlist"
+    "pages/admin/userlist/userlist",
+    "pages/admin/eventList/eventList"
     
   ],
   "window":{

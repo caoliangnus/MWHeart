@@ -24,7 +24,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log("Admin is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** Start opening Page *****");
+    console.log("Admin Page is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** End opening Page *****");
 
     if (this.data.isSuccess) {
       wx.showToast({

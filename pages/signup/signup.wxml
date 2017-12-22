@@ -45,9 +45,7 @@
 
       <!--After signup: Update Status -->
       <label class="weui-agree" for="weuiAgree" wx:else>
-        <view class="weui-agree__text">You have successfully signed up.
-          <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
-        </view>
+        <view class="weui-agree__text">You have successfully signed up.</view>
       </label>
 
       <!-- ***** Submit or Quit Button ***** -->

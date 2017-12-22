@@ -16,8 +16,10 @@ Page({
   },
   onLoad: function () {
     that = this
+    console.log("***** MePage: Start loading user info *****");
     console.log(getApp().globalData.userInfo)
     console.log(getApp().globalData.openid)
+    console.log("***** MePage: End loading user info *****");
     that.setData({
       userInfo: getApp().globalData.userInfo,
       realName: getApp().globalData.realName,
@@ -35,11 +37,15 @@ Page({
       })
   },
   onShow: function () {
-    console.log("Me is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** Start opening Page *****");
+    console.log("Me Page is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** End opening Page *****");
   },
 
   adminBtnClick: function (e) {
-    console.log(that.data.adminStatus);
+    console.log("***** MePage: Admin Button Clicked *****");
+    console.log("adminStatus: "+ that.data.adminStatus);
+    console.log("***** MePage: End Admin Button Clicked *****");
     if (that.data.adminStatus) {
       wx.navigateTo({
         url: '../admin/admin/admin'

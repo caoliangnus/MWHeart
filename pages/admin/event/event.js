@@ -46,54 +46,17 @@ Page({
     /**
      * Update Event Page
      */
-
     if (isUpdateEvent) {
-      getEvent(this);
-      var Event = Bmob.Object.extend("event");
-      var event = new Bmob.Query(Event);
-      var today = util.formatTime(new Date());
+      var objectId = String(options.objectId);
+      this.setData({
+        isUpdateEvent: isUpdateEvent,
+        buttonText: "Update Event",
+      })
 
-      //Select Upcoming event
-      event.equalTo("date", { "$gte": { "__type": "Date", "iso": today } });
-      event.ascending('date');
-
-      event.first({
-        success: function (results) {
-          console.log(results);
-          app.globalData.eventDetail = results;
-          var detail = app.globalData.eventDetail.attributes;
-          console.log(detail);
-          that.setData({
-            isUpdateEvent: isUpdateEvent,
-            uniqueID: app.globalData.eventDetail.objectId,
-            date: detail.date,
-            fullDate: detail.fullDate,
-            deadline: detail.deadline,
-            fullDeadline: detail.fullDeadline,
-            time: detail.time,
-            limit: detail.limit,
-            duration: detail.duration,
-            eventStatus: detail.eventStatus,
-            buttonText: "Update Event",
-            formText: "modifyForm"
-          })
-
-          // Get pic url if the event image is not null
-          if (detail.pic) {
-            that.setData({ picUrl: detail.pic._url })
-          }
-
-        },
-        error: function (error) {
-          console.log("查询失败: " + error.code + " " + error.message);
-        }
-      });
+      getEvent(this, objectId);
 
       wx.setNavigationBarTitle({
         title: "Update Event",
-        success: function (res) {
-          console.log("Update Event is ready")
-        }
       });
 
     } else {
@@ -113,7 +76,7 @@ Page({
         buttonText: "Create New Event",
         formText: "submitForm"
       })
-      console.log("Create Event is ready")
+
     }
   },
 
@@ -121,7 +84,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log("Event is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** Start opening Page *****");
+    console.log(this.data.buttonText + " Page is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** End opening Page *****");
   },
 
   //For Event Status 
@@ -196,20 +161,17 @@ function createEvent(t, e) {
   var duration = Number(e.detail.value.duration);
   var eventStatus = Number(e.detail.value.eventStatus)
 
-  console.log("Event: " + e.detail.value);
-
+  console.log("***** EventPage: Start Validing Event Information *****");
   //Valid Event information
   if (!isValidDeadline(date, deadline)) {
-    console.log("DEADLINE: " + deadline);
     Show.showAlert(t, "warn", 'Deadline must before the actual Date');
   } else if (!isValidLimit(limit)) {
-    console.log("LIMIT: " + limit);
     Show.showAlert(t, "warn", 'Limit must be positive integer');
   } else if (!isValidDuration(duration)) {
-    console.log("Duration: " + duration);
     Show.showAlert(t, "warn", 'Duration must be positive integer');
   } else {
-    console.log("Start Creating Event: ");
+    console.log("***** EventPage: End Validing Event Information *****");
+    console.log("***** EventPage: Start uploading EventInfo to Bmob *****");
     //Bmob Create Event
     var Event = Bmob.Object.extend("event");
     var event = new Event();
@@ -228,7 +190,7 @@ function createEvent(t, e) {
             delta: 1
           })
           common.showTip('Event successfully created ');
-          console.log("Event successfully created")
+          console.log("***** EventPage: End uploading EventInfo to Bmob *****");
         },
         error: function (result, error) {
           common.showTip('failed to create event ');
@@ -242,25 +204,38 @@ function createEvent(t, e) {
 * Get Event Detail from Bmob
 */
 function getEvent(t, k) {
+
   that = t;
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
-  var today = util.formatTime(new Date());
 
-  //Select Upcoming event
-  event.equalTo("date", { "$gte": { "__type": "Date", "iso": today } });
-  event.ascending('date');
-
-  event.first({
+  event.get(k, {
     success: function (results) {
+      console.log("***** EventPage: Start loading Specific Event from BMOB *****");
       console.log(results);
-      app.globalData.eventDetail = results.attributes;
+      console.log("***** EventPage: End loading Specific Event from BMOB *****");
+      app.globalData.eventDetail = results;
+      var detail = app.globalData.eventDetail.attributes;
       that.setData({
-        event: results,
+        uniqueID: app.globalData.eventDetail.objectId,
+        date: detail.date,
+        fullDate: detail.fullDate,
+        deadline: detail.deadline,
+        fullDeadline: detail.fullDeadline,
+        time: detail.time,
+        limit: detail.limit,
+        duration: detail.duration,
+        eventStatus: detail.eventStatus,
+        formText: "modifyForm"
       })
+
+      // Get pic url if the event image is not null
+      if (detail.pic) {
+        that.setData({ picUrl: detail.pic._url })
+      }
     },
-    error: function (error) {
-      console.log("查询失败: " + error.code + " " + error.message);
+    error: function (object, error) {
+      // 查询失败
     }
   });
 }
@@ -279,24 +254,23 @@ function modifyEvent(t, e) {
   var eventStatus = Number(e.detail.value.eventStatus)
   var picFile = file
 
+  console.log("***** EventPage: Start Validing Event Information *****");
   //Valid Event information
   if (!isValidDeadline(date, deadline)) {
-    console.log("DEADLINE: " + deadline);
     Show.showAlert(t, "warn", 'Deadline must before the actual Date');
   } else if (!isValidLimit(limit)) {
-    console.log("LIMIT: " + limit);
     Show.showAlert(t, "warn", 'Limit must be positive integer');
   } else if (!isValidDuration(duration)) {
-    console.log("Duration: " + duration);
     Show.showAlert(t, "warn", 'Duration must be positive integer');
   } else {
+    console.log("***** EventPage: End Validing Event Information *****");
+
     var Event = Bmob.Object.extend("event");
     var event = new Bmob.Query(Event);
 
-    // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
     event.get(that.data.nowId, {
       success: function (result) {
-        // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
+        console.log("***** EventPage: Start uploading EventInfo to BMOB *****");
         result.set('date', date);
         result.set('fullDate', fullDate);
         result.set('deadline', deadline);
@@ -329,10 +303,11 @@ function modifyEvent(t, e) {
             result.unset("pic");
           }
         }
+        
         result.save();
+        common.showTip('Success', 'success');     
+        console.log("***** EventPage: End uploading EventInfo to BMOB *****");
 
-        common.showTip('Updated');
-        console.log("Event successfully updated")
       },
       error: function (object, error) {
         common.showTip('Event updated Fail');
@@ -341,7 +316,7 @@ function modifyEvent(t, e) {
     });
   }
 
-  
+
 }
 
 function delPic(t) {//图片删除
@@ -392,24 +367,27 @@ function upPic(t, e) {
           console.log(error);
         })
       }
-
-
     }
   })
 }
 
 function isValidDeadline(date, deadline) {
+  
+  console.log("Checking Deadline");
   //Deadline must before date
   return date >= deadline;
 }
 
 function isValidLimit(limit) {
+  
+  console.log("Checking Limit: " + limit);
   //limit must be a positive integer
   return Number.isInteger(limit) && limit >= 0;
 }
 
 function isValidDuration(duration) {
+  
+  console.log("Checking Duration: " + duration);
   //duration must be a positive integer
-  console.log("validDUration: " + duration);
   return Number.isInteger(duration) && duration >= 0;
 }

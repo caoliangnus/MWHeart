@@ -31,7 +31,7 @@ function showAlert(that, iconType, alertlable) {
     that.setData({
       isAlert: false
     })
-  }, 1500)
+  }, 1000)
 }
 
 module.exports.showTip = showTip;
