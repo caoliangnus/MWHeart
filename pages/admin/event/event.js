@@ -38,8 +38,7 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    // var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
-    var isUpdateEvent = true;
+    var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
     if (isUpdateEvent) {
       // getEvent(this);
       var Event = Bmob.Object.extend("event");
