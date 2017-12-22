@@ -23,6 +23,11 @@ Page({
    */
   onLoad: function (options) {
     that = this;
+    wx.showToast({
+      title: 'Loading',
+      icon: 'loading',
+      duration: 1500
+    })
     //Get userInfo
     that.setData({
       userInfo: getApp().globalData.userInfo
@@ -59,7 +64,9 @@ Page({
    */
   onShow: function () {
     getList(this);
-    console.log("List is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** Start opening Page *****");
+    console.log("UserListPage is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** End opening Page *****");
   },
 
   /**
@@ -163,7 +170,9 @@ function getList(t, k) {
   user.ascending('updatedAt');
   user.find({
     success: function (results) {
+      console.log("*****UserListPage: Start loading User List from BMOB *****");
       console.log(results);
+      console.log("*****UserListPage: End loading User List from BMOB *****");
       app.globalData.userList = results;
       that.setData({
         userList: results,
@@ -185,6 +194,7 @@ function modify(t, e) {
   var thatName = that.data.nowName;
   var thatPhone = Number(that.data.nowPhone);
 
+  console.log("*****UserListPage: Start validing Edited UserInfo *****");
   if ((modyName != thatName || modyPhone != thatPhone)) {
     if (modyName == "" || modyPhone == "") {
       Show.showAlert(that, "warn", 'Name or Phone can not be empty');
@@ -192,14 +202,14 @@ function modify(t, e) {
       Show.showAlert(that,"warn" ,'Phone must be 8 digits only');
     }
     else {
-      console.log(modyName, modyPhone)
+      console.log("*****UserListPage: End validing Edited UserInfo *****");
+
       var Diary = Bmob.Object.extend("user");
       var query = new Bmob.Query(Diary);
       // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
       query.get(that.data.nowId, {
         success: function (result) {
-          console.log(result);
-          // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
+          console.log("*****UserListPage: Start uploading Edited UserInfo to Bmob *****");
           result.set('realName', modyName);
           result.set('phone', modyPhone);
           result.save();
@@ -208,6 +218,7 @@ function modify(t, e) {
             that.setData({
               isModifyUser: false
             })
+            console.log("*****UserListPage: End uploading Edited UserInfo to Bmob *****");
           });
         },
         error: function (object, error) {

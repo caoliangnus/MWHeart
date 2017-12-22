@@ -12,21 +12,28 @@ App({
 
   },
 
-  getOpenId: function() {
+  getOpenId: function () {
     var that = this;
-    var user = new Bmob.User();
 
     wx.login({
       success: function (res) {
-        user.loginWithWeapp(res.code).then(function (user) {
-          var openid = user.get("authData").weapp.openid;
-          that.globalData.openid = openid;
-
-          console.log("openid: " + that.globalData.openid);
-
-        }, function (err) {
-          console.log(err, 'errr');
-        });
+        if (res.code) {
+          Bmob.User.requestOpenId(res.code, {
+            success: function (result) {
+              that.globalData.openid = result.openid;
+              console.log("***** AppPage: Start login WeChat and load UserInfo *****");
+              console.log(result);
+              console.log("openid: " + that.globalData.openid);
+              console.log("***** AppPage:End login WeChat and load UserInfo *****");
+            },
+            error: function (error) {
+              // Show the error message somewhere
+              console.log("Error: " + error.code + " " + error.message);
+            }
+          });
+        } else {
+          common.showTip('Unable to get userInfo', 'loading');
+        }
       }
     });
   },
@@ -80,5 +87,6 @@ App({
     objectId: null,
     eventDetail: null,
     userList: null,
+    eventList: null,
   }
 })

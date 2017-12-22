@@ -59,19 +59,19 @@
             <input name="duration" class="weui-input" value='{{duration}}' />
           </view>
         </view>
-      
 
-      <!-- Event Status -->
-      <view class="weui-cell weui-cell_input">
-        <view class="weui-cell__hd">
-          <view class="weui-label">Status</view>
+
+        <!-- Event Status -->
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Status</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="selector" name="eventStatus" value="{{eventStatus}}" bindchange="onPickerChange" range="{{statusArray}}">
+              <view class="weui-input">{{statusArray[eventStatus]}}</view>
+            </picker>
+          </view>
         </view>
-        <view class="weui-cell__bd">
-          <picker mode="selector" name="eventStatus" value="{{eventStatus}}" bindchange="onPickerChange" range="{{statusArray}}">
-            <view class="weui-input">{{statusArray[eventStatus]}}</view>
-          </picker>
-        </view>
-      </view>
       </view>
 
       <!-- upload event picture area -->
@@ -100,10 +100,10 @@
         </view>
       </view>
 
-        <view class="weui-btn-area">
-          <button class="weui-btn" type="primary" formType="submit">{{buttonText}}</button>
-        </view>
+      <view class="weui-btn-area">
+        <button class="weui-btn" type="primary" formType="submit">{{buttonText}}</button>
       </view>
+    </view>
   </form>
 
   <view class="page__bd" wx:if="{{isUpdateEvent}}">
@@ -111,17 +111,20 @@
     <!-- Manage Volunteer List-->
     <view class="weui-btn-area">
       <navigator url='/pages/admin/userlist/userlist?isVolunteerList=true&date={{date}}' open-type="navigate">
-        <button class="weui-btn" type="primary">Manager Volunteer List</button>
+        <button class="weui-btn" type="primary">Manage Volunteer List</button>
       </navigator>
     </view>
 
     <!-- Manage Waiting List-->
     <view class="weui-btn-area">
       <navigator url='/pages/admin/userlist/userlist?isWaitingList=true' open-type="navigate">
-        <button class="weui-btn" type="primary">Manager Waiting List</button>
+        <button class="weui-btn" type="primary">Manage Waiting List</button>
       </navigator>
+    </view>
+
+    <view class="weui-btn-area">
+     <button class="weui-btn" type="warn" catchtap='deleteEvent'>delete</button>
     </view>
   </view>
 
 </view>
-

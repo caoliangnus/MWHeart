@@ -19,6 +19,16 @@ Page({
     that.setData({
       userInfo: getApp().globalData.userInfo
     })
+
+    //This is for Scroll view in Terms of Service
+    wx.getSystemInfo({
+      success: (res) => {
+        that.setData({
+          windowHeight: res.windowHeight,
+          windowWidth: res.windowWidth
+        })
+      }
+    })
   },
 
   onReady: function () {
@@ -27,7 +37,9 @@ Page({
 
   onShow: function () {
     getEvent(this);
-    console.log("SignUp is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** Start opening Page *****");
+    console.log("SignUp Page is ready" + ". Window opened: " + getCurrentPages().length);
+    console.log("***** End opening Page *****");
   },
 
   onPullDownRefresh: function () {
@@ -105,6 +117,7 @@ Page({
       })
     } else {
 
+      console.log("***** SignUpPage: Start Signing Up New User *****");
       // Save new user: openid,name and phone to cloud
       var User = Bmob.Object.extend("user");
       var user = new User();
@@ -114,14 +127,14 @@ Page({
         phone: phone
       }, {
           success: function (result) {
-            // Create new user successfully
-            // Store objectId
+            // Create new user successfully and Store objectId
             wx.setStorageSync("objectId", result.id)
             console.log("objectId: " + wx.getStorageSync("objectId"))
             // Close window
             that.setData({ isSubmitingUserInfo: false })
             // Get user sign up
             signUpUser();
+            console.log("***** SignUpPage: End Signing Up New User *****");
           },
           error: function (result, error) {
             console.log("failed to create new user" + error.message)
@@ -153,7 +166,6 @@ function checkNewUser(t) {
 
   //Select user with that openid
   user.equalTo("openid", getApp().globalData.openid);
-  console.log(getApp().globalData.openid)
   user.find({
     success: function (results) {
       if (results.length == 0) {
@@ -163,8 +175,7 @@ function checkNewUser(t) {
         // Pop up window shows
         that.setData({ isSubmitingUserInfo: true })
       } else {
-        // Old user
-        // Get user sign up
+        // Old user -> Get user sign up
         signUpUser();
       }
     },
@@ -185,6 +196,7 @@ function signUpUser(t, k) {
     icon: 'success',
     duration: 2000
   })
+  
 }
 
 /*
@@ -202,7 +214,9 @@ function getEvent(t, k) {
 
   event.first({
     success: function (results) {
+      console.log("***** SignUpPage: Start loading UpComing Event from BMOB *****");
       console.log(results);
+      console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
         event: results,
       })
@@ -211,4 +225,5 @@ function getEvent(t, k) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });
+  
 }
