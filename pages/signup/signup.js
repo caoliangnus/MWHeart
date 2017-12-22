@@ -15,6 +15,9 @@ Page({
 
   onLoad: function (options) {
     that = this;
+
+    getEventList(this);
+
     //Get userInfo
     that.setData({
       userInfo: getApp().globalData.userInfo
@@ -37,6 +40,7 @@ Page({
 
   onShow: function () {
     getEvent(this);
+    getEventList(this);
     console.log("***** Start opening Page *****");
     console.log("SignUp Page is ready" + ". Window opened: " + getCurrentPages().length);
     console.log("***** End opening Page *****");
@@ -228,4 +232,32 @@ function getEvent(t, k) {
     }
   });
   
+}
+
+
+/*
+* Get Past Event Detail from Bmob
+*/
+function getEventList(t, k) {
+  that = t;
+  var Event = Bmob.Object.extend("event");
+  var event = new Bmob.Query(Event);
+  //Select Upcoming event
+  var today = util.formatTime(new Date());
+  event.equalTo("date", { "$lt": { "__type": "Date", "iso": today } });
+  event.descending('date');
+  event.find({
+    success: function (results) {
+      console.log("***** EventListPage: Start loading Event Listfrom BMOB *****");
+      console.log(results);
+      console.log("***** EventListPage: End loading Event Listfrom BMOB *****");
+      app.globalData.eventList = results;
+      that.setData({
+        eventList: results,
+      })
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
 }

@@ -2,12 +2,11 @@
   <view class="weui-panel__bd">
     <block wx:if="{{userList.length > 0}}">
       <navigator class="weui-media-box weui-media-box_text" wx:for="{{userList}}" wx:key="userItem" url="../../user/user">
-        <view class="weui-media-box__title weui-media-box__title_in-text">
-          {{item.realName}}</view>
-        <view class="weui-media-box__desc">{{item.phone}}</view>
+        <view class="weui-media-box__title weui-media-box__title_in-text">Name: {{item.realName}}
+        </view>
+        <view class="weui-media-box__desc">Phone: {{item.phone}}</view>
         <view class="weui-media-box__info">
           <view class="weui-media-box__info__meta weui-media-time">Date：{{item.updatedAt}}</view>
-
           <view class="weui-media-box__info__meta weui-media-box__info__operate">
             <button class="del weui-btn mini-btn" type="default" size="mini" catchtap="deleteUser" data-id="{{item.objectId}}">delete</button>
             <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="toModifyUser" data-id="{{item.objectId}}" data-name="{{item.realName}}" data-phone="{{item.phone}}">edit</button>
@@ -16,12 +15,12 @@
       </navigator>
     </block>
     <block wx:else>
-            <view class="weui-media-box weui-media-box_text">
-              <view class="weui-media-box__title weui-media-box__title_in-text">
-                暂无内容</view>
-              <view class="weui-media-box__desc"></view>
-            </view>
-          </block>
+      <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text">
+          暂无内容</view>
+        <view class="weui-media-box__desc"></view>
+      </view>
+    </block>
   </view>
 </view>
 

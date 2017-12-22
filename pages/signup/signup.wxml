@@ -6,7 +6,7 @@
       <view class="weui-form-preview__hd">
         <view class="weui-form-preview__item">
           <view class="weui-form-preview__label">Event Name</view>
-          <view class="weui-form-preview__value_in-hd">MWH</view>
+          <view class="weui-form-preview__value">MWHeart</view>
         </view>
       </view>
       <view class="weui-form-preview__bd">
@@ -55,8 +55,33 @@
       <!-- After Sign Up: Button set to Quit-->
       <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="default" bindtap="quitBtnClick" wx:else>Quit</button>
     </view>
-
   </view>
+
+<view class="page__desc">Past Event</view>
+  <view class="page">
+  <view class="weui-panel__bd">
+    <block wx:if="{{eventList.length > 0}}">
+      <view class="weui-media-box weui-media-box_text" wx:for="{{eventList}}" wx:key="eventItem">
+        <view class="weui-media-box__title weui-media-box__title_in-text">
+          {{item.fullDate}}</view>
+        <view class="weui-media-box__desc">{{item.fullDeadline}}</view>
+        <view class="weui-media-box__info">
+          <view class="weui-media-box__info__meta weui-media-time">Date：{{item.updatedAt}}</view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+            <view class="weui-media-box weui-media-box_text">
+              <view class="weui-media-box__title weui-media-box__title_in-text">
+                暂无内容</view>
+              <view class="weui-media-box__desc"></view>
+            </view>
+          </block>
+  </view>
+</view>
+
+<include src="../../../utils/alert/alert.wxml" />
+
 </view>
 
 
