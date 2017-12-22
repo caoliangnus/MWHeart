@@ -118,11 +118,11 @@ Page({
           query.equalTo("objectId", id);
           query.destroyAll({
             success: function () {
-              common.showTip('Delete User Success');
+              common.showTip('Success');
               that.onShow();
             },
             error: function (err) {
-              common.showTip('Delete User Fail', 'loading');
+              common.showTip('Fail', 'loading');
             }
           });
         }
@@ -181,9 +181,9 @@ function modify(t, e) {
   var that = t;
   //Edit User
   var modyName = e.detail.value.name;
-  var modyPhone = e.detail.value.phone;
+  var modyPhone = Number(e.detail.value.phone);
   var thatName = that.data.nowName;
-  var thatPhone = that.data.nowPhone;
+  var thatPhone = Number(that.data.nowPhone);
 
   if ((modyName != thatName || modyPhone != thatPhone)) {
     if (modyName == "" || modyPhone == "") {
@@ -203,7 +203,7 @@ function modify(t, e) {
           result.set('realName', modyName);
           result.set('phone', modyPhone);
           result.save();
-          common.showTip('User Updated successfully', 'success', function () {
+          common.showTip('Success', 'success', function () {
             that.onShow();
             that.setData({
               isModifyUser: false
@@ -223,11 +223,11 @@ function modify(t, e) {
     that.setData({
       isModifyUser: false
     })
-    common.showTip('User Updated successfully', 'success');
+    common.showTip('Success', 'success');
   }
 }
 
 function isPhoneValid(phoneNum){
   //Phone length must be 8 and must be num only
-  return Number.isInteger(phoneNum) && phoneNum.length === 8
+  return Number.isInteger(phoneNum) && phoneNum >= 0 && phoneNum.toString().length == 8;
 }
