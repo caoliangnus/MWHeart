@@ -13,6 +13,8 @@ Page({
     isAgree: false,
     isOngoing: false,
     isSignedUp: false,
+    isClose: false,
+    isNotYet: false,
     signUpStatus: false,
     event: "",
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
@@ -98,6 +100,9 @@ Page({
     this.setData({
       'notice_status': false
     });
+  },
+  showContactPD: function (e) {
+
   },
 
   sighUpBtnClick: function (e) {
@@ -322,6 +327,8 @@ function getEvent(t, k) {
       console.log(results);
       app.globalData.eventId = results.id;
       console.log("Event Id: ", results.id, " Event Date: ", results.attributes.fullDate);
+      var isNotYet = results.attributes.eventStatus === 0 ? true : false;
+      console.log("Event not open: ", isNotYet);
       var isOngoing = results.attributes.eventStatus === 1 ? true : false;
       console.log("Event ongoing: ", isOngoing);
       var isClosed = new Date(results.attributes.deadline) >= today ? true : false;
@@ -337,6 +344,7 @@ function getEvent(t, k) {
       console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
         event: results,
+        isNotYet: isNotYet,
         isOngoing: isOngoing,
         isClosed: isClosed,
         signUpStatus: signUpStatus,
