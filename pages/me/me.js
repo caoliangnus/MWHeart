@@ -135,13 +135,13 @@ function getUserCIPHour(t) {
       }
       that.setData({
         eventArray: eventArray,
-        loading:false,
+        loading: false,
       })
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
-  }).then(function(){
+  }).then(function () {
     that.setData({
       loading: true
     })
@@ -155,13 +155,13 @@ function getUserCIPHour(t) {
         success: function (result) {
           console.log("Event", result);
           var eventDate = new Date(result.attributes.date);
-          if (new Date() >= eventDate){
+          if (new Date() >= eventDate) {
             sum += Number(result.attributes.duration);
             that.setData({
               cipHour: sum,
               loading: false
             })
-          }else{
+          } else {
             that.setData({
               cipHour: sum,
               loading: false
@@ -175,6 +175,6 @@ function getUserCIPHour(t) {
         }
       });
     }
-    
+
   });
 }

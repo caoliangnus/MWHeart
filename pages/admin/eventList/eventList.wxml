@@ -6,7 +6,7 @@
     <block wx:if="{{eventList.length > 0}}">
     <view catchtap=''>
       <navigator class="weui-media-box weui-media-box_text" wx:for="{{eventList}}" wx:key="eventItem" url="../event/event?isUpdateEvent=true&objectId={{item.objectId}}">
-        <view class="weui-media-box__title weui-media-box__title_in-text"> {{index}}.
+        <view class="weui-media-box__title weui-media-box__title_in-text"> {{index+1}}.
           {{item.fullDate}}</view>
         <view class="weui-media-box__desc">{{item.fullDeadline}}</view>
         <view class="weui-media-box__info">
