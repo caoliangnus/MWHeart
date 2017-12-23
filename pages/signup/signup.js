@@ -1,4 +1,5 @@
 var util = require('../../utils/util.js');
+var common = require('../../utils/common.js');
 var Bmob = require('../../utils/bmob.js');  // Initialize cloud server Bmob
 const app = getApp(); //get app instance
 var that;
@@ -106,6 +107,39 @@ Page({
 
   quitBtnClick: function (e) {
     //Todo
+    var that = this;
+    that.setData({
+      loading: true
+    })
+    var userId = app.globalData.openid;
+    var eventId = app.globalData.eventId;
+
+    wx.showModal({
+      title: 'Alert',
+      content: 'Quit Event？',
+      success: function (res) {
+        if (res.confirm) {
+          //delete user from Participation Table
+          var Participation = Bmob.Object.extend("participationTable");
+          //创建查询对象，入口参数是对象类的实例
+          var event = new Bmob.Query(Participation);
+          event.equalTo("user", userId);
+          event.equalTo("event", eventId);
+          event.destroyAll({
+            success: function () {
+              that.setData({
+                isSignedUp: false,
+                loading: false,
+              })
+              common.showTip('Success');
+            },
+            error: function (err) {
+              common.showTip('Fail', 'loading');
+            }
+          });
+        }
+      }
+    })
   },
 
   /**
@@ -162,7 +196,9 @@ Page({
   },
 
   cancelBtnClick: function (e) {
-    that.setData({ isSubmitingUserInfo: false })
+    that.setData({
+      isSubmitingUserInfo: false,
+    })
   }
 
 })
