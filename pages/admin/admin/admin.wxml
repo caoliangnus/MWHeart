@@ -1,3 +1,6 @@
+<loading hidden="{{!loading}}">
+  loading...
+</loading>
 <view class="page">
   <!-- New Line -->
   <text>\n</text>

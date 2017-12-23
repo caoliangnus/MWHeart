@@ -80,22 +80,15 @@
           <loading hidden="{{!loading}}">
             Uploading...
           </loading>
-          <view class="weui-panel weui-panel_access">
-            <view class="weui-panel__bd">
-              <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
-                <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-                  <image class="weui-media-box__thumb" src="{{picUrl}}" />
-                </view>
-                <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-                  <view class="weui-media-box__desc" wx:if="{{picUrl != null}}">{{picUrl}}</view>
-                  <view class="weui-media-box__desc" wx:else>Uploaded image display</view>
-                </view>
-              </navigator>
-            </view>
+
+          <view class="add_pic" catchtap="upPic" wx-if="{{picUrl == null}}">
+            <view>添加图片（选）</view>
           </view>
-          <view>
-            <button type="default" bindtap="upPic" wx:if="{{picUrl == null}}">Upload Event Image</button>
-            <button type="default" bindtap="delPic" wx:else>Delete Event Image</button>
+          <view wx:if="{{picUrl != null}}" class="image_box">
+            <view class="picPre">
+              <image src="{{picUrl}}" mode="aspectFill"></image>
+              <view catchtap="delPic"></view>
+            </view>
           </view>
         </view>
       </view>
@@ -110,20 +103,20 @@
 
     <!-- Manage Volunteer List-->
     <view class="weui-btn-area">
-      <navigator url='/pages/admin/userlist/userlist?isVolunteerList=true&date={{date}}' open-type="navigate">
+      <navigator url='/pages/admin/userlist/userlist?isVolunteerList=true&objectId={{objectId}}' open-type="navigate">
         <button class="weui-btn" type="primary">Manage Volunteer List</button>
       </navigator>
     </view>
 
     <!-- Manage Waiting List-->
     <view class="weui-btn-area">
-      <navigator url='/pages/admin/userlist/userlist?isWaitingList=true' open-type="navigate">
+      <navigator url='/pages/admin/userlist/userlist?isWaitingList=true&objectId={{objectId}}' open-type="navigate">
         <button class="weui-btn" type="primary">Manage Waiting List</button>
       </navigator>
     </view>
 
     <view class="weui-btn-area">
-     <button class="weui-btn" type="warn" catchtap='deleteEvent'>delete</button>
+      <button class="weui-btn" type="warn" catchtap='deleteEvent'>delete</button>
     </view>
   </view>
 

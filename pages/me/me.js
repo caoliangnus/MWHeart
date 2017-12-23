@@ -6,6 +6,7 @@ var that;
 
 Page({
   data: {
+    loading: false,
     userInfo: {},
     cipHour: 40,
     realName: null,
@@ -16,6 +17,9 @@ Page({
   },
   onLoad: function () {
     that = this
+    this.setData({
+      loading: true
+    })
     console.log("***** MePage: Start loading user info *****");
     console.log(getApp().globalData.userInfo)
     console.log(getApp().globalData.openid)
@@ -41,7 +45,8 @@ Page({
     console.log("Me Page is ready" + ". Window opened: " + getCurrentPages().length);
     that.setData({
       realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
-      phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone
+      phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
+      loading: false,
     })
     console.log(this.data.realname, this.data.phone)
     console.log("***** End opening Page *****");
@@ -77,7 +82,7 @@ Page({
       if (true) {
         that.setData({
           adminStatus: true,
-          showAdminLogIn: false
+          showAdminLogIn: false,
         });
         console.log(that.data.adminStatus);
         wx.showToast({

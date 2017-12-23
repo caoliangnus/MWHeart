@@ -1,6 +1,7 @@
 var util = require('../../../utils/util.js');
 var Bmob = require('../../../utils/bmob.js');
 var common = require('../../../utils/common.js');
+var util = require('../../../utils/util.js');
 var Show = require("../../../utils/alert/alert.js");
 const app = getApp(); //get app instance
 var that;
@@ -40,6 +41,9 @@ Page({
   onLoad: function (options) {
     that = this;
 
+    this.setData({
+      loading: true
+    })
     //To determine CreateEvent Page or UpdateEvent Page
     var isUpdateEvent = options.isUpdateEvent == "true" ? true : false;
 
@@ -48,6 +52,7 @@ Page({
      */
     if (isUpdateEvent) {
       var objectId = String(options.objectId);
+      console.log(objectId)
       this.setData({
         isUpdateEvent: isUpdateEvent,
         buttonText: "Update Event",
@@ -75,7 +80,8 @@ Page({
         duration: "2",
         eventStatus: 0,
         buttonText: "Create New Event",
-        formText: "submitForm"
+        formText: "submitForm",
+        loading: false,
       })
 
     }
@@ -135,7 +141,7 @@ Page({
 
   modifyForm: function (e) {
     var t = this;
-    var nowId = t.data.uniqueID;
+    var nowId = t.data.objectId;
     that.setData({
       nowId: nowId,
     })
@@ -181,6 +187,7 @@ Page({
 })
 
 function createEvent(t, e) {
+  var that = t;
   // Event information
   var date = new Date((e.detail.value.date));
   var fullDate = util.formatDate(new Date(date));
@@ -200,6 +207,9 @@ function createEvent(t, e) {
   } else if (!isValidDuration(duration)) {
     Show.showAlert(t, "warn", 'Duration must be positive integer');
   } else {
+    that.setData({
+      loading: true
+    })
     console.log("***** EventPage: End Validing Event Information *****");
     console.log("***** EventPage: Start uploading EventInfo to Bmob *****");
     //Bmob Create Event
@@ -216,6 +226,9 @@ function createEvent(t, e) {
       eventStatus: eventStatus
     }, {
         success: function (result) {
+          that.setData({
+            loading: false
+          })
           wx.navigateBack({
             delta: 1
           })
@@ -243,6 +256,7 @@ function getEvent(t, k) {
     success: function (results) {
       console.log("***** EventPage: Start loading Specific Event from BMOB *****");
       console.log(results);
+      console.log(results.pic);
       console.log("***** EventPage: End loading Specific Event from BMOB *****");
       app.globalData.eventDetail = results;
       var detail = app.globalData.eventDetail.attributes;
@@ -256,7 +270,8 @@ function getEvent(t, k) {
         limit: detail.limit,
         duration: detail.duration,
         eventStatus: detail.eventStatus,
-        formText: "modifyForm"
+        formText: "modifyForm",
+        loading: false,
       })
 
       // Get pic url if the event image is not null
@@ -272,7 +287,9 @@ function getEvent(t, k) {
 
 function modifyEvent(t, e) {
   var that = t;
-
+  that.setData({
+    loading: true
+  })
   // Event information
   var date = new Date((e.detail.value.date));
   var fullDate = util.formatDate(new Date(date));
@@ -335,6 +352,9 @@ function modifyEvent(t, e) {
         }
         
         result.save();
+        that.setData({
+          loading: false
+        })
         wx.navigateBack({
           delta: 1
         })  
@@ -380,8 +400,8 @@ function upPic(t, e) {
         if (extension) {
           extension = extension[1].toLowerCase();
         }
-        var newDate = new Date();
-        var newDateStr = newDate.toLocaleDateString();
+        var newDate = new Date(that.data.date)
+        var newDateStr = util.formatTimeDMY(newDate);
         var name = newDateStr + "." + extension;
 
         // Upload file

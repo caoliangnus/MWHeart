@@ -11,7 +11,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    
+    loading: false
   },
 
   /**
@@ -19,11 +19,6 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    wx.showToast({
-      title: 'Loading',
-      icon: 'loading',
-      duration: 1500
-    })
     getEventList(this);
   },
 
@@ -90,6 +85,9 @@ function getEventList(t, k) {
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
   event.descending('date');
+  that.setData({
+    loading: true
+  })
   event.find({
     success: function (results) {
       console.log("***** EventListPage: Start loading Event Listfrom BMOB *****");
@@ -98,6 +96,7 @@ function getEventList(t, k) {
       app.globalData.eventList = results;
       that.setData({
         eventList: results,
+        loading: false
       })
     },
     error: function (error) {
