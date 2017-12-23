@@ -10,23 +10,22 @@ Page({
     picUrl: null,
     oldPicUrl: null,
     isAgree: false,
-    isOngoing:false,
+    isOngoing: false,
     isSignedUp: false,
     signUpStatus: false,
     event: "",
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
-    isSubmitingUserInfo: false
+    isSubmitingUserInfo: false,
+    volunteerList: [],
+    waitingList: [],
   },
 
 
   onLoad: function (options) {
     that = this;
-    this.setData({
-      loading: true
-    })
     getEvent(this);
     getEventList(this);
-
+    getUserSignUpStatus(this);
     //Get userInfo
     that.setData({
       userInfo: getApp().globalData.userInfo
@@ -50,7 +49,7 @@ Page({
   onShow: function () {
     getEvent(this);
     getEventList(this);
-
+    getUserSignUpStatus(this);
     console.log("***** Start opening Page *****");
     console.log("SignUp Page is ready" + ". Window opened: " + getCurrentPages().length);
     console.log("***** End opening Page *****");
@@ -195,7 +194,7 @@ function checkNewUser(t) {
         that.setData({ isSubmitingUserInfo: true })
       } else {
         // Old user -> Get user sign up
-        signUpUser();
+        signUpUser(that);
       }
     },
     error: function (error) {
@@ -207,15 +206,58 @@ function checkNewUser(t) {
 
 // Get user signed up for upcoming event
 function signUpUser(t, k) {
-
-  // Signed up successfully
-  that.setData({ isSignedUp: true })
-  wx.showToast({
-    title: 'Signed up!',
-    icon: 'success',
-    duration: 2000
+  var that = t;
+  that.setData({
+    loading: true
   })
-  
+
+  var limit = that.data.limit
+  var status = 0;
+  var userId = app.globalData.openid;
+  var eventId = app.globalData.eventId;
+
+  var Participlation = Bmob.Object.extend("participationTable");
+  var participation = new Participlation();
+
+  //Check for number of participants
+  var query = new Bmob.Query(Participlation);
+  query.include("event");
+
+  query.find({
+    success: function (results) {
+      console.log("***** SignUpPage: Start Signing Up User *****");
+      //Need to be less than {{limit}}, initially results.length = 0
+      if(results.length < limit){
+        console.log("Number of Participants before signUp: ", results.length);
+        status = 1;
+      } else {
+        status = 0;
+      }
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  }).then(function() {
+    var event = Bmob.Object.createWithoutData("event", eventId);
+    var user = Bmob.Object.createWithoutData("user", userId);
+
+    participation.set("user", userId);
+    participation.set("event", eventId);
+    participation.set("status", status)
+
+    participation.save();
+    // Signed up successfully
+    that.setData({
+      isSignedUp: true,
+      loading: false
+    })
+    wx.showToast({
+      title: 'Signed up!',
+      icon: 'success',
+      duration: 2000
+    })
+    console.log("***** SignUpPage: End Signing Up User *****");
+  })
 }
 
 /*
@@ -223,6 +265,9 @@ function signUpUser(t, k) {
 */
 function getEvent(t, k) {
   that = t;
+  that.setData({
+    loading: true
+  })
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
   var today = new Date(new Date().setDate(new Date().getDate() - 1)); //This actually refers to yesterday
@@ -236,33 +281,36 @@ function getEvent(t, k) {
     success: function (results) {
       console.log("***** SignUpPage: Start loading UpComing Event from BMOB *****");
       console.log(results);
+      app.globalData.eventId = results.id;
+      console.log("Event Id: ", results.id, " Event Date: ", results.attributes.fullDate);
       var isOngoing = results.attributes.eventStatus === 1 ? true : false;
       console.log("Event ongoing: ", isOngoing);
       var isClosed = new Date(results.attributes.deadline) >= today ? true : false;
-      console.log("Deadline: ", results.attributes.deadline);
-      console.log("today: ", today);
       console.log("Deadline reached: ", isClosed);
       var btnText = "";
       if (isClosed) {
         btnText = "Sign Up";
-      }else {
+      } else {
         btnText = "Closed";
       }
       var signUpStatus = isOngoing && isClosed && that.data.isAgree;
+      var limit = results.attributes.limit;
       console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
         event: results,
         isOngoing: isOngoing,
         isClosed: isClosed,
         signUpStatus: signUpStatus,
-        btnText: btnText
+        btnText: btnText,
+        limit: limit,
+        loading: false
       })
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });
-  
+
 }
 
 
@@ -271,6 +319,10 @@ function getEvent(t, k) {
 */
 function getEventList(t, k) {
   that = t;
+  that.setData({
+    loading: true
+  })
+
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
   //Select Upcoming event
@@ -279,15 +331,47 @@ function getEventList(t, k) {
   event.descending('date');
   event.find({
     success: function (results) {
-      console.log("***** EventListPage: Start loading Event Listfrom BMOB *****");
+      console.log("***** SignUpPage: Start loading Event Listfrom BMOB *****");
       console.log(results);
-      console.log("***** EventListPage: End loading Event Listfrom BMOB *****");
+      console.log("***** SignUpPage: End loading Event Listfrom BMOB *****");
       app.globalData.eventList = results;
       // Get pic url if the event image is not null
       that.setData({
         eventList: results,
         loading: false,
       })
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+}
+
+function getUserSignUpStatus(t){
+  var that = t;
+  that.setData({
+    loading: true
+  })
+  //One user for One Event
+  var Participlation = Bmob.Object.extend("participationTable");
+  var query = new Bmob.Query(Participlation);
+  query.include("user");
+  query.find({
+    success: function (results) {
+      var userId = app.globalData.openid;
+      var eventId = app.globalData.eventId;
+      console.log("***** SignUpPage: Start loading UserStatusfrom BMOB *****");
+      for (var i = 0; i < results.length; i++) {
+        if (results[i].attributes.event == eventId) {
+          console.log("User Already Signed Up");
+          //Already signed up
+          that.setData({
+            isSignedUp: true,
+            loading: false
+          })
+        }
+      }
+      console.log(results);
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);

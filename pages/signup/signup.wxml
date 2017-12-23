@@ -57,7 +57,7 @@
       <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="sighUpBtnClick" disabled="{{!signUpStatus}}" wx:if="{{!isSignedUp}}">{{btnText}}</button>
 
       <!-- After Sign Up: Button set to Quit-->
-      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="default" bindtap="quitBtnClick" wx:else>Quit</button>
+      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="warn" bindtap="quitBtnClick" wx:else>Quit</button>
     </view>
   </view>
 

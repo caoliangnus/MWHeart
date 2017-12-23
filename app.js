@@ -86,6 +86,7 @@ App({
     phone: null,
     openid: null,
     objectId: null,
+    eventId:null,
     eventDetail: null,
     userList: null,
     eventList: null,
