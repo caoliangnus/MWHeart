@@ -12,6 +12,7 @@ Page({
     isAgree: false,
     isOngoing:false,
     isSignedUp: false,
+    signUpStatus: false,
     event: "",
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
     isSubmitingUserInfo: false
@@ -49,6 +50,7 @@ Page({
   onShow: function () {
     getEvent(this);
     getEventList(this);
+
     console.log("***** Start opening Page *****");
     console.log("SignUp Page is ready" + ". Window opened: " + getCurrentPages().length);
     console.log("***** End opening Page *****");
@@ -71,8 +73,11 @@ Page({
    */
   //Agree checkbox
   bindAgreeChange: function (e) {
+    var isAgree = !!e.detail.value.length;
+    var signUpStatus = this.data.isOngoing && this.data.isClosed && isAgree;
     this.setData({
-      isAgree: !!e.detail.value.length
+      isAgree: !!e.detail.value.length,
+      signUpStatus: signUpStatus,
     });
   },
 
@@ -232,11 +237,25 @@ function getEvent(t, k) {
       console.log("***** SignUpPage: Start loading UpComing Event from BMOB *****");
       console.log(results);
       var isOngoing = results.attributes.eventStatus === 1 ? true : false;
-      isOngoing = new Date(results.attributes.deadline) >= today;
+      console.log("Event ongoing: ", isOngoing);
+      var isClosed = new Date(results.attributes.deadline) >= today ? true : false;
+      console.log("Deadline: ", results.attributes.deadline);
+      console.log("today: ", today);
+      console.log("Deadline reached: ", isClosed);
+      var btnText = "";
+      if (isClosed) {
+        btnText = "Sign Up";
+      }else {
+        btnText = "Closed";
+      }
+      var signUpStatus = isOngoing && isClosed && that.data.isAgree;
       console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
         event: results,
         isOngoing: isOngoing,
+        isClosed: isClosed,
+        signUpStatus: signUpStatus,
+        btnText: btnText
       })
     },
     error: function (error) {

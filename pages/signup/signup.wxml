@@ -54,7 +54,7 @@
 
       <!-- ***** Submit or Quit Button ***** -->
       <!-- Before Sign Up: Button set to SignUp-->
-      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="sighUpBtnClick" disabled="{{!isAgree && !isOngoing}}" wx:if="{{!isSignedUp}}">Sign Up</button>
+      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="sighUpBtnClick" disabled="{{!signUpStatus}}" wx:if="{{!isSignedUp}}">{{btnText}}</button>
 
       <!-- After Sign Up: Button set to Quit-->
       <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="default" bindtap="quitBtnClick" wx:else>Quit</button>
