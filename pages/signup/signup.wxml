@@ -49,7 +49,8 @@
 
       <!--After signup: Update Status -->
       <label class="weui-agree" for="weuiAgree" wx:else>
-        <view class="weui-agree__text">You have successfully signed up.</view>
+        <view class="weui-agree__text" wx:if="{{isWaiting}}">You are in the waiting list.</view>
+        <view class="weui-agree__text" wx:else>You have successfully signed up.</view>
       </label>
 
       <!-- ***** Submit or Quit Button ***** -->
@@ -57,12 +58,12 @@
       <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="sighUpBtnClick" disabled="{{!signUpStatus}}" wx:if="{{!isSignedUp}}">{{btnText}}</button>
 
       <!-- After Sign Up: Button set to Quit-->
-      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="warn" bindtap="quitBtnClick" wx:else>Quit</button>
+      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="warn" bindtap="quitBtnClick" disabled="{{!signUpStatus}}" wx:else>Quit</button>
     </view>
   </view>
 
   <!-- Past Event -->
-  <view class="page__desc">Past Event</view>
+  <view class="page__desc">Past Events</view>
   <view class="page">
     <view class="weui-panel__bd">
       <block wx:if="{{eventList.length > 0}}">
@@ -85,7 +86,7 @@
       <block wx:else>
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">
-            暂无内容</view>
+            No past events yet. Looking forward to it!</view>
           <view class="weui-media-box__desc"></view>
         </view>
       </block>

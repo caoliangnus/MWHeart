@@ -19,6 +19,7 @@ Page({
     isSubmitingUserInfo: false,
     volunteerList: [],
     waitingList: [],
+    isWaiting: false
   },
 
 
@@ -132,6 +133,7 @@ Page({
                 loading: false,
               })
               common.showTip('Success');
+              console.log("Quit an event")
             },
             error: function (err) {
               common.showTip('Fail', 'loading');
@@ -285,7 +287,8 @@ function signUpUser(t, k) {
     // Signed up successfully
     that.setData({
       isSignedUp: true,
-      loading: false
+      loading: false,
+      isWaiting: status == 0
     })
     wx.showToast({
       title: 'Signed up!',
@@ -403,7 +406,8 @@ function getUserSignUpStatus(t){
           //Already signed up
           that.setData({
             isSignedUp: true,
-            loading: false
+            loading: false,
+            isWaiting: results[i].attributes.status == 0
           })
         }
       }
