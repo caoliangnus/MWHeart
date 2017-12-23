@@ -339,7 +339,7 @@ function getEvent(t, k) {
       } else {
         btnText = "Closed";
       }
-      var signUpStatus = isOngoing && isClosed && that.data.isAgree;
+      var signUpStatus = isOngoing && !isClosed && that.data.isAgree;
       var limit = results.attributes.limit;
       console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
