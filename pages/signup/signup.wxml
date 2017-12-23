@@ -54,7 +54,7 @@
 
       <!-- ***** Submit or Quit Button ***** -->
       <!-- Before Sign Up: Button set to SignUp-->
-      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="sighUpBtnClick" disabled="{{!isAgree}}" wx:if="{{!isSignedUp}}">Sign Up</button>
+      <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="primary" bindtap="sighUpBtnClick" disabled="{{!isAgree && !isOngoing}}" wx:if="{{!isSignedUp}}">Sign Up</button>
 
       <!-- After Sign Up: Button set to Quit-->
       <button class="weui-form-preview__btn weui-form-preview__btn_primary" type="default" bindtap="quitBtnClick" wx:else>Quit</button>
@@ -71,14 +71,15 @@
             {{item.fullDate}}</view>
           <view class="weui-media-box__desc">{{item.fullDeadline}}</view>
           <view class="weui-media-box__info">
-            <view class="weui-media-box__info__meta weui-media-time">Date：{{item.updatedAt}}</view>
+            <view class="weui-media-box__desc">Event Status: {{statusArray[item.eventStatus]}}</view>
           </view>
-          <view wx:if="{{item.pic._url != null}}" class="image_box">
-            <view class="picPre">
-              <image src="{{item.pic._url}}" mode="aspectFit"></image>
-              <view bindtap="delPic"></view>
+
+            <view wx:if="{{item.pic._url != null}}" class="image_box">
+              <view class="picPre">
+                <image src="{{item.pic._url}}" mode="aspectFit"></image>
+                <view bindtap="delPic"></view>
+              </view>
             </view>
-          </view>
         </view>
       </block>
       <block wx:else>

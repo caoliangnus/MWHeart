@@ -69,4 +69,5 @@
   padding-left: 25rpx;
 }
 
+.picPre{width:100%;margin:0 auto;position:relative;box-sizing:border-box;}
 .picPre image{width:100%;height:100%rpx;}

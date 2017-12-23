@@ -10,8 +10,10 @@ Page({
     picUrl: null,
     oldPicUrl: null,
     isAgree: false,
+    isOngoing:false,
     isSignedUp: false,
     event: "",
+    statusArray: ['Not Yet', 'Ongoing', 'Closed'],
     isSubmitingUserInfo: false
   },
 
@@ -228,10 +230,12 @@ function getEvent(t, k) {
     success: function (results) {
       console.log("***** SignUpPage: Start loading UpComing Event from BMOB *****");
       console.log(results);
+      var isOngoing = results.attributes.eventStatus === 1 ? true : false;
+      
       console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
         event: results,
-        
+        isOngoing: isOngoing,
       })
     },
     error: function (error) {
