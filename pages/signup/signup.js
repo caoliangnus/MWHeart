@@ -220,6 +220,7 @@ function getEvent(t, k) {
   that = t;
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
+  var today = new Date(new Date().setDate(new Date().getDate() - 1)); //This actually refers to yesterday
   var yesterday = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
 
   //Select Upcoming event
@@ -231,7 +232,7 @@ function getEvent(t, k) {
       console.log("***** SignUpPage: Start loading UpComing Event from BMOB *****");
       console.log(results);
       var isOngoing = results.attributes.eventStatus === 1 ? true : false;
-      
+      isOngoing = new Date(results.attributes.deadline) >= today;
       console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
         event: results,
