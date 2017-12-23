@@ -28,12 +28,16 @@
   <text>\n</text>
 
   <view class="weui-cells weui-cells_after-title">
+    <navigator url="../admin/eventList/eventList?isMyEvent=true" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">My Past Events</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
     <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
       <view class="weui-cell__bd">About</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
     <view class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd" bindtap='adminBtnClick'>Admin Page</view>
+      <view class="weui-cell__bd" catchtap='adminBtnClick'>Admin Page</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </view>
   </view>
