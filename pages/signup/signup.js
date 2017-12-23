@@ -13,12 +13,15 @@ Page({
     isAgree: false,
     isOngoing: false,
     isSignedUp: false,
+    isClose: false,
+    isNotYet: false,
     signUpStatus: false,
     event: "",
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
     isSubmitingUserInfo: false,
     volunteerList: [],
     waitingList: [],
+    isWaiting: false
   },
 
 
@@ -98,6 +101,9 @@ Page({
       'notice_status': false
     });
   },
+  showContactPD: function (e) {
+
+  },
 
   sighUpBtnClick: function (e) {
     // Show pop up for user to fill in info if is new user
@@ -132,6 +138,7 @@ Page({
                 loading: false,
               })
               common.showTip('Success');
+              console.log("Quit an event")
             },
             error: function (err) {
               common.showTip('Fail', 'loading');
@@ -285,7 +292,8 @@ function signUpUser(t, k) {
     // Signed up successfully
     that.setData({
       isSignedUp: true,
-      loading: false
+      loading: false,
+      isWaiting: status == 0
     })
     wx.showToast({
       title: 'Signed up!',
@@ -319,6 +327,8 @@ function getEvent(t, k) {
       console.log(results);
       app.globalData.eventId = results.id;
       console.log("Event Id: ", results.id, " Event Date: ", results.attributes.fullDate);
+      var isNotYet = results.attributes.eventStatus === 0 ? true : false;
+      console.log("Event not open: ", isNotYet);
       var isOngoing = results.attributes.eventStatus === 1 ? true : false;
       console.log("Event ongoing: ", isOngoing);
       var isClosed = new Date(results.attributes.deadline) >= today ? true : false;
@@ -334,6 +344,7 @@ function getEvent(t, k) {
       console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
       that.setData({
         event: results,
+        isNotYet: isNotYet,
         isOngoing: isOngoing,
         isClosed: isClosed,
         signUpStatus: signUpStatus,
@@ -402,7 +413,8 @@ function getUserSignUpStatus(t){
           //Already signed up
           that.setData({
             isSignedUp: true,
-            loading: false
+            loading: false,
+            isWaiting: results[i].attributes.status == 0
           })
         }
       }
