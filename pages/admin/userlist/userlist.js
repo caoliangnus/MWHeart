@@ -203,7 +203,7 @@ function modify(t, e) {
     else {
       console.log("*****UserListPage: End validing Edited UserInfo *****");
 
-      this.setData({
+      that.setData({
         loading: true
       })
       var Diary = Bmob.Object.extend("user");

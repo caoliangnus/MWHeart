@@ -81,13 +81,13 @@
             Uploading...
           </loading>
 
-          <view class="add_pic" bindtap="upPic" wx-if="{{picUrl == null}}">
+          <view class="add_pic" catchtap="upPic" wx-if="{{picUrl == null}}">
             <view>添加图片（选）</view>
           </view>
           <view wx:if="{{picUrl != null}}" class="image_box">
             <view class="picPre">
               <image src="{{picUrl}}" mode="aspectFill"></image>
-              <view bindtap="delPic"></view>
+              <view catchtap="delPic"></view>
             </view>
           </view>
         </view>

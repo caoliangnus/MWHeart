@@ -19,9 +19,6 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    this.setData({
-      loading:true
-    })
     getEventList(this);
   },
 
@@ -88,6 +85,9 @@ function getEventList(t, k) {
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
   event.descending('date');
+  that.setData({
+    loading: true
+  })
   event.find({
     success: function (results) {
       console.log("***** EventListPage: Start loading Event Listfrom BMOB *****");

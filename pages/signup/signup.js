@@ -7,6 +7,8 @@ Page({
 
   data: {
     loading: false,
+    picUrl: null,
+    oldPicUrl: null,
     isAgree: false,
     isSignedUp: false,
     event: "",
@@ -216,10 +218,10 @@ function getEvent(t, k) {
   that = t;
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
-  var today = util.formatTime(new Date());
+  var yesterday = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
 
   //Select Upcoming event
-  event.equalTo("date", { "$gte": { "__type": "Date", "iso": today } });
+  event.equalTo("date", { "$gte": { "__type": "Date", "iso": yesterday } });
   event.ascending('date');
 
   event.first({
@@ -248,8 +250,8 @@ function getEventList(t, k) {
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
   //Select Upcoming event
-  var today = util.formatTime(new Date());
-  event.equalTo("date", { "$lt": { "__type": "Date", "iso": today } });
+  var tomorrow = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
+  event.equalTo("date", { "$lte": { "__type": "Date", "iso": tomorrow } });
   event.descending('date');
   event.find({
     success: function (results) {
@@ -257,6 +259,7 @@ function getEventList(t, k) {
       console.log(results);
       console.log("***** EventListPage: End loading Event Listfrom BMOB *****");
       app.globalData.eventList = results;
+      // Get pic url if the event image is not null
       that.setData({
         eventList: results,
         loading: false,

@@ -61,6 +61,7 @@
     </view>
   </view>
 
+  <!-- Past Event -->
   <view class="page__desc">Past Event</view>
   <view class="page">
     <view class="weui-panel__bd">
@@ -71,6 +72,12 @@
           <view class="weui-media-box__desc">{{item.fullDeadline}}</view>
           <view class="weui-media-box__info">
             <view class="weui-media-box__info__meta weui-media-time">Date：{{item.updatedAt}}</view>
+          </view>
+          <view wx:if="{{item.pic._url != null}}" class="image_box">
+            <view class="picPre">
+              <image src="{{item.pic._url}}" mode="aspectFit"></image>
+              <view bindtap="delPic"></view>
+            </view>
           </view>
         </view>
       </block>
