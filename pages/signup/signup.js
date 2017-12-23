@@ -361,7 +361,6 @@ function getEventList(t, k) {
 
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
-  //Select Upcoming event
   var tomorrow = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
   event.equalTo("date", { "$lte": { "__type": "Date", "iso": tomorrow } });
   event.descending('date');

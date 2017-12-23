@@ -33,6 +33,7 @@ Page({
       realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
       phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
       showAdminLogIn: false,
+      loading: false,
     }),
 
       wx.getSystemInfo({
@@ -45,6 +46,7 @@ Page({
       })
   },
   onShow: function () {
+
     getUserCIPHour(this);
     console.log("***** Start opening Page *****");
     console.log("Me Page is ready" + ". Window opened: " + getCurrentPages().length);
@@ -116,11 +118,11 @@ function getUserCIPHour(t) {
     loading: true
   })
   var userId = app.globalData.openid;
-  var Event = Bmob.Object.extend("event");
-  var event = new Bmob.Query(Event);
+
   var Participlation = Bmob.Object.extend("participationTable");
   var query = new Bmob.Query(Participlation);
   query.equalTo("user", userId);
+  query.equalTo("status", 1);
   query.include("event");
   query.find({
     success: function (results) {
@@ -145,18 +147,31 @@ function getUserCIPHour(t) {
     })
     var Event = Bmob.Object.extend("event");
     var event = new Bmob.Query(Event);
+
     var sum = 0;
     for (var i = 0; i < that.data.eventArray.length; i++) {
       var eventId = that.data.eventArray[i];
       event.get(eventId, {
         success: function (result) {
           console.log("Event", result);
-          sum += Number(result.attributes.duration);
-          that.setData({
-            cipHour: sum,
-            loading: false
-          })
+          var eventDate = new Date(result.attributes.date);
+          if (new Date() >= eventDate){
+            sum += Number(result.attributes.duration);
+            that.setData({
+              cipHour: sum,
+              loading: false
+            })
+          }else{
+            that.setData({
+              cipHour: sum,
+              loading: false
+            })
+          }
           console.log("***** MePage: End loading UserStatusfrom BMOB *****");
+        },
+        error: function (object, error) {
+          // 查询失败
+
         }
       });
     }
