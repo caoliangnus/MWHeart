@@ -86,7 +86,8 @@ Page({
 /*
 * Get Past Event Detail from Bmob
 */
-function getEventList(t, k) {
+function getEventList() {
+  that.setData({loading:true});
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
   //Select past event
@@ -95,11 +96,7 @@ function getEventList(t, k) {
   event.descending('date');
   event.find({
     success: function (results) {
-      console.log("***** EventListPage: Start loading Event Listfrom BMOB *****");
-      console.log(results);
-      console.log("***** EventListPage: End loading Event Listfrom BMOB *****");
       app.globalData.eventList = results;
-      // Get pic url if the event image is not null
       that.setData({
         eventList: results,
         loading: false,

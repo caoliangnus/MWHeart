@@ -198,10 +198,10 @@ function signUpUser() {
       var isOngoing = that.data.isOngoing;
       var isClosed = that.data.isClosed;
       var isDeadlineOver = that.data.isDeadlineOver;
-      var isAgree = e.detail.value.length === 1 ? true : false;
+      var isAgree = that.data.isAgree;
       var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && isAgree;
       var isWaiting = status == 0 ? true : false;
-      this.setData({
+      that.setData({
         loading: false,
         isSignUpAllowed: isSignUpAllowed,
         isSignedUp: true,
@@ -245,7 +245,7 @@ function quitEvent(){
   })
 }
 
-function getUpComingEvent(t, k) {
+function getUpComingEvent() {
   that.setData({ loading: true })
 
   var Event = Bmob.Object.extend("event");
@@ -270,15 +270,30 @@ function getUpComingEvent(t, k) {
 
   event.find({
     success: function (results) {
-      console.log("共查询到 " + results.length + " 条记录");
       if(results.length == 0) {
-        return;
-      }else{
-        console.log("DSA");
-        for (var i = 0; i < results.length; i++) {
-          var object = results[i];
-          console.log(object.id + ' - ' + object.get('title'));
-        }
+        that.setData({ hasUpcomingEvent:false})
+      } else {
+        console.log("Upcoming Event", results);
+        app.globalData.eventId = results[0].id;
+        var limit = results[0].attributes.limit;
+        var isNotYet = results[0].attributes.eventStatus == 0 ? true : false;
+        var isOngoing = results[0].attributes.eventStatus == 1 ? true : false;
+        var isClosed = results[0].attributes.eventStatus == 2 ? true : false;
+        var isDeadlineOver = new Date(results[0].attributes.deadline) <= today ? true : false;
+        var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && that.data.isAgree;
+        updateBtnText(isDeadlineOver, isClosed);
+
+        that.setData({
+          loading: false,
+          eventItem: results[0],
+          limit: limit,
+          isNotYet: isNotYet,
+          isOngoing: isOngoing,
+          isClosed: isClosed,
+          isDeadlineOver: isDeadlineOver,
+          isSignUpAllowed: isSignUpAllowed,
+          hasUpcomingEvent:true,
+        })
       }
 
     },
@@ -286,35 +301,6 @@ function getUpComingEvent(t, k) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });
-
-  // event.find({
-  //   success: function (results) {
-  //     console.log("TEST: ", results);
-  //     app.globalData.eventId = results.id;
-  //     var limit = results.attributes.limit;
-  //     var isNotYet = results.attributes.eventStatus == 0 ? true : false;
-  //     var isOngoing = results.attributes.eventStatus == 1 ? true : false;
-  //     var isClosed = results.attributes.eventStatus == 2 ? true : false;
-  //     var isDeadlineOver = new Date(results.attributes.deadline) <= today ? true : false;
-  //     var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && that.data.isAgree;   
-  //     updateBtnText(isDeadlineOver, isClosed);
-
-  //     that.setData({
-  //       loading: false,
-  //       eventItem: results,
-  //       limit: limit,
-  //       isNotYet: isNotYet,
-  //       isOngoing: isOngoing,
-  //       isClosed: isClosed,
-  //       isDeadlineOver: isDeadlineOver,
-  //       isSignUpAllowed: isSignUpAllowed,
-  //     })
-  //   },
-  //   error: function (error) {
-  //     console.log("查询失败: " + error.code + " " + error.message);
-  //   }
-  // });
-
 }
 
 /**
@@ -333,13 +319,13 @@ function getUserSignUpStatus() {
   query.equalTo("event", eventId);
   query.find({
     success: function (result) {
-      console.log(result);
       if(result.length == 0) {
-        // User has not signed up
+        console.log("User SignUp Status: Not signed up yet.");
         that.setData({
           isSignedUp: false,
         })
       }else{
+        console.log("User SignUp Status: ", result[0].attributes.status);
         that.setData({
           status: result[0].attributes.status,
           isSignedUp: true,
@@ -363,7 +349,7 @@ function countPeopleInEvent() {
   query.equalTo("event", eventId);
   query.find({
     success: function (results) {
-      console.log("NumPeople: ",results.length);
+      console.log("NumPeople joined: ",results.length);
       that.setData({ 
         loading: false, 
         numPeopleJoined: results.length, 
