@@ -34,28 +34,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    that = this;
     getEventList(this);
-    this.setData({
-      loading: true
-    })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-    
-  },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
     getEventList(this);
-    console.log("Home is ready" + ". Window opened: " + getCurrentPages().length);
-    this.setData({
-      loading: false
-    })
   },
 
   /**
@@ -99,12 +87,11 @@ Page({
 * Get Past Event Detail from Bmob
 */
 function getEventList(t, k) {
-  that = t;
   var Event = Bmob.Object.extend("event");
   var event = new Bmob.Query(Event);
-  //Select Upcoming event
-  var tomorrow = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
-  event.equalTo("date", { "$lte": { "__type": "Date", "iso": tomorrow } });
+  //Select past event
+  var yesterday = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
+  event.equalTo("date", { "$lte": { "__type": "Date", "iso": yesterday } });
   event.descending('date');
   event.find({
     success: function (results) {

@@ -8,89 +8,60 @@ Page({
 
   data: {
     loading: false,
+
+    numPeopleJoined:null,
     picUrl: null,
     oldPicUrl: null,
-    isAgree: false,
-    isOngoing: false,
-    isSignedUp: false,
-    isClose: false,
-    isNotYet: false,
-    signUpStatus: false,
-    event: "",
-    statusArray: ['Not Yet', 'Ongoing', 'Closed'],
+
     isSubmitingUserInfo: false,
+    isSignedUp: false,
+    isWaiting: false,
+
+    isNotYet: false,
+    isOngoing: false,
+    isClose: false,
+    isAgree: false,
+    isSignUpAllowed: false,
+
+    statusArray: ['Not Yet', 'Ongoing', 'Closed'],
     volunteerList: [],
     waitingList: [],
-    isWaiting: false
   },
 
 
   onLoad: function (options) {
     that = this;
-    getEvent(this);
-    getEventList(this);
-    getUserSignUpStatus(this);
-    //Get userInfo
-    that.setData({
-      userInfo: getApp().globalData.userInfo
-    })
-
-    //This is for Scroll view in Terms of Service
-    wx.getSystemInfo({
-      success: (res) => {
-        that.setData({
-          windowHeight: res.windowHeight,
-          windowWidth: res.windowWidth
-        })
-      }
-    })
-  },
-
-  onReady: function () {
-
+    getUpComingEvent();
+    setTimeout(function () {
+      getUserSignUpStatus();
+      countPeopleInEvent();
+      setUpNoticePanel();
+    }, 2000)     
   },
 
   onShow: function () {
-    getEvent(this);
-    getEventList(this);
-    getUserSignUpStatus(this);
-    console.log("***** Start opening Page *****");
-    console.log("SignUp Page is ready" + ". Window opened: " + getCurrentPages().length);
-    console.log("***** End opening Page *****");
+    getUpComingEvent();
+    getUserSignUpStatus();
+    countPeopleInEvent();
+    setUpNoticePanel();
   },
 
-  onPullDownRefresh: function () {
 
-  },
-
-  onReachBottom: function () {
-
-  },
-
-  onShareAppMessage: function () {
-
-  },
-
-  /**
-   * Methods below are used for Notice panel
-   */
   //Agree checkbox
   bindAgreeChange: function (e) {
-    var isAgree = !!e.detail.value.length;
-    var signUpStatus = this.data.isOngoing && this.data.isClosed && isAgree;
+    var isNotYet = that.data.isNotYet;
+    var isOngoing = that.data.isOngoing;
+    var isClosed = that.data.isClosed;
+    var isDeadlineOver = that.data.isDeadlineOver;
+    var isAgree = e.detail.value.length === 1 ? true : false;
+    var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && isAgree;  
     this.setData({
-      isAgree: !!e.detail.value.length,
-      signUpStatus: signUpStatus,
+      isAgree: isAgree,
+      isSignUpAllowed: isSignUpAllowed,
     });
   },
 
-  //Hide panel when tapped outside
-  tapNotice: function (e) {
-    if (e.target.id == 'notice') {
-      this.hideNotice();
-    }
-  },
-  //Show panel when tapped "Terms of Service"
+  //Terms of Service Panel
   showNotice: function (e) {
     this.setData({
       'notice_status': true
@@ -101,114 +72,329 @@ Page({
       'notice_status': false
     });
   },
+
+
   showContactPD: function (e) {
-
+    //Todo: Display infomation on how to contact PD
   },
 
-  sighUpBtnClick: function (e) {
-    // Show pop up for user to fill in info if is new user
-    checkNewUser(this);
-
-  },
-
-  quitBtnClick: function (e) {
-    //Todo
-    var that = this;
-    that.setData({
-      loading: true
-    })
-    var userId = app.globalData.openid;
-    var eventId = app.globalData.eventId;
-
-    wx.showModal({
-      title: 'Alert',
-      content: 'Quit Event？',
-      success: function (res) {
-        if (res.confirm) {
-          //delete user from Participation Table
-          var Participation = Bmob.Object.extend("participationTable");
-          //创建查询对象，入口参数是对象类的实例
-          var event = new Bmob.Query(Participation);
-          event.equalTo("user", userId);
-          event.equalTo("event", eventId);
-          event.destroyAll({
-            success: function () {
-              that.setData({
-                isSignedUp: false,
-                loading: false,
-              })
-              common.showTip('Success');
-              console.log("Quit an event")
-            },
-            error: function (err) {
-              common.showTip('Fail', 'loading');
-            }
-          });
-        }
-      }
-    })
-  },
 
   /**
-   * Sumbit button clicked when submitting
-   * user real name and phone number
-   *  Register a new user in cloud
+   * User can sign up or quit event
    */
-  submitUserInfo: function (e) {
-    var realName = e.detail.value.realName;
-    var phone = e.detail.value.phone;
-
-    if (isInvalidRealName(realName)) {
-      wx.showModal({
-        title: 'Invalid name',
-        content: 'Please enter your name in Pinyin. e.g. Chen Xiaoman',
-        confirmText: 'OK',
-        showCancel: false
-      })
-    } else if (isInvalidPhone(phone)) {
-      wx.showModal({
-        title: 'Invalid phone number',
-        content: 'Please enter valid phone number.',
-        confirmText: 'OK',
-        showCancel: false
-      })
-    } else {
-
-      console.log("***** SignUpPage: Start Signing Up New User *****");
-      // Save new user: openid,name and phone to cloud
-      var User = Bmob.Object.extend("user");
-      var user = new User();
-      user.save({
-        openid: getApp().globalData.openid,
-        realName: realName,
-        phone: phone
-      }, {
-          success: function (result) {
-            // Create new user successfully and Store objectId
-            wx.setStorageSync("objectId", result.id)
-            console.log("objectId: " + wx.getStorageSync("objectId"))
-            // Close window
-            that.setData({ isSubmitingUserInfo: false })
-            // Update me page: update phone & name
-            app.getUserRealNameAndPhone();
-            // Get user sign up
-            signUpUser();
-            console.log("***** SignUpPage: End Signing Up New User *****");
-          },
-          error: function (result, error) {
-            console.log("failed to create new user" + error.message)
-          }
-        });
-    }
+  sighUpBtnClick: function (e) {
+    checkNewUser();
+  },
+  quitBtnClick: function (e) {
+    quitEvent();
   },
 
+
+  /**
+   * User need to fill up phone and realname
+   */
+  submitUserInfo: function (e) {
+    submitUserInfoForm()
+  },
   cancelBtnClick: function (e) {
     that.setData({
       isSubmitingUserInfo: false,
     })
   }
-
 })
+
+
+
+function checkNewUser() {
+
+  var User = Bmob.Object.extend("user");
+  var user = new Bmob.Query(User);
+
+  //Select user with that openid
+  user.equalTo("openid", getApp().globalData.openid);
+  user.find({
+    success: function (results) {
+      if (results.length == 0) {
+        //Pop up window shows
+        that.setData({ isSubmitingUserInfo: true })
+      } else {
+        //Allow user to sign up
+        signUpUser();
+      }
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+}
+
+function submitUserInfoForm(){
+  var realName = e.detail.value.realName;
+  var phone = e.detail.value.phone;
+
+  if (isInvalidRealName(realName)) {
+    wx.showModal({
+      title: 'Invalid name',
+      content: 'Please enter your name in Pinyin. e.g. Chen Xiaoman',
+      confirmText: 'OK',
+      showCancel: false
+    })
+  } else if (isInvalidPhone(phone)) {
+    wx.showModal({
+      title: 'Invalid phone number',
+      content: 'Please enter valid phone number.',
+      confirmText: 'OK',
+      showCancel: false
+    })
+  } else {
+    // Save new user: openid,name and phone to cloud
+    var User = Bmob.Object.extend("user");
+    var user = new User();
+    user.save({
+      openid: getApp().globalData.openid,
+      realName: realName,
+      phone: phone
+    }, {
+        success: function (result) {
+          // Create new user successfully and Store objectId
+          wx.setStorageSync("objectId", result.id)
+          console.log("objectId: " + wx.getStorageSync("objectId"))
+          // Close window
+          that.setData({ isSubmitingUserInfo: false })
+          // Update me page: update phone & name
+          app.getUserRealNameAndPhone();
+          // Get user sign up
+          signUpUser();
+          console.log("***** SignUpPage: End Signing Up New User *****");
+        },
+        error: function (result, error) {
+          console.log("failed to create new user" + error.message)
+        }
+      });
+  }
+}
+
+// Get user to sign up for upcoming event
+function signUpUser() {
+  that.setData({loading:true})
+  
+  var userId = app.globalData.userId;
+  var eventId = app.globalData.eventId;
+  var status = (that.data.numPeopleJoined < that.data.limit) ? 1 : 0;
+
+  var P = Bmob.Object.extend("p");
+  var participation = new P();
+
+  var event = Bmob.Object.createWithoutData("event", eventId);
+  var user = Bmob.Object.createWithoutData("user", userId);
+
+  participation.set("user", user);
+  participation.set("event", event);
+  participation.set("status", status);
+
+  participation.save(null, {
+    success: function (result) {
+      var isNotYet = that.data.isNotYet;
+      var isOngoing = that.data.isOngoing;
+      var isClosed = that.data.isClosed;
+      var isDeadlineOver = that.data.isDeadlineOver;
+      var isAgree = e.detail.value.length === 1 ? true : false;
+      var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && isAgree;
+      var isWaiting = status == 0 ? true : false;
+      this.setData({
+        loading: false,
+        isSignUpAllowed: isSignUpAllowed,
+        isSignedUp: true,
+        isWaiting: false,
+      });
+    }
+  });
+
+}
+
+function quitEvent(){
+  that.setData({ loading: true })
+  var userId = app.globalData.userId;
+  var eventId = app.globalData.eventId;
+
+  wx.showModal({
+    title: 'Alert',
+    content: 'Quit Event？',
+    success: function (res) {
+      if (res.confirm) {
+        //delete user from Participation Table
+        var P = Bmob.Object.extend("p");
+        var query = new Bmob.Query(P);
+        query.equalTo("user", userId);
+        query.equalTo("event", eventId);
+        query.destroyAll({
+          success: function () {
+            that.setData({
+              isSignedUp: false,
+              loading: false,
+            })
+            common.showTip('Success');
+            console.log("Quit an event")
+          },
+          error: function (err) {
+            common.showTip('Fail', 'loading');
+          }
+        });
+      }
+    }
+  })
+}
+
+function getUpComingEvent(t, k) {
+  that.setData({ loading: true })
+
+  var Event = Bmob.Object.extend("event");
+  var event = new Bmob.Query(Event);
+
+  /**
+   * Bomb Date default is 8am, eg. 23/12/2017 0800
+   * If event date is 23/12/2017 and today is also 23/12/2017
+   * Upcoming event will be updated after 8am 23/12/2017
+   * 
+   * Code below is to avoid this issue
+   * If event date is 23/12/2017 and today is also 23/12/2017
+   * By setting today to be yesterday
+   * Upcoming event will only be updated after 8am 24/12/2017
+   */
+  var today = new Date(new Date().setDate(new Date().getDate() -1));
+  var yesterday = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
+
+  //Select Upcoming event
+  event.equalTo("date", { "$gte": { "__type": "Date", "iso": yesterday } });
+  event.ascending('date');
+
+  event.find({
+    success: function (results) {
+      console.log("共查询到 " + results.length + " 条记录");
+      if(results.length == 0) {
+        return;
+      }else{
+        console.log("DSA");
+        for (var i = 0; i < results.length; i++) {
+          var object = results[i];
+          console.log(object.id + ' - ' + object.get('title'));
+        }
+      }
+
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+
+  // event.find({
+  //   success: function (results) {
+  //     console.log("TEST: ", results);
+  //     app.globalData.eventId = results.id;
+  //     var limit = results.attributes.limit;
+  //     var isNotYet = results.attributes.eventStatus == 0 ? true : false;
+  //     var isOngoing = results.attributes.eventStatus == 1 ? true : false;
+  //     var isClosed = results.attributes.eventStatus == 2 ? true : false;
+  //     var isDeadlineOver = new Date(results.attributes.deadline) <= today ? true : false;
+  //     var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && that.data.isAgree;   
+  //     updateBtnText(isDeadlineOver, isClosed);
+
+  //     that.setData({
+  //       loading: false,
+  //       eventItem: results,
+  //       limit: limit,
+  //       isNotYet: isNotYet,
+  //       isOngoing: isOngoing,
+  //       isClosed: isClosed,
+  //       isDeadlineOver: isDeadlineOver,
+  //       isSignUpAllowed: isSignUpAllowed,
+  //     })
+  //   },
+  //   error: function (error) {
+  //     console.log("查询失败: " + error.code + " " + error.message);
+  //   }
+  // });
+
+}
+
+/**
+ * Determine the signing up status
+ * status = 1 to indicate already signed up
+ * status = 0 to indicate not signed up yet
+ */
+function getUserSignUpStatus() {
+  that.setData({ loading: true })
+
+  var P = Bmob.Object.extend("p");
+  var query = new Bmob.Query(P);
+  var userId = app.globalData.userId;
+  var eventId = app.globalData.eventId;
+  query.equalTo("user", userId);
+  query.equalTo("event", eventId);
+  query.find({
+    success: function (result) {
+      console.log(result);
+      if(result.length == 0) {
+        // User has not signed up
+        that.setData({
+          isSignedUp: false,
+        })
+      }else{
+        that.setData({
+          status: result[0].attributes.status,
+          isSignedUp: true,
+        })
+      }
+
+    },
+    error: function (object, error) {
+
+    }
+  });
+}
+
+
+function countPeopleInEvent() {
+  that.setData({ loading: true })
+  //One user for One Event
+  var P = Bmob.Object.extend("p");
+  var query = new Bmob.Query(P);
+  var eventId = app.globalData.eventId;
+  query.equalTo("event", eventId);
+  query.find({
+    success: function (results) {
+      console.log("NumPeople: ",results.length);
+      that.setData({ 
+        loading: false, 
+        numPeopleJoined: results.length, 
+        })
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+}
+
+function updateBtnText(isDeadlineOver, isClosed) {
+  var btnText = "";
+  if (isClosed || isDeadlineOver) {
+    btnText = "Closed";
+  } else {
+    btnText = "Sign Up";
+  }
+  that.setData({ btnText: btnText })
+}
+
+function setUpNoticePanel() {
+  wx.getSystemInfo({
+    success: (res) => {
+      that.setData({
+        windowHeight: res.windowHeight,
+        windowWidth: res.windowWidth
+      })
+    }
+  })
+}
 
 function isInvalidRealName(realName) {
   //Todo
@@ -218,210 +404,4 @@ function isInvalidRealName(realName) {
 function isInvalidPhone(phone) {
   //Todo
   return false;
-}
-
-function checkNewUser(t) {
-  that = t;
-  var User = Bmob.Object.extend("user");
-  var user = new Bmob.Query(User);
-
-  //Select user with that openid
-  user.equalTo("openid", getApp().globalData.openid);
-  user.find({
-    success: function (results) {
-      if (results.length == 0) {
-        // Is new user
-        console.log("New user")
-        // User needs to key in real name and phone number
-        // Pop up window shows
-        that.setData({ isSubmitingUserInfo: true })
-      } else {
-        // Old user -> Get user sign up
-        signUpUser(that);
-      }
-    },
-    error: function (error) {
-      console.log("查询失败: " + error.code + " " + error.message);
-    }
-  });
-}
-
-
-// Get user signed up for upcoming event
-function signUpUser(t, k) {
-  var that = t;
-  that.setData({
-    loading: true
-  })
-
-  var limit = that.data.limit
-  var status = 0;
-  var userId = app.globalData.openid;
-  var eventId = app.globalData.eventId;
-
-  var Participlation = Bmob.Object.extend("participationTable");
-  var participation = new Participlation();
-
-  //Check for number of participants
-  var query = new Bmob.Query(Participlation);
-  query.include("event");
-
-  query.find({
-    success: function (results) {
-      console.log("***** SignUpPage: Start Signing Up User *****");
-      //Need to be less than {{limit}}, initially results.length = 0
-      if(results.length < limit){
-        console.log("Number of Participants before signUp: ", results.length);
-        status = 1;
-      } else {
-        status = 0;
-      }
-    },
-    error: function (error) {
-      console.log("查询失败: " + error.code + " " + error.message);
-    }
-  }).then(function() {
-    var event = Bmob.Object.createWithoutData("event", eventId);
-    var user = Bmob.Object.createWithoutData("user", userId);
-
-    participation.set("user", userId);
-    participation.set("event", eventId);
-    participation.set("status", status)
-
-    participation.save();
-    // Signed up successfully
-    that.setData({
-      isSignedUp: true,
-      loading: false,
-      isWaiting: status == 0
-    })
-    wx.showToast({
-      title: 'Signed up!',
-      icon: 'success',
-      duration: 2000
-    })
-    console.log("***** SignUpPage: End Signing Up User *****");
-  })
-}
-
-/*
-* Get Event Detail from Bmob
-*/
-function getEvent(t, k) {
-  that = t;
-  that.setData({
-    loading: true
-  })
-  var Event = Bmob.Object.extend("event");
-  var event = new Bmob.Query(Event);
-  var today = new Date(new Date().setDate(new Date().getDate() - 1)); //This actually refers to yesterday
-  var yesterday = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
-
-  //Select Upcoming event
-  event.equalTo("date", { "$gte": { "__type": "Date", "iso": yesterday } });
-  event.ascending('date');
-
-  event.first({
-    success: function (results) {
-      console.log("***** SignUpPage: Start loading UpComing Event from BMOB *****");
-      console.log(results);
-      app.globalData.eventId = results.id;
-      console.log("Event Id: ", results.id, " Event Date: ", results.attributes.fullDate);
-      var isNotYet = results.attributes.eventStatus === 0 ? true : false;
-      console.log("Event not open: ", isNotYet);
-      var isOngoing = results.attributes.eventStatus === 1 ? true : false;
-      console.log("Event ongoing: ", isOngoing);
-      var isClosed = new Date(results.attributes.deadline) >= today ? true : false;
-      console.log("Deadline reached: ", isClosed);
-      var btnText = "";
-      if (isClosed) {
-        btnText = "Sign Up";
-      } else {
-        btnText = "Closed";
-      }
-      var signUpStatus = isOngoing && isClosed && that.data.isAgree;
-      var limit = results.attributes.limit;
-      console.log("***** SignUpPage: End loading UpComing Event from BMOB *****");
-      that.setData({
-        event: results,
-        isNotYet: isNotYet,
-        isOngoing: isOngoing,
-        isClosed: isClosed,
-        signUpStatus: signUpStatus,
-        btnText: btnText,
-        limit: limit,
-        loading: false
-      })
-    },
-    error: function (error) {
-      console.log("查询失败: " + error.code + " " + error.message);
-    }
-  });
-
-}
-
-
-/*
-* Get Past Event Detail from Bmob
-*/
-function getEventList(t, k) {
-  that = t;
-  that.setData({
-    loading: true
-  })
-
-  var Event = Bmob.Object.extend("event");
-  var event = new Bmob.Query(Event);
-  var tomorrow = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
-  event.equalTo("date", { "$lte": { "__type": "Date", "iso": tomorrow } });
-  event.descending('date');
-  event.find({
-    success: function (results) {
-      console.log("***** SignUpPage: Start loading Event Listfrom BMOB *****");
-      console.log(results);
-      console.log("***** SignUpPage: End loading Event Listfrom BMOB *****");
-      app.globalData.eventList = results;
-      // Get pic url if the event image is not null
-      that.setData({
-        eventList: results,
-        loading: false,
-      })
-    },
-    error: function (error) {
-      console.log("查询失败: " + error.code + " " + error.message);
-    }
-  });
-}
-
-function getUserSignUpStatus(t){
-  var that = t;
-  that.setData({
-    loading: true
-  })
-  //One user for One Event
-  var Participlation = Bmob.Object.extend("participationTable");
-  var query = new Bmob.Query(Participlation);
-  query.include("user");
-  query.find({
-    success: function (results) {
-      var userId = app.globalData.openid;
-      var eventId = app.globalData.eventId;
-      console.log("***** SignUpPage: Start loading UserStatusfrom BMOB *****");
-      for (var i = 0; i < results.length; i++) {
-        if (results[i].attributes.event == eventId) {
-          console.log("User Already Signed Up");
-          //Already signed up
-          that.setData({
-            isSignedUp: true,
-            loading: false,
-            isWaiting: results[i].attributes.status == 0
-          })
-        }
-      }
-      console.log(results);
-    },
-    error: function (error) {
-      console.log("查询失败: " + error.code + " " + error.message);
-    }
-  });
 }

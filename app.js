@@ -9,7 +9,7 @@ App({
 
     this.getOpenId();
     this.getUserInfo();
-
+  
   },
 
   getOpenId: function () {
@@ -20,9 +20,8 @@ App({
         if (res.code) {
           Bmob.User.requestOpenId(res.code, {
             success: function (result) {
-              that.globalData.openid = result.openid;
               console.log("***** AppPage: Start login WeChat and load UserInfo *****");
-              console.log(result);
+              that.globalData.openid = result.openid;
               console.log("openid: " + that.globalData.openid);
               that.getUserRealNameAndPhone();
               console.log("***** AppPage:End login WeChat and load UserInfo *****");
@@ -72,6 +71,8 @@ App({
         if (results.length == 1) {
         that.globalData.realName = results[0].get('realName')
         that.globalData.phone = results[0].get('phone')
+        that.globalData.userId = results[0].id;
+        console.log("userId: ", that.globalData.userId);
         console.log("realName: " + that.globalData.realName, " phone: " + that.globalData.phone)
         }
       },
@@ -86,6 +87,7 @@ App({
     phone: null,
     openid: null,
     objectId: null,
+    userId:null,
     eventId:null,
     eventDetail: null,
     userList: null,

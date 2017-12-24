@@ -16,19 +16,19 @@
       <view class="weui-form-preview__bd">
         <view class="weui-form-preview__item">
           <view class="weui-form-preview__label">Date</view>
-          <view class="weui-form-preview__value">{{event.fullDate}}</view>
+          <view class="weui-form-preview__value">{{eventItem.fullDate}}</view>
         </view>
         <view class="weui-form-preview__item">
           <view class="weui-form-preview__label">Time</view>
-          <view class="weui-form-preview__value">{{event.time}}</view>
+          <view class="weui-form-preview__value">{{eventItem.time}}</view>
         </view>
         <view class="weui-form-preview__item">
           <view class="weui-form-preview__label">Deadline</view>
-          <view class="weui-form-preview__value">{{event.fullDeadline}}</view>
+          <view class="weui-form-preview__value">{{eventItem.fullDeadline}}</view>
         </view>
         <view class="weui-form-preview__item">
           <view class="weui-form-preview__label">Limit</view>
-          <view class="weui-form-preview__value">{{event.limit}} people</view>
+          <view class="weui-form-preview__value">{{eventItem.limit}} people</view>
         </view>
       </view>
 
@@ -66,10 +66,10 @@
 
       <!-- ***** Submit or Quit Button ***** -->
       <!-- Before Sign Up: Button set to SignUp-->
-      <button class=" weui-form-preview__btn weui-form-preview__btn_primary " type="primary" bindtap="sighUpBtnClick " disabled="{{!signUpStatus}} " wx:if="{{!isSignedUp}} ">{{btnText}}</button>
+      <button class=" weui-form-preview__btn weui-form-preview__btn_primary " type="primary" bindtap="sighUpBtnClick" disabled="{{!isSignUpAllowed}}" wx:if="{{!isSignedUp}}">{{btnText}}</button>
 
       <!-- After Sign Up: Button set to Quit-->
-      <button class="weui-form-preview__btn weui-form-preview__btn_primary " type="default" bindtap="quitBtnClick " disabled="{{!signUpStatus}} " wx:else>Quit</button>
+      <button class="weui-form-preview__btn weui-form-preview__btn_primary " type="default" bindtap="quitBtnClick" disabled="" wx:else> Quit </button>
     </view>
   </view>
 
@@ -108,7 +108,7 @@
 
   <!-- ***** popup Notice panel to display Terms of service *****-->
 
-  <view class="notice" id="notice" wx:if="{{notice_status}}" bindtap="tapNotice">
+  <view class="notice" id="notice" wx:if="{{notice_status}}">
 
     <scroll-view lower-threshold="800" upper-threshold="0" scroll-y="true" style="height: {{windowHeight}}px;">
 

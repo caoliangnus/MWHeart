@@ -18,16 +18,9 @@ Page({
   },
   onLoad: function () {
     that = this
-    this.setData({
-      loading: true
-    })
 
     getUserCIPHour(this);
 
-    console.log("***** MePage: Start loading user info *****");
-    console.log(getApp().globalData.userInfo)
-    console.log(getApp().globalData.openid)
-    console.log("***** MePage: End loading user info *****");
     that.setData({
       userInfo: getApp().globalData.userInfo,
       realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
@@ -45,24 +38,16 @@ Page({
         }
       })
   },
-  onShow: function () {
 
-    getUserCIPHour(this);
+  onShow: function () {
     console.log("***** Start opening Page *****");
     console.log("Me Page is ready" + ". Window opened: " + getCurrentPages().length);
-    that.setData({
-      realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
-      phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
-      loading: false,
-    })
-    console.log(this.data.realname, this.data.phone)
+    console.log("UserInfo: ", getApp().globalData.userInfo)
+    console.log("OpenId: ", getApp().globalData.openid)
     console.log("***** End opening Page *****");
   },
 
   adminBtnClick: function (e) {
-    console.log("***** MePage: Admin Button Clicked *****");
-    console.log("adminStatus: " + that.data.adminStatus);
-    console.log("***** MePage: End Admin Button Clicked *****");
     if (that.data.adminStatus) {
       wx.navigateTo({
         url: '../admin/admin/admin'
@@ -72,7 +57,6 @@ Page({
         showAdminLogIn: true
       });
     }
-
   },
 
   cancelBtnClick: function (e) {
@@ -91,7 +75,6 @@ Page({
           adminStatus: true,
           showAdminLogIn: false,
         });
-        console.log(that.data.adminStatus);
         wx.showToast({
           title: 'Welcome',
           icon: 'success',
@@ -108,22 +91,22 @@ Page({
         })
       }
     }
-
   }
 })
 
-function getUserCIPHour(t) {
-  var that = t;
-  that.setData({
-    loading: true
-  })
+function getUserCIPHour() {
+
+  that.setData({loading: true})
+
   var userId = app.globalData.openid;
 
   var Participlation = Bmob.Object.extend("participationTable");
   var query = new Bmob.Query(Participlation);
+
   query.equalTo("user", userId);
   query.equalTo("status", 1);
-  query.include("event");
+  query.include("event"); 
+
   query.find({
     success: function (results) {
       console.log("***** MePage: Start loading UserStatusfrom BMOB *****");
@@ -142,9 +125,6 @@ function getUserCIPHour(t) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
   }).then(function () {
-    that.setData({
-      loading: true
-    })
     var Event = Bmob.Object.extend("event");
     var event = new Bmob.Query(Event);
 
