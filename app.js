@@ -89,9 +89,5 @@ App({
     
     userId:null,
     eventId:null,
-    eventDetail: null,
-    userList: null,
-    eventList: null,
-
   }
 })

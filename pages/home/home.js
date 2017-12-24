@@ -70,7 +70,6 @@ function getEventList() {
   event.descending('date');
   event.find({
     success: function (results) {
-      app.globalData.eventList = results;
       that.setData({
         eventList: results,
         loading: false,

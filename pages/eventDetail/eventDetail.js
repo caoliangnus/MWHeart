@@ -61,7 +61,8 @@ function getVolunteerList() {
   //One user for One Event
   var P = Bmob.Object.extend("p");
   var query = new Bmob.Query(P);
-  var eventId = app.globalData.eventId;
+  var eventId = that.data.eventId;
+  console.log(eventId);
   query.equalTo("event", eventId);
   query.equalTo("status", 1)
   query.ascending('updatedAt');

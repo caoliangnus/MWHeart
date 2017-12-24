@@ -81,7 +81,11 @@ function getMyEventList(t) {
   query.find({
     success: function (results) {
       for (var i = 0; i < results.length; i++) {
-        eventList = eventList.concat(results[i].attributes.event);
+        var eventDate = new Date(results[i].attributes.event.attributes.date);
+        var today = new Date(new Date().setDate(new Date().getDate() - 1));
+        if (eventDate <= today) {
+          eventList = eventList.concat(results[i].attributes.event);
+        }
       }
       that.setData({
         eventList: eventList,
