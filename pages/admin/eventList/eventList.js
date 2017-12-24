@@ -13,7 +13,8 @@ Page({
   data: {
     loading: false,
     eventList:null,
-    isMyEvent: false,
+    url:null
+
   },
 
   /**
@@ -25,12 +26,11 @@ Page({
     //To determine MyPastEvent or EventList Page
     var isMyEvent = options.isMyEvent == "true" ? true : false;
     if(isMyEvent){
+      this.setData({ url: "../../eventDetail/eventDetail?isMyEvent=true", })
       //Display event list for specific user only
-      this.setData({
-        isMyEvent: isMyEvent
-      })
       getMyEventList(this);
     }else{
+      this.setData({ url: "../event/event?isUpdateEvent=true"})
       //Display all events in the list
       getEventList(this);
     }
@@ -56,7 +56,7 @@ function getEventList() {
     success: function (results) {
       that.setData({
         eventList: results,
-        loading: false
+        loading: false,
       })
     },
     error: function (error) {
@@ -85,7 +85,7 @@ function getMyEventList(t) {
       }
       that.setData({
         eventList: eventList,
-        loading: false
+        loading: false,
       })
     },
     error: function (error) {

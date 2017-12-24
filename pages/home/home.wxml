@@ -57,7 +57,6 @@
           <view wx:if="{{item.pic._url != null}}" class="image_box">
             <view class="picPre">
               <image src="{{item.pic._url}}" mode="aspectFit"></image>
-              <view bindtap="delPic"></view>
             </view>
           </view>
         </view>

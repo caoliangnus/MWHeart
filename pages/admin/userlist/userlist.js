@@ -19,6 +19,8 @@ Page({
     isAllUserList: false,
     isVolunteerList: false,
     isWaitingList: false,
+
+    userList:null,
   },
 
   /**
@@ -26,21 +28,19 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-
-    getList();
-
     //Determine which list to open
     var isAllUserList = options.isAllUserList == "true" ? true : false;
     var isVolunteerList = options.isVolunteerList == "true" ? true : false;
     var isWaitingList = options.isWaitingList == "true" ? true : false;
     var eventId = options.eventId;
-
     this.setData({
       isAllUserList: isAllUserList,
       isVolunteerList: isVolunteerList,
       isWaitingList: isWaitingList,
       eventId: eventId,
     })
+
+    getList();
   },
 
   /**
@@ -114,16 +114,11 @@ function deleteUser() {
 * Get Event Detail from Bmob
 */
 function getList(t, k) {
-  that = t;
   var User = Bmob.Object.extend("user");
   var user = new Bmob.Query(User);
   user.ascending('updatedAt');
   user.find({
     success: function (results) {
-      console.log("*****UserListPage: Start loading User List from BMOB *****");
-      console.log(results);
-      console.log("*****UserListPage: End loading User List from BMOB *****");
-      app.globalData.userList = results;
       that.setData({
         userList: results,
         loading: false,
