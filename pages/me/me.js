@@ -12,34 +12,25 @@ Page({
     cipHour: 0,
     realName: null,
     phone: null,
-    windowHeight: "",
-    windowWidth: "",
+    windowHeight: null,
+    windowWidth: null,
     adminStatus: true,
+    showAdminLogIn: false,
   },
 
   onLoad: function () {
     that = this
     getUserCIPHour();
-
+    setUpAccountLoginPage();
     that.setData({
       userInfo: getApp().globalData.userInfo,
       realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
       phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
-      showAdminLogIn: false,
-    }),
-
-      wx.getSystemInfo({
-        success: (res) => {
-          that.setData({
-            windowHeight: res.windowHeight,
-            windowWidth: res.windowWidth
-          })
-        }
-      })
+    })
   },
 
   onShow: function () {
-    getUserCIPHour();
+   
   },
 
   adminBtnClick: function (e) {
@@ -118,4 +109,15 @@ function getUserCIPHour() {
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });
+}
+
+function setUpAccountLoginPage(){
+  wx.getSystemInfo({
+    success: (res) => {
+      that.setData({
+        windowHeight: res.windowHeight,
+        windowWidth: res.windowWidth
+      })
+    }
+  })
 }

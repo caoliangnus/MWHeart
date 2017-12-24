@@ -11,8 +11,8 @@
         <view class="weui-media-box__info">
           <view class="weui-media-box__info__meta weui-media-time">Date：{{item.updatedAt}}</view>
           <view class="weui-media-box__info__meta weui-media-box__info__operate">
-            <button class="del weui-btn mini-btn" type="default" size="mini" catchtap="deleteUser" data-id="{{item.objectId}}">delete</button>
-            <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="toModifyUser" data-id="{{item.objectId}}" data-name="{{item.realName}}" data-phone="{{item.phone}}">edit</button>
+            <button class="del weui-btn mini-btn" type="default" size="mini" catchtap="deleteUserBtnClick" data-id="{{item.objectId}}">delete</button>
+            <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="modifyUserBtnClick" data-id="{{item.objectId}}" data-name="{{item.realName}}" data-phone="{{item.phone}}">edit</button>
           </view>
         </view>
       </navigator>
@@ -36,7 +36,7 @@
       <view class="weui-dialog__hd">
         <strong class="weui-dialog__title">Edit User</strong>
       </view>
-      <form bindsubmit="modifyUser">
+      <form bindsubmit="modifyUserForm">
         <view class="weui-dialog__bd">
           <view class="weui-cells__title">Name</view>
           <view class="weui-cells weui-cells_after-title">

@@ -12,10 +12,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userInfo: {},
-    eventDate: "",
+
     loading: false,
-    isModifyUser: false
+    
+    isModifyUser: false,
+    isAllUserList: false,
+    isVolunteerList: false,
+    isWaitingList: false,
   },
 
   /**
@@ -23,83 +26,28 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    this.setData({
-      loading: true
-    })
-    //Get userInfo
-    that.setData({
-      userInfo: getApp().globalData.userInfo
-    })
 
-    getList(this);
+    getList();
 
-    //Update Data
+    //Determine which list to open
     var isAllUserList = options.isAllUserList == "true" ? true : false;
     var isVolunteerList = options.isVolunteerList == "true" ? true : false;
     var isWaitingList = options.isWaitingList == "true" ? true : false;
-    var eventDate = "";
-    if (isVolunteerList || isWaitingList) {
-      eventDate = options.date;
-    }
+    var eventId = options.eventId;
 
     this.setData({
       isAllUserList: isAllUserList,
       isVolunteerList: isVolunteerList,
       isWaitingList: isWaitingList,
-      eventDate: eventDate,
+      eventId: eventId,
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    getList(this);
-    console.log("***** Start opening Page *****");
-    console.log("UserListPage is ready" + ". Window opened: " + getCurrentPages().length);
-    console.log("***** End opening Page *****");
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+    getList();
   },
 
   noneWindows: function () {
@@ -109,35 +57,13 @@ Page({
   },
 
   //Delete User After clicked Delete Button
-  deleteUser: function (event) {
-    var id = event.target.dataset.id;
-    wx.showModal({
-      title: 'Alert',
-      content: 'Delete User？',
-      success: function (res) {
-        if (res.confirm) {
-          //delete user
-          var Diary = Bmob.Object.extend("user");
-          //创建查询对象，入口参数是对象类的实例
-          var query = new Bmob.Query(Diary);
-          query.equalTo("objectId", id);
-          query.destroyAll({
-            success: function () {
-              common.showTip('Success');
-              that.onShow();
-            },
-            error: function (err) {
-              common.showTip('Fail', 'loading');
-            }
-          });
-        }
-      }
-    })
+  deleteUserBtnClick: function (event) {
+    deleteUser()
   },
 
 
   //Open form after clicked Edit button
-  toModifyUser: function (event) {
+  modifyUserBtnClick: function (event) {
     var nowId = event.target.dataset.id;
     var nowName = event.target.dataset.name;
     var nowPhone = event.target.dataset.phone;
@@ -150,13 +76,39 @@ Page({
   },
 
   //Form for modifying user
-  modifyUser: function (e) {
+  modifyUserForm: function (e) {
     var t = this;
     modify(t, e)
   },
 })
 
-
+/**
+ * Delete User from list
+ */
+function deleteUser() {
+  var id = event.target.dataset.id;
+  wx.showModal({
+    title: 'Alert',
+    content: 'Delete User？',
+    success: function (res) {
+      if (res.confirm) {
+        //delete user
+        var User = Bmob.Object.extend("user");
+        var query = new Bmob.Query(User);
+        query.equalTo("objectId", id);
+        query.destroyAll({
+          success: function () {
+            common.showTip('Success');
+            that.onShow();
+          },
+          error: function (err) {
+            common.showTip('Fail', 'loading');
+          }
+        });
+      }
+    }
+  })
+}
 
 /*
 * Get Event Detail from Bmob
@@ -183,35 +135,30 @@ function getList(t, k) {
   });
 }
 
+/**
+ * Upload data to BMob after clicked submit button on ModifyForm
+ */
 
-//Upload data to BMob after clicked submit button on ModifyForm
-function modify(t, e) {
-  var that = t;
+function modify() {
   //Edit User
   var modyName = e.detail.value.name;
   var modyPhone = Number(e.detail.value.phone);
   var thatName = that.data.nowName;
   var thatPhone = Number(that.data.nowPhone);
 
-  console.log("*****UserListPage: Start validing Edited UserInfo *****");
   if ((modyName != thatName || modyPhone != thatPhone)) {
     if (modyName == "" || modyPhone == "") {
       Show.showAlert(that, "warn", 'Name or Phone can not be empty');
-    }else if(!isPhoneValid(modyPhone)){
-      Show.showAlert(that,"warn" ,'Phone must be 8 digits only');
+    } else if (!isPhoneValid(modyPhone)) {
+      Show.showAlert(that, "warn", 'Phone must be 8 digits only');
     }
     else {
-      console.log("*****UserListPage: End validing Edited UserInfo *****");
-
-      that.setData({
-        loading: true
-      })
+      that.setData({ loading: true })
       var Diary = Bmob.Object.extend("user");
       var query = new Bmob.Query(Diary);
-      // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
+
       query.get(that.data.nowId, {
         success: function (result) {
-          console.log("*****UserListPage: Start uploading Edited UserInfo to Bmob *****");
           result.set('realName', modyName);
           result.set('phone', modyPhone);
           result.save();
@@ -225,7 +172,6 @@ function modify(t, e) {
           });
         },
         error: function (object, error) {
-
         }
       });
     }
@@ -241,7 +187,7 @@ function modify(t, e) {
   }
 }
 
-function isPhoneValid(phoneNum){
+function isPhoneValid(phoneNum) {
   //Phone length must be 8 and must be num only
   return Number.isInteger(phoneNum) && phoneNum >= 0 && phoneNum.toString().length == 8;
 }
