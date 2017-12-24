@@ -31,19 +31,16 @@ Page({
 
   onLoad: function (options) {
     that = this;
-    getUpComingEvent();
+    getUpComingEvent();    
     setTimeout(function () {
       getUserSignUpStatus();
       countPeopleInEvent();
       setUpNoticePanel();
-    }, 2000)     
+    }, 1500)     
   },
 
   onShow: function () {
-    getUpComingEvent();
-    getUserSignUpStatus();
-    countPeopleInEvent();
-    setUpNoticePanel();
+    
   },
 
 
