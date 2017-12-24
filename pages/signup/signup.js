@@ -212,7 +212,6 @@ function signUpUser() {
 }
 
 function quitEvent() {
-  that.setData({ loading: true })
   var userId = app.globalData.userId;
   var eventId = app.globalData.eventId;
 
@@ -221,6 +220,7 @@ function quitEvent() {
     content: 'Quit Event？',
     success: function (res) {
       if (res.confirm) {
+        that.setData({ loading: true })
         //delete user from Participation Table
         var P = Bmob.Object.extend("p");
         var query = new Bmob.Query(P);
@@ -236,7 +236,12 @@ function quitEvent() {
             console.log("Quit an event")
           },
           error: function (err) {
-            common.showTip('Fail', 'loading');
+            wx.showModal({
+              title: 'Failed',
+              showCancel: false,
+              content: 'Failed to quit. Please try again.',
+            })
+            that.setData({ loading: false })
           }
         });
       }
