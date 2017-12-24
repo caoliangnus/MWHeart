@@ -94,7 +94,7 @@ Page({
    * User need to fill up phone and realname
    */
   submitUserInfo: function (e) {
-    submitUserInfoForm()
+    submitUserInfoForm(e)
   },
   cancelBtnClick: function (e) {
     that.setData({
@@ -128,7 +128,7 @@ function checkNewUser() {
   });
 }
 
-function submitUserInfoForm(){
+function submitUserInfoForm(e){
   var realName = e.detail.value.realName;
   var phone = e.detail.value.phone;
 
@@ -147,18 +147,20 @@ function submitUserInfoForm(){
       showCancel: false
     })
   } else {
-    // Save new user: openid,name and phone to cloud
+    // Save new user: openid,name, phone and picture to cloud
     var User = Bmob.Object.extend("user");
     var user = new User();
+    console.log("avatar"+getApp().globalData.userInfo.avatarUrl)
     user.save({
       openid: getApp().globalData.openid,
       realName: realName,
-      phone: phone
+      phone: phone,
+      avatarUrl: getApp().globalData.userInfo.avatarUrl
     }, {
         success: function (result) {
-          // Create new user successfully and Store objectId
-          wx.setStorageSync("objectId", result.id)
-          console.log("objectId: " + wx.getStorageSync("objectId"))
+          // Create new user successfully and Store user objectId
+          app.globalData.userId = result.id
+          
           // Close window
           that.setData({ isSubmitingUserInfo: false })
           // Update me page: update phone & name
