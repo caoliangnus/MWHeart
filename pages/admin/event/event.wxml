@@ -1,3 +1,6 @@
+<loading hidden="{{!loading}}">
+  loading...
+</loading>
 <include src="../../../utils/alert/alert.wxml" />
 <view class="page">
   <form bindsubmit="{{formText}}">
@@ -77,10 +80,6 @@
       <!-- upload event picture area -->
       <view class="page-body" wx:if="{{isUpdateEvent}}">
         <view class="weui-btn-area">
-          <loading hidden="{{!loading}}">
-            Uploading...
-          </loading>
-
           <view class="add_pic" catchtap="upPic" wx-if="{{picUrl == null}}">
             <view>添加图片（选）</view>
           </view>
@@ -116,7 +115,7 @@
     </view>
 
     <view class="weui-btn-area">
-      <button class="weui-btn" type="warn" catchtap='deleteEvent'>delete</button>
+      <button class="weui-btn" type="warn" catchtap='deleteBtnClick'>delete</button>
     </view>
   </view>
 

@@ -10,8 +10,11 @@ Page({
    */
   data: {
     loading: false,
-    
-    
+    eventDescription: "",
+    bonusDescription: "",
+    bonusArray: [],
+    time: "",
+    location: "",    
   },
 
   /**
