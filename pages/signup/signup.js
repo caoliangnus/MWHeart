@@ -295,7 +295,6 @@ function getUpComingEvent() {
           hasUpcomingEvent:true,
         })
       }
-
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
