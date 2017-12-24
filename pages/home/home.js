@@ -10,23 +10,7 @@ Page({
    */
   data: {
     loading: false,
-    eventDescription: "Moral Welfare House是NUS Volunteer Action Committee" +
-    "旗下的一个volunteer project",
-    bonusDescription: "参与活动认真积极的同学下学期可升级为project director，" + 
-    "获得更多福利，提升leadership skills, 甚至享受pgp保房特权。",
-    bonusArray: [{
-        msg: "方便日积月累攒CIP"
-    }, {
-        msg: "活动轻松，不占用太多时间"
-    }, {
-        msg: "时间固定，地点方便"
-    }, {
-        msg: "活动有趣又有爱"
-    }, {
-        msg: "后续更多福利"
-    }],
-    time: "Every Saturday 2pm - 4pm",
-    location: "Moral Welfare House",
+    
     
   },
 
@@ -35,7 +19,8 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    getEventList(this);
+    getEventList();
+    setUpContent();
   },
 
 
@@ -82,6 +67,27 @@ Page({
   }
 })
 
+function setUpContent(){
+that.setData({
+  eventDescription: "Moral Welfare House是NUS Volunteer Action Committee" +
+  "旗下的一个volunteer project",
+  bonusDescription: "参与活动认真积极的同学下学期可升级为project director，" +
+  "获得更多福利，提升leadership skills, 甚至享受pgp保房特权。",
+  bonusArray: [{
+    msg: "方便日积月累攒CIP"
+  }, {
+    msg: "活动轻松，不占用太多时间"
+  }, {
+    msg: "时间固定，地点方便"
+  }, {
+    msg: "活动有趣又有爱"
+  }, {
+    msg: "后续更多福利"
+  }],
+  time: "Every Saturday 2pm - 4pm",
+  location: "Moral Welfare House",
+})
+}
 
 /*
 * Get Past Event Detail from Bmob
