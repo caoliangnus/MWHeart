@@ -16,17 +16,16 @@ Page({
     windowWidth: "",
     adminStatus: true,
   },
+
   onLoad: function () {
     that = this
-
-    getUserCIPHour(this);
+    getUserCIPHour();
 
     that.setData({
       userInfo: getApp().globalData.userInfo,
       realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
       phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
       showAdminLogIn: false,
-      loading: false,
     }),
 
       wx.getSystemInfo({
@@ -40,11 +39,7 @@ Page({
   },
 
   onShow: function () {
-    console.log("***** Start opening Page *****");
-    console.log("Me Page is ready" + ". Window opened: " + getCurrentPages().length);
-    console.log("UserInfo: ", getApp().globalData.userInfo)
-    console.log("OpenId: ", getApp().globalData.openid)
-    console.log("***** End opening Page *****");
+    getUserCIPHour();
   },
 
   adminBtnClick: function (e) {
@@ -95,66 +90,32 @@ Page({
 })
 
 function getUserCIPHour() {
-
   that.setData({loading: true})
 
-  var userId = app.globalData.openid;
+  var P = Bmob.Object.extend("p");
+  var query = new Bmob.Query(P);
 
-  var Participlation = Bmob.Object.extend("participationTable");
-  var query = new Bmob.Query(Participlation);
-
+  var userId = app.globalData.userId;
   query.equalTo("user", userId);
   query.equalTo("status", 1);
-  query.include("event"); 
+
+  query.include("event");
+  query.include("user");
 
   query.find({
     success: function (results) {
-      console.log("***** MePage: Start loading UserStatusfrom BMOB *****");
-      console.log(results);
-      var eventArray = [];
+      console.log("My Event: ", results);
+      var cipHour = 0;
       for (var i = 0; i < results.length; i++) {
-        var eventId = results[i].attributes.event
-        eventArray = eventArray.concat(eventId);
+        cipHour += results[i].attributes.event.attributes.duration;
       }
       that.setData({
-        eventArray: eventArray,
         loading: false,
+        cipHour: cipHour,
       })
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
-  }).then(function () {
-    var Event = Bmob.Object.extend("event");
-    var event = new Bmob.Query(Event);
-
-    var sum = 0;
-    for (var i = 0; i < that.data.eventArray.length; i++) {
-      var eventId = that.data.eventArray[i];
-      event.get(eventId, {
-        success: function (result) {
-          console.log("Event", result);
-          var eventDate = new Date(result.attributes.date);
-          if (new Date() >= eventDate) {
-            sum += Number(result.attributes.duration);
-            that.setData({
-              cipHour: sum,
-              loading: false
-            })
-          } else {
-            that.setData({
-              cipHour: sum,
-              loading: false
-            })
-          }
-          console.log("***** MePage: End loading UserStatusfrom BMOB *****");
-        },
-        error: function (object, error) {
-          // 查询失败
-
-        }
-      });
-    }
-
   });
 }
