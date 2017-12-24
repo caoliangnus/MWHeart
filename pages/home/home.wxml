@@ -6,22 +6,27 @@
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__bd">
 
-         <!-- Brief Description -->
+        <!-- Brief Description -->
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">Event Description</view>
           <view class="weui-media-box__desc">{{eventDescription}}</view>
         </view>
 
-       <!-- Time and Location -->
+        <!-- Time and Location -->
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">Time</view>
           <view class="weui-media-box__desc">{{time}}</view>
 
           <!-- New Line -->
           <text>\n</text>
-          
+
           <view class="weui-media-box__title weui-media-box__title_in-text">Location</view>
-          <view class="weui-media-box__desc">{{location}}</view>
+          <view class="location">
+            <view class="weui-media-box__desc">{{location}}</view>
+          </view>
+          <!-- map.wxml -->
+<map id="map" longitude="103.812195" latitude="1.272070" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" polyline="{{polyline}}" bindregionchange="regionchange" show-location style="width: 100%; height: 300px;"></map>
+
         </view>
 
         <!-- Bonus Description -->
@@ -49,12 +54,12 @@
             <view class="weui-media-box__desc">Event Status: {{statusArray[item.eventStatus]}}</view>
           </view>
 
-            <view wx:if="{{item.pic._url != null}}" class="image_box">
-              <view class="picPre">
-                <image src="{{item.pic._url}}" mode="aspectFit"></image>
-                <view bindtap="delPic"></view>
-              </view>
+          <view wx:if="{{item.pic._url != null}}" class="image_box">
+            <view class="picPre">
+              <image src="{{item.pic._url}}" mode="aspectFit"></image>
+              <view bindtap="delPic"></view>
             </view>
+          </view>
         </view>
       </block>
       <block wx:else>

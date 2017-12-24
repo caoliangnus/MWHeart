@@ -80,7 +80,6 @@ function getMyEventList(t) {
   var eventList = [];
   query.find({
     success: function (results) {
-      var cipHour = 0;
       for (var i = 0; i < results.length; i++) {
         eventList = eventList.concat(results[i].attributes.event);
       }

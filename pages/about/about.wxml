@@ -1,0 +1,17 @@
+<view class="container">
+  <image src="/images/meBack.jpg" class="img"></image>
+  <text class="txt">MWHeart</text>
+  <text class="men">Liang and Xiaoman</text>
+
+
+  <image src="/images/icon/line.png" class="line"></image>
+
+  <view class="area">
+    <text class='a'> Merry Chrismas To You</text>
+  </view>
+
+  <view bindlongtap="cut">
+    <image src="/images/icon/wechat.jpeg" class="img1"></image>
+    <text class="txt1">25 Dec 2017</text>
+  </view>
+</view>

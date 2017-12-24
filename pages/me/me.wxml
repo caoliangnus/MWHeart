@@ -32,7 +32,7 @@
       <view class="weui-cell__bd">My Past Events</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
-    <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+    <navigator url="../about/about" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
       <view class="weui-cell__bd">About</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
