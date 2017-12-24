@@ -9,7 +9,7 @@ Page({
   data: {
     loading: false,
 
-    numPeopleJoined:null,
+    numPeopleJoined: null,
     picUrl: null,
     oldPicUrl: null,
 
@@ -31,16 +31,16 @@ Page({
 
   onLoad: function (options) {
     that = this;
-    getUpComingEvent();    
+    getUpComingEvent();
     setTimeout(function () {
       getUserSignUpStatus();
-      
+
       setUpNoticePanel();
-    }, 1500)     
+    }, 1500)
   },
 
   onShow: function () {
-    
+
   },
 
 
@@ -147,7 +147,7 @@ function submitUserInfoForm(e){
     // Save new user: openid,name, phone and picture to cloud
     var User = Bmob.Object.extend("user");
     var user = new User();
-    console.log("avatar"+getApp().globalData.userInfo.avatarUrl)
+    console.log("avatar" + getApp().globalData.userInfo.avatarUrl)
     user.save({
       openid: getApp().globalData.openid,
       realName: realName,
@@ -157,7 +157,7 @@ function submitUserInfoForm(e){
         success: function (result) {
           // Create new user successfully and Store user objectId
           app.globalData.userId = result.id
-          
+
           // Close window
           that.setData({ isSubmitingUserInfo: false })
           // Update me page: update phone & name
@@ -175,8 +175,8 @@ function submitUserInfoForm(e){
 
 // Get user to sign up for upcoming event
 function signUpUser() {
-  that.setData({loading:true})
-  
+  that.setData({ loading: true })
+
   var userId = app.globalData.userId;
   var eventId = app.globalData.eventId;
   var status = (that.data.numPeopleJoined < that.data.limit) ? 1 : 0;
@@ -211,7 +211,7 @@ function signUpUser() {
 
 }
 
-function quitEvent(){
+function quitEvent() {
   that.setData({ loading: true })
   var userId = app.globalData.userId;
   var eventId = app.globalData.eventId;
@@ -260,7 +260,7 @@ function getUpComingEvent() {
    * By setting today to be yesterday
    * Upcoming event will only be updated after 8am 24/12/2017
    */
-  var today = new Date(new Date().setDate(new Date().getDate() -1));
+  var today = new Date(new Date().setDate(new Date().getDate() - 1));
   var yesterday = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
 
   //Select Upcoming event
@@ -269,8 +269,8 @@ function getUpComingEvent() {
 
   event.find({
     success: function (results) {
-      if(results.length == 0) {
-        that.setData({ hasUpcomingEvent:false})
+      if (results.length == 0) {
+        that.setData({ hasUpcomingEvent: false })
       } else {
         console.log("Upcoming Event", results);
         app.globalData.eventId = results[0].id;
@@ -291,7 +291,7 @@ function getUpComingEvent() {
           isClosed: isClosed,
           isDeadlineOver: isDeadlineOver,
           isSignUpAllowed: isSignUpAllowed,
-          hasUpcomingEvent:true,
+          hasUpcomingEvent: true,
         })
         countPeopleInEvent();
         getVolunteerList();
@@ -320,13 +320,13 @@ function getUserSignUpStatus() {
   query.equalTo("event", eventId);
   query.find({
     success: function (result) {
-      if(result.length == 0) {
+      if (result.length == 0) {
         console.log("User SignUp Status: Not signed up yet.");
         that.setData({
           isSignedUp: false,
           loading: false
         })
-      }else{
+      } else {
         console.log("User SignUp Status: ", result[0].attributes.status);
         that.setData({
           status: result[0].attributes.status,
@@ -352,11 +352,11 @@ function countPeopleInEvent() {
   query.equalTo("event", eventId);
   query.find({
     success: function (results) {
-      console.log("NumPeople joined: ",results.length);
-      that.setData({ 
-        loading: false, 
-        numPeopleJoined: results.length, 
-        })
+      console.log("NumPeople joined: ", results.length);
+      that.setData({
+        loading: false,
+        numPeopleJoined: results.length,
+      })
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
@@ -409,7 +409,8 @@ function getVolunteerList() {
   query.find({
     success: function (results) {
       for (var i = 0; i < results.length; i++) {
-        volunteerList = volunteerList.concat(results[i].attributes.user);
+        var user = [{ user: results[i].attributes.user, updatedAt: results[i].updatedAt }]
+        volunteerList = volunteerList.concat(user);
       }
       that.setData({
         volunteerList: volunteerList,
@@ -436,8 +437,10 @@ function getWaitingList() {
   query.find({
     success: function (results) {
       for (var i = 0; i < results.length; i++) {
-        waitingList = waitingList.concat(results[i].attributes.user);
+        var user = [{ user: results[i].attributes.user, updatedAt: results[i].updatedAt}]
+        waitingList = waitingList.concat(user);
       }
+      console.log(waitingList)
       that.setData({
         waitingList: waitingList,
         loading: false

@@ -78,42 +78,47 @@
   </view>
 
   <!-- Display volunteer list -->
-  <view class="page__desc">{{numPeopleJoined}} people have joined.</view>
-<view class="weui-panel__bd">
+  <view class="page__desc" style="color:rgb(100,100,100)">{{numPeopleJoined}} people have joined.</view>
+  <text class="page__desc">Volunteer List:</text>
+   <!-- <view class="weui-media-box">Volunteer List:</view>  -->
+  <view class="weui-panel__bd">
     <block wx:if="{{volunteerList.length > 0}}">
-    <view catchtap=''>
-      <view class="weui-media-box weui-media-box_text" wx:for="{{volunteerList}}" wx:key="volunteerItem">
-        <view class="weui-media-box__title weui-media-box__title_in-text"> {{index+1}}.
-          {{item.realName}}</view>
-        <view class="weui-media-box__desc">{{item.phone}}</view>
-        <view class="weui-media-box__info">
-          <view class="weui-media-box__info__meta weui-media-time">Date：{{item.updatedAt}}</view>
+      <view catchtap=''>
+        <view class="weui-media-box weui-media-box_text" wx:for="{{volunteerList}}" wx:key="volunteerItem">
+          <view class="userInfo">
+            <view>
+              <image src="{{item.user.avatarUrl}}" class="avatar" mode="aspectFit"></image>
+            </view>
+            <view class="nickTime">
+              <view class="nickArea">
+                <text class="nick">{{item.user.realName}}</text>
+              </view>
+              <text class="postTime" style="color:rgb(191,191,191);font-size:24rpx">{{item.updatedAt}}</text>
+            </view>
+          </view>
         </view>
-      </view>
-      </view>
-    </block>
-    <block wx:else>
-      <view class="weui-media-box weui-media-box_text">
-        <view class="weui-media-box__title weui-media-box__title_in-text">
-          暂无内容</view>
-        <view class="weui-media-box__desc"></view>
       </view>
     </block>
   </view>
 
- <!-- Display waiting list -->
-<view class="weui-panel__bd" wx:if="{{waitingList.length!=0}}">
-<view class="page__desc">Waiting List</view>
+  <!-- Display waiting list -->
+  <view class="weui-panel__bd">
     <block wx:if="{{waitingList.length > 0}}">
-    <view catchtap=''>
-      <view class="weui-media-box weui-media-box_text" wx:for="{{waitingList}}" wx:key="volunteerItem">
-        <view class="weui-media-box__title weui-media-box__title_in-text"> {{index+1}}.
-          {{item.realName}}</view>
-        <view class="weui-media-box__desc">{{item.phone}}</view>
-        <view class="weui-media-box__info">
-          <view class="weui-media-box__info__meta weui-media-time">Date：{{item.updatedAt}}</view>
+    <view class="page__desc">Waiting List:</view>
+      <view catchtap=''>
+        <view class="weui-media-box weui-media-box_text" wx:for="{{waitingList}}" wx:key="waitingItem">
+          <view class="userInfo">
+            <view>
+              <image src="{{item.user.avatarUrl}}" class="avatar" mode="aspectFit"></image>
+            </view>
+            <view class="nickTime">
+              <view class="nickArea">
+                <text class="nick">{{item.user.realName}}</text>
+              </view>
+              <text class="postTime" style="color:rgb(191,191,191);font-size:24rpx">{{item.updatedAt}}</text>
+            </view>
+          </view>
         </view>
-      </view>
       </view>
     </block>
   </view>
