@@ -98,7 +98,11 @@ function getUserCIPHour() {
       console.log("My Event: ", results);
       var cipHour = 0;
       for (var i = 0; i < results.length; i++) {
-        cipHour += results[i].attributes.event.attributes.duration;
+        var eventDate = new Date(results[i].attributes.event.attributes.date);
+        var today = new Date(new Date().setDate(new Date().getDate() - 1));
+        if (eventDate <= today) {
+          cipHour += results[i].attributes.event.attributes.duration;
+        }
       }
       that.setData({
         loading: false,
