@@ -13,6 +13,7 @@ Page({
   data: {
     loading: false,
     eventList:null,
+    isMyEvent: false,
   },
 
   /**
