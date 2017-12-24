@@ -40,14 +40,24 @@ Page({
       eventId: eventId,
     })
 
-    getList();
+    if(isVolunteerList) {
+      getVolunteerList();
+    } else if(isWaitingList) {
+      getWaitingList();
+    }else{
+      getList();
+    }
+    
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    getList();
+    if (that.data.isAllUserList) {
+      getList();
+    }
+    
   },
 
   noneWindows: function () {
@@ -185,4 +195,58 @@ function modify() {
 function isPhoneValid(phoneNum) {
   //Phone length must be 8 and must be num only
   return Number.isInteger(phoneNum) && phoneNum >= 0 && phoneNum.toString().length == 8;
+}
+
+function getVolunteerList() {
+  that.setData({ loading: true })
+  //One user for One Event
+  var P = Bmob.Object.extend("p");
+  var query = new Bmob.Query(P);
+  var eventId = that.data.eventId;
+  query.equalTo("event", eventId);
+  query.equalTo("status", 1)
+  query.ascending('updatedAt');
+  query.include("user");
+  var userList = [];
+  query.find({
+    success: function (results) {
+      for (var i = 0; i < results.length; i++) {
+        userList = userList.concat(results[i].attributes.user);
+      }
+      that.setData({
+        userList: userList,
+        loading: false
+      })
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+}
+
+function getWaitingList() {
+  that.setData({ loading: true })
+  //One user for One Event
+  var P = Bmob.Object.extend("p");
+  var query = new Bmob.Query(P);
+  var eventId = that.data.eventId;
+  query.equalTo("event", eventId);
+  query.equalTo("status", 0)
+  query.ascending('updatedAt');
+  query.include("user");
+  var userList = [];
+  query.find({
+    success: function (results) {
+      for (var i = 0; i < results.length; i++) {
+        userList = userList.concat(results[i].attributes.user);
+      }
+      that.setData({
+        userList: userList,
+        loading: false
+      })
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
 }
