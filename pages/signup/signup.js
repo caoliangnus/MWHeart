@@ -25,7 +25,7 @@ Page({
 
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
     volunteerList: [],
-    waitingList: [],
+    waitingList: []
   },
 
 
@@ -34,7 +34,7 @@ Page({
     getUpComingEvent();    
     setTimeout(function () {
       getUserSignUpStatus();
-      countPeopleInEvent();
+      
       setUpNoticePanel();
     }, 1500)     
   },
@@ -293,6 +293,9 @@ function getUpComingEvent() {
           isSignUpAllowed: isSignUpAllowed,
           hasUpcomingEvent:true,
         })
+        countPeopleInEvent();
+        getVolunteerList();
+        getWaitingList();
       }
     },
     error: function (error) {
@@ -321,18 +324,20 @@ function getUserSignUpStatus() {
         console.log("User SignUp Status: Not signed up yet.");
         that.setData({
           isSignedUp: false,
+          loading: false
         })
       }else{
         console.log("User SignUp Status: ", result[0].attributes.status);
         that.setData({
           status: result[0].attributes.status,
           isSignedUp: true,
+          loading: false
         })
       }
 
     },
     error: function (object, error) {
-
+      console.log(error.message)
     }
   });
 }
@@ -388,4 +393,50 @@ function isInvalidRealName(realName) {
 function isInvalidPhone(phone) {
   //Todo
   return false;
+}
+
+function getVolunteerList() {
+  that.setData({ loading: true })
+  //One user for One Event
+  var P = Bmob.Object.extend("p");
+  var query = new Bmob.Query(P);
+  var eventId = app.globalData.eventId;
+  query.equalTo("event", eventId);
+  query.equalTo("status", 1)
+  query.ascending('updatedAt');
+  query.find({
+    success: function (results) {
+      console.log("volunteerList: ", results);
+      that.setData({ 
+        volunteerList: results,
+        loading: false 
+        })
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+}
+
+function getWaitingList() {
+  that.setData({ loading: true })
+  //One user for One Event
+  var P = Bmob.Object.extend("p");
+  var query = new Bmob.Query(P);
+  var eventId = app.globalData.eventId;
+  query.equalTo("event", eventId);
+  query.equalTo("status", 0)
+  query.ascending('updatedAt');
+  query.find({
+    success: function (results) {
+      console.log("waiting: ", results);
+      that.setData({ 
+        volunteerList: results,
+        loading: false 
+        })
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
 }

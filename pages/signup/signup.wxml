@@ -75,7 +75,40 @@
     <view class="weui-form-preview__bd" wx:else>
       <view class="weui-form-preview__value_in-hd">No Upcoming Event</view>
     </view>
-  </view>  
+  </view>
+
+  <!-- Display volunteer list -->
+  <view class="page__desc" >
+{{numPeopleJoined}} people have joined.
+    <view class="userInfo" wx:for="{{volunteerList}}" wx:key="volunteerList">
+      <view>
+        <image src="{{item.avatarUrl}}" class="avatar" mode="aspectFit"></image>
+      </view>
+      <view class="nickTime">
+        <view class="nickArea">
+          <text class="nick">{{item.realName}}</text>
+        </view>
+        <text class="postTime" style="color:rgb(191,191,191);font-size:24rpx">{{item.updatedAt}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Display waiting list -->  
+  <view class="page__desc" wx:if="{{waitingList.length!=0}}">
+    Waiting list
+    <view class="userInfo" wx:for="{{waitingList}}" wx:key="waitingList">
+      <view>
+        <image src="{{item.avatarUrl}}" class="avatar" mode="aspectFit"></image>
+      </view>
+      <view class="nickTime">
+        <view class="nickArea">
+          <text class="nick">{{item.realName}}</text>
+        </view>
+        <text class="postTime" style="color:rgb(191,191,191);font-size:24rpx">{{item.updatedAt}}</text>
+      </view>
+    </view>
+  </view>
+
 </view>
 
 
