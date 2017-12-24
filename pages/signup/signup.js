@@ -404,13 +404,17 @@ function getVolunteerList() {
   query.equalTo("event", eventId);
   query.equalTo("status", 1)
   query.ascending('updatedAt');
+  query.include("user");
+  var volunteerList = [];
   query.find({
     success: function (results) {
-      console.log("volunteerList: ", results);
-      that.setData({ 
-        volunteerList: results,
-        loading: false 
-        })
+      for (var i = 0; i < results.length; i++) {
+        volunteerList = volunteerList.concat(results[i].attributes.user);
+      }
+      that.setData({
+        volunteerList: volunteerList,
+        loading: false
+      })
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
@@ -427,13 +431,17 @@ function getWaitingList() {
   query.equalTo("event", eventId);
   query.equalTo("status", 0)
   query.ascending('updatedAt');
+  query.include("user");
+  var waitingList = [];
   query.find({
     success: function (results) {
-      console.log("waiting: ", results);
-      that.setData({ 
-        volunteerList: results,
-        loading: false 
-        })
+      for (var i = 0; i < results.length; i++) {
+        waitingList = waitingList.concat(results[i].attributes.user);
+      }
+      that.setData({
+        waitingList: waitingList,
+        loading: false
+      })
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);

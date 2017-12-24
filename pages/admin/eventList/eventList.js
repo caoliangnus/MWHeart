@@ -13,7 +13,8 @@ Page({
   data: {
     loading: false,
     eventList:null,
-    isMyEvent: false,
+    url:null
+
   },
 
   /**
@@ -25,12 +26,11 @@ Page({
     //To determine MyPastEvent or EventList Page
     var isMyEvent = options.isMyEvent == "true" ? true : false;
     if(isMyEvent){
+      this.setData({ url: "../../eventDetail/eventDetail?isMyEvent=true", })
       //Display event list for specific user only
-      this.setData({
-        isMyEvent: isMyEvent
-      })
       getMyEventList(this);
     }else{
+      this.setData({ url: "../event/event?isUpdateEvent=true"})
       //Display all events in the list
       getEventList(this);
     }
@@ -56,7 +56,7 @@ function getEventList() {
     success: function (results) {
       that.setData({
         eventList: results,
-        loading: false
+        loading: false,
       })
     },
     error: function (error) {
@@ -80,13 +80,16 @@ function getMyEventList(t) {
   var eventList = [];
   query.find({
     success: function (results) {
-      var cipHour = 0;
       for (var i = 0; i < results.length; i++) {
-        eventList = eventList.concat(results[i].attributes.event);
+        var eventDate = new Date(results[i].attributes.event.attributes.date);
+        var today = new Date(new Date().setDate(new Date().getDate() - 1));
+        if (eventDate <= today) {
+          eventList = eventList.concat(results[i].attributes.event);
+        }
       }
       that.setData({
         eventList: eventList,
-        loading: false
+        loading: false,
       })
     },
     error: function (error) {
