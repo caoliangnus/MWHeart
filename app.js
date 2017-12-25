@@ -13,6 +13,7 @@ App({
   },
 
   getOpenId: function () {
+    console.log("***** AppPage: Start get Openid *****");
     var that = this;
 
     wx.login({
@@ -20,11 +21,9 @@ App({
         if (res.code) {
           Bmob.User.requestOpenId(res.code, {
             success: function (result) {
-              console.log("***** AppPage: Start login WeChat and load UserInfo *****");
               that.globalData.openid = result.openid;
               console.log("openid: " + that.globalData.openid);
-              that.getUserRealNameAndPhone();
-              console.log("***** AppPage:End login WeChat and load UserInfo *****");
+              console.log("***** AppPage: End get Openid *****");
             },
             error: function (error) {
               // Show the error message somewhere
@@ -39,6 +38,7 @@ App({
   },
 
   getUserInfo: function (cb) {
+    console.log("***** AppPage: Start get UserInfo *****");
     var that = this
     if (this.globalData.userInfo) {
       typeof cb == "function" && cb(this.globalData.userInfo)
@@ -49,6 +49,7 @@ App({
             success: function (res) {
               that.globalData.userInfo = res.userInfo
               typeof cb == "function" && cb(that.globalData.userInfo)
+              console.log("***** AppPage: End get UserInfo *****");
             }
           })
         }
@@ -56,7 +57,7 @@ App({
     }
   },
 
-  getUserRealNameAndPhone: function () {
+  getUserIdRealNameAndPhone: function () {
     var that = this
     var openid = that.globalData.openid
 
@@ -74,6 +75,9 @@ App({
         that.globalData.userId = results[0].id;
         console.log("userId: ", that.globalData.userId);
         console.log("realName: " + that.globalData.realName, " phone: " + that.globalData.phone)
+        console.log("***** AppPage:End get userId realName and phone *****");
+        } else {
+          console.log("***** AppPage:End get userId realName and phone, no such user *****");
         }
       },
       error: function (error) {
@@ -88,6 +92,6 @@ App({
     openid: null,
     
     userId:null,
-    eventId:null,
+    eventId:null
   }
 })

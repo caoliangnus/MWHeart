@@ -30,17 +30,10 @@ Page({
 
 
   onLoad: function (options) {
+    console.log("sign up on load")
     that = this;
     getUpComingEvent();
-    setTimeout(function () {
       getUserSignUpStatus();
-
-      setUpNoticePanel();
-    }, 1500)
-  },
-
-  onShow: function () {
-
   },
 
 
@@ -60,9 +53,16 @@ Page({
 
   //Terms of Service Panel
   showNotice: function (e) {
-    this.setData({
-      'notice_status': true
-    });
+    wx.getSystemInfo({
+      success: (res) => {
+        that.setData({
+          windowHeight: res.windowHeight,
+          windowWidth: res.windowWidth,
+          'notice_status': true
+        })
+      }
+    })
+    
   },
   hideNotice: function (e) {
     this.setData({
@@ -177,8 +177,22 @@ function submitUserInfoForm(e){
 function signUpUser() {
   that.setData({ loading: true })
 
+  // More defensive
+  // Ensure userId and eventId is loaded completedly in app.js before do Bmob query
   var userId = app.globalData.userId;
+  while (userId == null) {
+    userId = app.globalData.userId;
+    console.log("empty userId")
+  }
   var eventId = app.globalData.eventId;
+  while (eventId == null) {
+    eventId = app.globalData.eventId;
+    console.log("empty eventId")
+  }
+
+  // Get real-time number of people join
+  var numPeopleJoined = countPeopleInEvent()
+  that.setData({ numPeopleJoined: numPeopleJoined})
   var status = (that.data.numPeopleJoined < that.data.limit) ? 1 : 0;
 
   var P = Bmob.Object.extend("p");
@@ -311,8 +325,8 @@ function getUpComingEvent() {
 
 /**
  * Determine the signing up status
- * status = 1 to indicate already signed up
- * status = 0 to indicate not signed up yet
+ * status = 1 to indicate already signed up, in volunteer list
+ * status = 0 to indicate not signed up yet, in waiting list
  */
 function getUserSignUpStatus() {
   that.setData({ loading: true })
@@ -320,6 +334,10 @@ function getUserSignUpStatus() {
   var P = Bmob.Object.extend("p");
   var query = new Bmob.Query(P);
   var userId = app.globalData.userId;
+  // while(userId == null) {
+  //   userId = app.globalData.userId;
+  //   console.log("empty userId")
+  // }
   var eventId = app.globalData.eventId;
   query.equalTo("user", userId);
   query.equalTo("event", eventId);
@@ -377,17 +395,6 @@ function updateBtnText(isDeadlineOver, isClosed) {
     btnText = "Sign Up";
   }
   that.setData({ btnText: btnText })
-}
-
-function setUpNoticePanel() {
-  wx.getSystemInfo({
-    success: (res) => {
-      that.setData({
-        windowHeight: res.windowHeight,
-        windowWidth: res.windowWidth
-      })
-    }
-  })
 }
 
 function isInvalidRealName(realName) {
