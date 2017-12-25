@@ -30,10 +30,10 @@ Page({
 
 
   onLoad: function (options) {
-    console.log("sign up on load")
     that = this;
     getUpComingEvent();
-      getUserSignUpStatus();
+    // Ensure user info needed is completedly loaded in app.js
+    app.getOpenIdUserIdRealNameAndPhone(getUserSignUpStatus)
   },
 
 
@@ -99,8 +99,6 @@ Page({
     })
   }
 })
-
-
 
 function checkNewUser() {
 
@@ -329,6 +327,7 @@ function getUpComingEvent() {
  * status = 0 to indicate not signed up yet, in waiting list
  */
 function getUserSignUpStatus() {
+  console.log("***** SignupPage:Start get userSignUpStatus *****");
   that.setData({ loading: true })
 
   var P = Bmob.Object.extend("p");
@@ -357,6 +356,7 @@ function getUserSignUpStatus() {
           loading: false
         })
       }
+      console.log("***** SignupPage:End get userSignUpStatus *****");
 
     },
     error: function (object, error) {

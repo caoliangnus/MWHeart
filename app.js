@@ -7,12 +7,9 @@ Bmob.initialize("dd7e3fb3803d26291a1867bd44df6986", "0efefcfe6a0c92f7abf501a7d44
 App({
   onLaunch: function () {
 
-    this.getOpenId();
-    this.getUserInfo();
-  
   },
 
-  getOpenId: function () {
+  getOpenIdUserIdRealNameAndPhone: function (f) {
     console.log("***** AppPage: Start get Openid *****");
     var that = this;
 
@@ -24,6 +21,7 @@ App({
               that.globalData.openid = result.openid;
               console.log("openid: " + that.globalData.openid);
               console.log("***** AppPage: End get Openid *****");
+              that.getUserIdRealNameAndPhone(f);
             },
             error: function (error) {
               // Show the error message somewhere
@@ -57,7 +55,8 @@ App({
     }
   },
 
-  getUserIdRealNameAndPhone: function () {
+  getUserIdRealNameAndPhone: function (f) {
+    console.log("***** AppPage:Start get userId realName and phone *****");
     var that = this
     var openid = that.globalData.openid
 
@@ -79,6 +78,9 @@ App({
         } else {
           console.log("***** AppPage:End get userId realName and phone, no such user *****");
         }
+
+        // Execute function parameter passed in
+        f()
       },
       error: function (error) {
         console.log("failed to query realName and phone" + error.code + " " + error.message);
