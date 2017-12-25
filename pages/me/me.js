@@ -22,15 +22,14 @@ Page({
     that = this
     getUserCIPHour();
     setUpAccountLoginPage();
-    that.setData({
-      userInfo: getApp().globalData.userInfo,
-      realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
-      phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
-    })
-  },
-
-  onShow: function () {
-   
+    // Then ensure user info needed is completedly loaded in app.js
+    app.getOpenIdUserIdRealNameAndPhone(
+      function () {
+        that.setData({
+          userInfo: getApp().globalData.userInfo,
+          realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
+          phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
+        }) });  
   },
 
   adminBtnClick: function (e) {
