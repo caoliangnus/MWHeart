@@ -29,11 +29,10 @@ Page({
   },
 
 
-  onLoad: function (options) {
+  onShow: function (options) {
     that = this;
-    getUpComingEvent();
-    // Ensure user info needed is completedly loaded in app.js
-    app.getOpenIdUserIdRealNameAndPhone(getUserSignUpStatus)
+    
+    refresh()
   },
 
 
@@ -99,6 +98,15 @@ Page({
     })
   }
 })
+
+// Refresh the entire page
+// Including upcoming event, event's lists, user sign up status
+function refresh() {
+  // First ensure event id is loaded
+  // Then ensure user info needed is completedly loaded in app.js
+  getUpComingEvent(
+    function () { app.getOpenIdUserIdRealNameAndPhone(getUserSignUpStatus) });
+}
 
 function checkNewUser() {
 
@@ -175,29 +183,15 @@ function submitUserInfoForm(e){
 function signUpUser() {
   that.setData({ loading: true })
 
-  // More defensive
-  // Ensure userId and eventId is loaded completedly in app.js before do Bmob query
-  var userId = app.globalData.userId;
-  while (userId == null) {
-    userId = app.globalData.userId;
-    console.log("empty userId")
-  }
-  var eventId = app.globalData.eventId;
-  while (eventId == null) {
-    eventId = app.globalData.eventId;
-    console.log("empty eventId")
-  }
-
-  // Get real-time number of people join
-  var numPeopleJoined = countPeopleInEvent()
-  that.setData({ numPeopleJoined: numPeopleJoined})
+  // Status 0: waiting list
+  // Status 1: volunteer list
   var status = (that.data.numPeopleJoined < that.data.limit) ? 1 : 0;
 
   var P = Bmob.Object.extend("p");
   var participation = new P();
 
-  var event = Bmob.Object.createWithoutData("event", eventId);
-  var user = Bmob.Object.createWithoutData("user", userId);
+  var event = Bmob.Object.createWithoutData("event", app.globalData.eventId);
+  var user = Bmob.Object.createWithoutData("user", app.globalData.userId);
 
   participation.set("user", user);
   participation.set("event", event);
@@ -218,6 +212,8 @@ function signUpUser() {
         isSignedUp: true,
         isWaiting: false,
       });
+      // Refresh the page
+      refresh()
     }
   });
 
@@ -246,6 +242,7 @@ function quitEvent() {
             })
             common.showTip('Success');
             console.log("Quit an event")
+            refresh()
           },
           error: function (err) {
             wx.showModal({
@@ -261,7 +258,7 @@ function quitEvent() {
   })
 }
 
-function getUpComingEvent() {
+function getUpComingEvent(f) {
   that.setData({ loading: true })
 
   var Event = Bmob.Object.extend("event");
@@ -313,6 +310,9 @@ function getUpComingEvent() {
         countPeopleInEvent();
         getVolunteerList();
         getWaitingList();
+
+        // Execute function parameter passed in
+        f();
       }
     },
     error: function (error) {
@@ -333,10 +333,6 @@ function getUserSignUpStatus() {
   var P = Bmob.Object.extend("p");
   var query = new Bmob.Query(P);
   var userId = app.globalData.userId;
-  // while(userId == null) {
-  //   userId = app.globalData.userId;
-  //   console.log("empty userId")
-  // }
   var eventId = app.globalData.eventId;
   query.equalTo("user", userId);
   query.equalTo("event", eventId);
@@ -350,6 +346,12 @@ function getUserSignUpStatus() {
         })
       } else {
         console.log("User SignUp Status: ", result[0].attributes.status);
+        // Check if the user is in waiting list
+        if (result[0].attributes.status == 0) {
+          that.setData({
+            isWaiting: true
+          })
+        }
         that.setData({
           status: result[0].attributes.status,
           isSignedUp: true,
@@ -366,7 +368,7 @@ function getUserSignUpStatus() {
 }
 
 
-function countPeopleInEvent() {
+function countPeopleInEvent(f) {
   that.setData({ loading: true })
   //One user for One Event
   var P = Bmob.Object.extend("p");
@@ -379,7 +381,7 @@ function countPeopleInEvent() {
       that.setData({
         loading: false,
         numPeopleJoined: results.length,
-      })
+      }, f)
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
