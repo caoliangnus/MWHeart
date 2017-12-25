@@ -12,27 +12,37 @@ App({
   getOpenIdUserIdRealNameAndPhone: function (f) {
     console.log("***** AppPage: Start get Openid *****");
     var that = this;
+    that.getUserInfo()
 
-    wx.login({
-      success: function (res) {
-        if (res.code) {
-          Bmob.User.requestOpenId(res.code, {
-            success: function (result) {
-              that.globalData.openid = result.openid;
-              console.log("openid: " + that.globalData.openid);
-              console.log("***** AppPage: End get Openid *****");
-              that.getUserIdRealNameAndPhone(f);
-            },
-            error: function (error) {
-              // Show the error message somewhere
-              console.log("Error: " + error.code + " " + error.message);
-            }
-          });
-        } else {
-          common.showTip('Unable to get userInfo', 'loading');
+    if (this.globalData.openid) {
+      //openid already loaded before
+      console.log("Have already openid: " + this.globalData.openid)
+      console.log("***** AppPage: End get Openid *****");
+
+      // Get other user info
+      that.getUserIdRealNameAndPhone(f);
+    } else {
+      wx.login({
+        success: function (res) {
+          if (res.code) {
+            Bmob.User.requestOpenId(res.code, {
+              success: function (result) {
+                that.globalData.openid = result.openid;
+                console.log("openid: " + that.globalData.openid);
+                console.log("***** AppPage: End get Openid *****");
+                that.getUserIdRealNameAndPhone(f);
+              },
+              error: function (error) {
+                // Show the error message somewhere
+                console.log("Error: " + error.code + " " + error.message);
+              }
+            });
+          } else {
+            common.showTip('Unable to get userInfo', 'loading');
+          }
         }
-      }
-    });
+      });
+    }
   },
 
   getUserInfo: function (cb) {
@@ -40,6 +50,7 @@ App({
     var that = this
     if (this.globalData.userInfo) {
       typeof cb == "function" && cb(this.globalData.userInfo)
+      console.log("***** AppPage: End get UserInfo *****");
     } else {
       wx.login({
         success: function () {
@@ -57,43 +68,58 @@ App({
 
   getUserIdRealNameAndPhone: function (f) {
     console.log("***** AppPage:Start get userId realName and phone *****");
+
     var that = this
-    var openid = that.globalData.openid
 
-    // Query user real name and phone number from cloud server
-    var u = Bmob.Object.extend("user");
-    var query = new Bmob.Query(u);
-    query.equalTo("openid", openid);
-    query.find({
-      success: function (results) {
-        // There is such a user
-        // Otherwise this user is not stored to clound yet
-        if (results.length == 1) {
-        that.globalData.realName = results[0].get('realName')
-        that.globalData.phone = results[0].get('phone')
-        that.globalData.userId = results[0].id;
-        console.log("userId: ", that.globalData.userId);
-        console.log("realName: " + that.globalData.realName, " phone: " + that.globalData.phone)
-        console.log("***** AppPage:End get userId realName and phone *****");
-        } else {
-          console.log("***** AppPage:End get userId realName and phone, no such user *****");
+    if (that.globalData.userId && that.globalData.phone && that.globalData.userId) {
+
+      // Those user info is already loaded before
+      console.log("Have already userId: ", that.globalData.userId);
+      console.log("Have already realName: " + that.globalData.realName, " phone: " + that.globalData.phone)
+      console.log("***** AppPage:End get userId realName and phone *****");
+
+      // Execute function parameter passed in
+      f()
+
+    } else {
+
+      var openid = that.globalData.openid
+
+      // Query user real name and phone number from cloud server
+      var u = Bmob.Object.extend("user");
+      var query = new Bmob.Query(u);
+      query.equalTo("openid", openid);
+      query.find({
+        success: function (results) {
+          // There is such a user
+          // Otherwise this user is not stored to clound yet
+          if (results.length == 1) {
+            that.globalData.realName = results[0].get('realName')
+            that.globalData.phone = results[0].get('phone')
+            that.globalData.userId = results[0].id;
+            console.log("userId: ", that.globalData.userId);
+            console.log("realName: " + that.globalData.realName, " phone: " + that.globalData.phone)
+            console.log("***** AppPage:End get userId realName and phone *****");
+          } else {
+            console.log("***** AppPage:End get userId realName and phone, no such user *****");
+          }
+
+          // Execute function parameter passed in
+          f()
+        },
+        error: function (error) {
+          console.log("failed to query realName and phone" + error.code + " " + error.message);
         }
-
-        // Execute function parameter passed in
-        f()
-      },
-      error: function (error) {
-        console.log("failed to query realName and phone" + error.code + " " + error.message);
-      }
-    });
+      });
+    }
   },
   globalData: {
     userInfo: null,
     realName: null,
     phone: null,
     openid: null,
-    
-    userId:null,
-    eventId:null
+
+    userId: null,
+    eventId: null
   }
 })
