@@ -19,7 +19,7 @@ Page({
 
     isNotYet: false,
     isOngoing: false,
-    isClose: false,
+    isClosed: false,
     isAgree: false,
     isSignUpAllowed: false,
 
@@ -258,7 +258,7 @@ function getCandidateToVolunteerList() {
   if (!that.data.isWaiting) {
     // Not in the waiting list
     // Removing from volunteer list
-console.log("In the volunteer list. Need to get candidate from waiting list")
+    console.log("In the volunteer list. Need to get candidate from waiting list")
     if (that.data.waitingList.length > 0) {
       console.log("Waiting list is not empyt")
       // If there is someone in the waiting list
@@ -349,6 +349,7 @@ function getUpComingEvent(f) {
         var isOngoing = results[0].attributes.eventStatus == 1 ? true : false;
         var isClosed = results[0].attributes.eventStatus == 2 ? true : false;
         var isDeadlineOver = new Date(results[0].attributes.deadline) <= today ? true : false;
+        isClosed = isClosed || isDeadlineOver
         var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && that.data.isAgree;
         updateBtnText(isDeadlineOver, isClosed);
 
@@ -363,12 +364,16 @@ function getUpComingEvent(f) {
           isSignUpAllowed: isSignUpAllowed,
           hasUpcomingEvent: true,
         })
-        countPeopleInEvent();
-        getVolunteerList();
-        getWaitingList();
-
-        // Execute function parameter passed in
-        f();
+        if (isNotYet) {
+          // Do nothing
+          console.log("Event sign up not yet.")
+        } else {
+          countPeopleInEvent();
+          getVolunteerList();
+          getWaitingList();
+          // Execute function parameter passed in
+          f();
+        }
       }
     },
     error: function (error) {
@@ -406,6 +411,10 @@ function getUserSignUpStatus() {
         if (result[0].attributes.status == 0) {
           that.setData({
             isWaiting: true
+          })
+        } else {
+          that.setData({
+            isWaiting: false
           })
         }
         that.setData({
