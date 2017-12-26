@@ -123,7 +123,7 @@ function checkNewUser() {
         that.setData({ isSubmitingUserInfo: true })
       } else {
         //Allow user to sign up
-        signUpUser();
+        countPeopleInEvent(signUpUser);
       }
     },
     error: function (error) {
@@ -168,7 +168,7 @@ function submitUserInfoForm(e) {
           // Close window
           that.setData({ isSubmitingUserInfo: false })
           // Get user sign up
-          signUpUser();
+          countPeopleInEvent(signUpUser);
           console.log("***** SignUpPage: End Signing Up New User *****");
         },
         error: function (result, error) {
