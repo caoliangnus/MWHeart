@@ -45,7 +45,7 @@ Page({
     } else if(isWaitingList) {
       getWaitingList();
     }else{
-      getList();
+      getList(this);
     }
     
   },
@@ -68,7 +68,7 @@ Page({
 
   //Delete User After clicked Delete Button
   deleteUserBtnClick: function (event) {
-    deleteUser()
+    deleteUser(event)
   },
 
 
@@ -87,15 +87,14 @@ Page({
 
   //Form for modifying user
   modifyUserForm: function (e) {
-    var t = this;
-    modify(t, e)
+    modify(e)
   },
 })
 
 /**
  * Delete User from list
  */
-function deleteUser() {
+function deleteUser(event) {
   var id = event.target.dataset.id;
   wx.showModal({
     title: 'Alert',
@@ -123,7 +122,7 @@ function deleteUser() {
 /*
 * Get Event Detail from Bmob
 */
-function getList(t, k) {
+function getList() {
   var User = Bmob.Object.extend("user");
   var user = new Bmob.Query(User);
   user.ascending('updatedAt');
@@ -144,10 +143,10 @@ function getList(t, k) {
  * Upload data to BMob after clicked submit button on ModifyForm
  */
 
-function modify() {
+function modify(e) {
   //Edit User
   var modyName = e.detail.value.name;
-  var modyPhone = Number(e.detail.value.phone);
+  var modyPhone = e.detail.value.phone;
   var thatName = that.data.nowName;
   var thatPhone = Number(that.data.nowPhone);
 
@@ -156,11 +155,10 @@ function modify() {
       Show.showAlert(that, "warn", 'Name or Phone can not be empty');
     } else if (!isPhoneValid(modyPhone)) {
       Show.showAlert(that, "warn", 'Phone must be 8 digits only');
-    }
-    else {
+    } else {
       that.setData({ loading: true })
-      var Diary = Bmob.Object.extend("user");
-      var query = new Bmob.Query(Diary);
+      var User = Bmob.Object.extend("user");
+      var query = new Bmob.Query(User);
 
       query.get(that.data.nowId, {
         success: function (result) {
@@ -193,6 +191,7 @@ function modify() {
 }
 
 function isPhoneValid(phoneNum) {
+  phoneNum = Number(phoneNum);
   //Phone length must be 8 and must be num only
   return Number.isInteger(phoneNum) && phoneNum >= 0 && phoneNum.toString().length == 8;
 }
