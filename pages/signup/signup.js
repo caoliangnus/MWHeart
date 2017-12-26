@@ -31,7 +31,7 @@ Page({
 
   onShow: function (options) {
     that = this;
-    
+
     refresh()
   },
 
@@ -43,7 +43,7 @@ Page({
     var isClosed = that.data.isClosed;
     var isDeadlineOver = that.data.isDeadlineOver;
     var isAgree = e.detail.value.length === 1 ? true : false;
-    var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && isAgree;  
+    var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && isAgree;
     this.setData({
       isAgree: isAgree,
       isSignUpAllowed: isSignUpAllowed,
@@ -61,7 +61,7 @@ Page({
         })
       }
     })
-    
+
   },
   hideNotice: function (e) {
     this.setData({
@@ -102,6 +102,7 @@ Page({
 // Refresh the entire page
 // Including upcoming event, event's lists, user sign up status
 function refresh() {
+  that.setData({ loading: true })
   // First ensure event id is loaded
   // Then ensure user info needed is completedly loaded in app.js
   getUpComingEvent(
@@ -131,7 +132,7 @@ function checkNewUser() {
   });
 }
 
-function submitUserInfoForm(e){
+function submitUserInfoForm(e) {
   var realName = e.detail.value.realName;
   var phone = e.detail.value.phone;
 
@@ -207,7 +208,6 @@ function signUpUser() {
       var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && isAgree;
       var isWaiting = status == 0 ? true : false;
       that.setData({
-        loading: false,
         isSignUpAllowed: isSignUpAllowed,
         isSignedUp: true,
         isWaiting: false,
@@ -237,12 +237,10 @@ function quitEvent() {
         query.destroyAll({
           success: function () {
             that.setData({
-              isSignedUp: false,
-              loading: false,
+              isSignedUp: false
             })
-            common.showTip('Success');
             console.log("Quit an event")
-            refresh()
+            getCandidateToVolunteerList()
           },
           error: function (err) {
             wx.showModal({
@@ -250,12 +248,72 @@ function quitEvent() {
               showCancel: false,
               content: 'Failed to quit. Please try again.',
             })
-            that.setData({ loading: false })
           }
         });
       }
     }
   })
+}
+
+function getCandidateToVolunteerList() {
+
+  if (!that.data.isWaiting) {
+    // Not in the waiting list
+    // Removing from volunteer list
+console.log("In the volunteer list. Need to get candidate from waiting list")
+    if (that.data.waitingList.length > 0) {
+      console.log("Waiting list is not empyt")
+      // If there is someone in the waiting list
+      // Get the first one in the waiting list and remove it from waiting list
+      var candidate = that.data.waitingList.shift()
+      var candidateId = candidate.user.id
+
+      var eventId = app.globalData.eventId;
+
+      // Get id of Participation Table where contains the candidate
+      var P = Bmob.Object.extend("p");
+      var query = new Bmob.Query(P);
+      query.equalTo("user", candidateId);
+      query.equalTo("event", eventId);
+      query.first({
+        success: function (object) {
+          var participationId = object.id
+          console.log("participation id for candidate: " + participationId)
+
+          // Update status of candidate to 1
+          var P2 = Bmob.Object.extend("p");
+          var query2 = new Bmob.Query(P2);
+          query2.get(participationId, {
+            success: function (result) {
+              // Change status to be in volunteer list
+              result.set('status', 1);
+              result.save();
+
+              console.log("Put candidate into volunteer list")
+              common.showTip('Success');
+              refresh()
+            },
+            error: function (object, error) {
+              console.log(error.code, error.message)
+              that.setData({ loading: false })
+            }
+          });
+        },
+        error: function (err) {
+          console.log(err.code, err.message)
+          that.setData({ loading: false })
+        }
+      });
+    } else {
+      console.log("Waiting list is empty")
+      common.showTip('Success');
+      refresh()
+    }
+  } else {
+    console.log("In waiting list, do nothing")
+    common.showTip('Success');
+    refresh()
+  }
 }
 
 function getUpComingEvent(f) {
@@ -451,10 +509,9 @@ function getWaitingList() {
   query.find({
     success: function (results) {
       for (var i = 0; i < results.length; i++) {
-        var user = [{ user: results[i].attributes.user, updatedAt: results[i].updatedAt}]
+        var user = [{ user: results[i].attributes.user, updatedAt: results[i].updatedAt }]
         waitingList = waitingList.concat(user);
       }
-      console.log(waitingList)
       that.setData({
         waitingList: waitingList,
         loading: false
