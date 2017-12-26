@@ -173,7 +173,7 @@
 </view>
 
 <!-- Sumbit User information Panel -->
-<view class="notice" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}">
+<view class="noticePanel" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}">
   <view class='box'>
     <view class="weui-mask"></view>
     <view class="page_container">
