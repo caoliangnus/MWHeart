@@ -34,6 +34,20 @@
 
 
       <!-- *****Terms of service***** -->
+      <!-- show info if the event is not open yet -->
+      <label class="weui-agree" wx:if="{{isNotYet}}">
+        <view>Sign up for upcoming event is not open yet. Please be patient :)</view>
+        <view>You can also contact project director if you have any questions.
+        <view bindtap="showContactPD" class="weui-agree__link">How?</view></view>
+      </label>
+
+      <!-- show info if the event is closed -->
+      <label class="weui-agree" wx:if="{{isClosed}}">
+        Sign up for upcoming event is closed. Please contact project director if you have any further queries. (e.g. join/quit)
+        <view bindtap="showContactPD" class="weui-agree__link">How?</view>
+      </label>
+
+
       <!-- Before Sign Up -->
       <checkbox-group bindchange="bindAgreeChange" wx:if="{{!isSignedUp}}">
         <label class="weui-agree" for="weuiAgree">
@@ -55,22 +69,9 @@
         <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
       </label>
 
-      <!-- show info if the event is closed -->
-      <label class="weui-agree" wx:if="{{isClosed}}">
-        Sign up for upcoming event is closed. Please contact project director if you have any further queries. (e.g. join/quit)
-        <view bindtap="showContactPD" class="weui-agree__link">How?</view>
-        <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
-      </label>
-
-      <!-- show info if the event is not open yet -->
-      <label class="weui-agree" wx:if="{{isNotYet}}">
-        Sign up for upcoming event is not open yet. Please be patient :)
-        <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
-      </label>
-
       <!-- ***** Submit or Quit Button ***** -->
       <!-- Before Sign Up: Button set to SignUp-->
-      <button class=" weui-form-preview__btn weui-form-preview__btn_primary " type="primary" bindtap="sighUpBtnClick" disabled="{{!isSignUpAllowed}}" wx:if="{{!isSignedUp}}">{{btnText}}</button>
+      <button class=" weui-form-preview__btn weui-form-preview__btn_primary " type="primary" bindtap="sighUpBtnClick" disabled="{{!isSignUpAllowed || isClosed}}" wx:if="{{!isSignedUp|| isClosed}}">{{btnText}}</button>
 
       <!-- After Sign Up: Button set to Quit-->
       <button class="weui-form-preview__btn weui-form-preview__btn_primary " type="default" bindtap="quitBtnClick" disabled="" wx:else> Quit </button>
@@ -81,8 +82,8 @@
   </view>
 
   <!-- Display volunteer list -->
-  <view class="page__desc" style="color:rgb(100,100,100)">{{numPeopleJoined}} people have joined.</view>
-  <text class="page__desc">Volunteer List:</text>
+  <view class="page__desc" style="color:rgb(100,100,100)" wx:if="{{volunteerList.length > 0}}">{{numPeopleJoined}} people have joined.</view>
+  <text class="page__desc" wx:if="{{volunteerList.length > 0}}">Volunteer List:</text>
    <!-- <view class="weui-media-box">Volunteer List:</view>  -->
   <view class="weui-panel__bd">
     <block wx:if="{{volunteerList.length > 0}}">
