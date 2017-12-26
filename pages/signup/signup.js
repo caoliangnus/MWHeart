@@ -238,7 +238,7 @@ function quitEvent() {
               isSignedUp: false
             })
             console.log("Quit an event")
-            getCandidateToVolunteerList()
+            getWaitingList(getCandidateToVolunteerList)
           },
           error: function (err) {
             wx.showModal({
@@ -493,7 +493,7 @@ function getVolunteerList() {
   });
 }
 
-function getWaitingList() {
+function getWaitingList(f) {
   that.setData({ loading: true })
   //One user for One Event
   var P = Bmob.Object.extend("p");
@@ -514,6 +514,9 @@ function getWaitingList() {
         waitingList: waitingList,
         loading: false
       })
+
+      // Execute function parameter passed in
+      f();
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
