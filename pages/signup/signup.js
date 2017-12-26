@@ -102,6 +102,7 @@ Page({
 // Refresh the entire page
 // Including upcoming event, event's lists, user sign up status
 function refresh() {
+  that.setData({ loading: true })
   // First ensure event id is loaded
   // Then ensure user info needed is completedly loaded in app.js
   getUpComingEvent(
@@ -237,12 +238,10 @@ function quitEvent() {
         query.destroyAll({
           success: function () {
             that.setData({
-              isSignedUp: false,
-              loading: false,
+              isSignedUp: false
             })
-            common.showTip('Success');
             console.log("Quit an event")
-            refresh()
+            getCandidateToVolunteerList()
           },
           error: function (err) {
             wx.showModal({
@@ -250,12 +249,67 @@ function quitEvent() {
               showCancel: false,
               content: 'Failed to quit. Please try again.',
             })
-            that.setData({ loading: false })
           }
         });
       }
     }
   })
+}
+
+function getCandidateToVolunteerList() {
+
+  if (!that.data.isWaiting) {
+    // Not in the waiting list
+    // Removing from volunteer list
+
+    if (that.data.waitingList.length > 0) {
+      // If there is someone in the waiting list
+      // Get the first one in the waiting list and remove it from waiting list
+      var candidate = that.data.waitingList.shift()
+      var candidateId = candidate.user.id
+
+      var eventId = app.globalData.eventId;
+
+      // Get id of Participation Table where contains the candidate
+      var P = Bmob.Object.extend("p");
+      var query = new Bmob.Query(P);
+      query.equalTo("user", candidateId);
+      query.equalTo("event", eventId);
+      query.first({
+        success: function (object) {
+          var participationId = object.id
+          console.log("participation id for candidate: " + participationId)
+
+          // Update status of candidate to 1
+          var P2 = Bmob.Object.extend("p");
+          var query2 = new Bmob.Query(P2);
+          query2.get(participationId, {
+            success: function (result) {
+              // Change status to be in volunteer list
+              result.set('status', 1);
+              result.save();
+
+              console.log("Put candidate into volunteer list")
+              common.showTip('Success');
+              refresh()
+            },
+            error: function (object, error) {
+              console.log(error.code, error.message)
+            }
+          });
+        },
+        error: function (err) {
+          console.log(err.code, err.message)
+        }
+      });
+    }
+  } else {
+    that.setData({ isWaiting: false })
+    console.log("In waiting list, no nothing")
+
+    common.showTip('Success');
+    refresh()
+  }
 }
 
 function getUpComingEvent(f) {
