@@ -513,10 +513,7 @@ function getWaitingList(f) {
       that.setData({
         waitingList: waitingList,
         loading: false
-      })
-
-      // Execute function parameter passed in
-      f();
+      }, f)
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
