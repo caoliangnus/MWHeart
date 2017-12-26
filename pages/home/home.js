@@ -15,6 +15,14 @@ Page({
     bonusArray: [],
     time: "",
     location: "",    
+
+    //Moral welfare home 301 henderson road
+    markers: [{
+      latitude: 1.272070,
+      longitude: 103.812195,
+      scale: 28,
+      name: 'Moral Welfare Home'
+    }],
   },
 
   /**
@@ -32,7 +40,16 @@ Page({
    */
   onShow: function () {
 
-  }
+  },
+  click: function (e) {
+    wx.openLocation({
+      latitude: 1.272070,
+      longitude: 103.812195,
+      scale: 24,
+      name: 'Moral Welfare Home',
+      address: '301 henderson road'
+    })
+  }, 
 })
 
 function setUpContent(){
@@ -79,4 +96,19 @@ function getEventList() {
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });
+}
+
+function getEventLocation(){
+  wx.getLocation({
+    type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+    success: function (res) {
+      var latitude = res.latitude
+      var longitude = res.longitude
+      wx.openLocation({
+        latitude: latitude,
+        longitude: longitude,
+        scale: 28
+      })
+    }
+  })
 }
