@@ -42,7 +42,7 @@
             <view class="weui-agree__checkbox-icon">
               <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
             </view>
-            I agree to the
+            I've read the
             <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
           </view>
         </label>
@@ -52,17 +52,20 @@
       <label class="weui-agree" for="weuiAgree" wx:else>
         <view class="weui-agree__text" wx:if="{{isWaiting}}">You are in the waiting list.</view>
         <view class="weui-agree__text" wx:else>You have successfully signed up.</view>
+        <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
       </label>
 
       <!-- show info if the event is closed -->
       <label class="weui-agree" wx:if="{{isClosed}}">
         Sign up for upcoming event is closed. Please contact project director if you have any further queries. (e.g. join/quit)
         <view bindtap="showContactPD" class="weui-agree__link">How?</view>
+        <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
       </label>
 
       <!-- show info if the event is not open yet -->
       <label class="weui-agree" wx:if="{{isNotYet}}">
         Sign up for upcoming event is not open yet. Please be patient :)
+        <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
       </label>
 
       <!-- ***** Submit or Quit Button ***** -->
