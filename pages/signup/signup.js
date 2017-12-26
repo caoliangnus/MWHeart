@@ -31,7 +31,7 @@ Page({
 
   onShow: function (options) {
     that = this;
-    
+
     refresh()
   },
 
@@ -43,7 +43,7 @@ Page({
     var isClosed = that.data.isClosed;
     var isDeadlineOver = that.data.isDeadlineOver;
     var isAgree = e.detail.value.length === 1 ? true : false;
-    var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && isAgree;  
+    var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && isAgree;
     this.setData({
       isAgree: isAgree,
       isSignUpAllowed: isSignUpAllowed,
@@ -61,7 +61,7 @@ Page({
         })
       }
     })
-    
+
   },
   hideNotice: function (e) {
     this.setData({
@@ -132,7 +132,7 @@ function checkNewUser() {
   });
 }
 
-function submitUserInfoForm(e){
+function submitUserInfoForm(e) {
   var realName = e.detail.value.realName;
   var phone = e.detail.value.phone;
 
@@ -208,7 +208,6 @@ function signUpUser() {
       var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && isAgree;
       var isWaiting = status == 0 ? true : false;
       that.setData({
-        loading: false,
         isSignUpAllowed: isSignUpAllowed,
         isSignedUp: true,
         isWaiting: false,
@@ -261,8 +260,9 @@ function getCandidateToVolunteerList() {
   if (!that.data.isWaiting) {
     // Not in the waiting list
     // Removing from volunteer list
-
+console.log("In the volunteer list. Need to get candidate from waiting list")
     if (that.data.waitingList.length > 0) {
+      console.log("Waiting list is not empyt")
       // If there is someone in the waiting list
       // Get the first one in the waiting list and remove it from waiting list
       var candidate = that.data.waitingList.shift()
@@ -295,18 +295,22 @@ function getCandidateToVolunteerList() {
             },
             error: function (object, error) {
               console.log(error.code, error.message)
+              that.setData({ loading: false })
             }
           });
         },
         error: function (err) {
           console.log(err.code, err.message)
+          that.setData({ loading: false })
         }
       });
+    } else {
+      console.log("Waiting list is empty")
+      common.showTip('Success');
+      refresh()
     }
   } else {
-    that.setData({ isWaiting: false })
-    console.log("In waiting list, no nothing")
-
+    console.log("In waiting list, do nothing")
     common.showTip('Success');
     refresh()
   }
@@ -505,10 +509,9 @@ function getWaitingList() {
   query.find({
     success: function (results) {
       for (var i = 0; i < results.length; i++) {
-        var user = [{ user: results[i].attributes.user, updatedAt: results[i].updatedAt}]
+        var user = [{ user: results[i].attributes.user, updatedAt: results[i].updatedAt }]
         waitingList = waitingList.concat(user);
       }
-      console.log(waitingList)
       that.setData({
         waitingList: waitingList,
         loading: false
