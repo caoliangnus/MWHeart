@@ -167,8 +167,6 @@ function submitUserInfoForm(e) {
 
           // Close window
           that.setData({ isSubmitingUserInfo: false })
-          // Update me page: update phone & name
-          app.getUserRealNameAndPhone();
           // Get user sign up
           signUpUser();
           console.log("***** SignUpPage: End Signing Up New User *****");
