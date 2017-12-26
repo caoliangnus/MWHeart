@@ -5,6 +5,7 @@ var util = require('../../../utils/util.js');
 var Show = require("../../../utils/alert/alert.js");
 const app = getApp(); //get app instance
 var that;
+var saturday = null;
 var file = null;
 
 
@@ -60,7 +61,7 @@ Page({
 
     } else {
       /**Create Event Page */
-      var saturday = getNextSaturday(); 
+      saturday = getNextSaturday(); 
       //Default Deadline is Wednesday
       var deadline = new Date(new Date().setDate(saturday.getDate() - 3))
       var fullDeadline = util.formatDate(deadline);
