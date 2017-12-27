@@ -1,0 +1,10 @@
+@import '/style/weui.wxss';
+@import '/style/zanui.wxss';
+
+.weui-article__title {
+  font-size: 1.4em;
+}
+
+.picPre{width:100%;margin:0 auto;position:relative;box-sizing:border-box;}
+.picPre image{width:100%;height:100%rpx;}
+

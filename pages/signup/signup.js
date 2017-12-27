@@ -143,7 +143,7 @@ function submitUserInfoForm(e) {
       confirmText: 'OK',
       showCancel: false
     })
-  } else if (isInvalidPhone(phone)) {
+  } else if (!isInvalidPhone(phone)) {
     wx.showModal({
       title: 'Invalid phone number',
       content: 'Please enter valid phone number.',
@@ -466,10 +466,12 @@ function updateBtnText(isDeadlineOver, isClosed) {
 
 function isInvalidRealName(realName) {
   //Todo
+  var str = String(realName);
+  console.log(str.trim())
   return false;
 }
 
-function isInvalidPhone(phone) {
+function isInvalidPhone(phoneNum) {
   //Todo
   phoneNum = Number(phoneNum);
   //Phone length must be 8 and must be num only
