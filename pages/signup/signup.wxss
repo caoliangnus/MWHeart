@@ -5,31 +5,13 @@
 
 .page__desc{
   padding-left: 30rpx;
-  font-size: 40rpx;
 }
 
 .weui-form-preview{
-  font-size: 40rpx;
   margin-bottom: 25px;
 }
 
-.weui-form-preview__value{
-  font-size: 35rpx;
-}
 
-.weui-agree {
-  font-size: 40rpx;
-}
-
-.weui-agree__checkbox{
-  position:absolute;left:-9999px
-}
-.weui-agree__checkbox-icon{
-  position:relative;top:2rpx;display:inline-block;border:1px solid#d1d1d1;background-color:#fff;border-radius:3px;width:22px;height:22px
-  }
-.weui-agree__checkbox-icon-check{
-  position:absolute;top:1rpx;left:1rpx
-  }
 
 .box {
   position: relative;
