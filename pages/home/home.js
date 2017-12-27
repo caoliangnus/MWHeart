@@ -72,6 +72,13 @@ Page({
       autoplay: false
     })
   },
+  click_activity:function(e) {
+    var objectId = e.target.dataset.id;
+    console.log(objectId);
+    wx.navigateTo({
+      url: '../eventDetail/eventDetail?isMyEvent=true&objectId=' + objectId,  
+    })
+  },
   //获取轮播图的文章,点赞数最多的前3个
   fetchTopThreePosts: function () {
     var molist = new Array();
