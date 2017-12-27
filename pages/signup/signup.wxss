@@ -1,8 +1,35 @@
 @import '/style/weui.wxss';
 @import '/style/zanui.wxss';
-.weui-form-preview{
-    margin-bottom: 25px;
+
+
+
+.page__desc{
+  padding-left: 30rpx;
+  font-size: 40rpx;
 }
+
+.weui-form-preview{
+  font-size: 40rpx;
+  margin-bottom: 25px;
+}
+
+.weui-form-preview__value{
+  font-size: 35rpx;
+}
+
+.weui-agree {
+  font-size: 40rpx;
+}
+
+.weui-agree__checkbox{
+  position:absolute;left:-9999px
+}
+.weui-agree__checkbox-icon{
+  position:relative;top:2rpx;display:inline-block;border:1px solid#d1d1d1;background-color:#fff;border-radius:3px;width:22px;height:22px
+  }
+.weui-agree__checkbox-icon-check{
+  position:absolute;top:1rpx;left:1rpx
+  }
 
 .box {
   position: relative;
@@ -65,9 +92,19 @@
   word-break: break-all;
 }
 
-.page__desc{
-  padding-left: 25rpx;
+.noticePanel {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+
 
 .picPre{width:100%;margin:0 auto;position:relative;box-sizing:border-box;}
 .picPre image{width:100%;height:100%rpx;}

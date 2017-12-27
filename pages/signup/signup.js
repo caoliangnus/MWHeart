@@ -471,7 +471,9 @@ function isInvalidRealName(realName) {
 
 function isInvalidPhone(phone) {
   //Todo
-  return false;
+  phoneNum = Number(phoneNum);
+  //Phone length must be 8 and must be num only
+  return Number.isInteger(phoneNum) && phoneNum >= 0 && phoneNum.toString().length == 8;
 }
 
 function getVolunteerList() {

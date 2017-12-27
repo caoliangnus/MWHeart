@@ -54,7 +54,7 @@
           <view class="weui-agree__text">
             <checkbox class="weui-agree__checkbox" id="weuiAgree" value="agree" checked="{{isAgree}}" />
             <view class="weui-agree__checkbox-icon">
-              <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
+              <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="20" wx:if="{{isAgree}}"></icon>
             </view>
             I've read the
             <view bindtap="showNotice" class="weui-agree__link">Terms of service</view>
@@ -173,7 +173,7 @@
 </view>
 
 <!-- Sumbit User information Panel -->
-<view class="notice" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}">
+<view class="noticePanel" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}">
   <view class='box'>
     <view class="weui-mask"></view>
     <view class="page_container">
