@@ -1,9 +1,7 @@
 @import '/style/weui.wxss';
 /* @import '/style/zanui.wxss'; */
 
-.weui-article__title {
-  font-size: 1.4em;
-}
+
 swiper {
   height: 380rpx;
 }
@@ -21,7 +19,6 @@ swiper-item, swiper-item image {
 .horizontal {
   display: block;
   text-align: center;
-  margin-bottom: 20rpx;
 }
 
 .horizontal .tag {
@@ -34,5 +31,4 @@ swiper-item, swiper-item image {
   vertical-align: middle;
   padding: 4px;
   line-height: 1rem;
-  
 }

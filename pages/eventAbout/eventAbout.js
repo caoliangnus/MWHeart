@@ -17,7 +17,6 @@ Page({
     time: "",
     location: "",
 
-
     //Moral welfare home 301 henderson road
     markers: [{
       latitude: 1.272070,
@@ -41,7 +40,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.fetchTopThreePosts(); //获取轮播图的3篇文章
+
   },
   click: function (e) {
     wx.openLocation({

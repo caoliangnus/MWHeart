@@ -9,6 +9,8 @@ Page({
   data: {
     loading: false,
 
+    today: util.formatTimeDMY(new Date()),
+
     numPeopleJoined: null,
     picUrl: null,
     oldPicUrl: null,
@@ -31,7 +33,6 @@ Page({
 
   onShow: function (options) {
     that = this;
-
     refresh()
   },
 
