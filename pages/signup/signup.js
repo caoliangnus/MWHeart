@@ -35,7 +35,9 @@ Page({
     that = this;
     refresh()
   },
-
+  onPullDownRefresh: function () {
+    refresh()
+  },
 
   //Agree checkbox
   bindAgreeChange: function (e) {
