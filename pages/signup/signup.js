@@ -31,7 +31,9 @@ Page({
 
   onShow: function (options) {
     that = this;
-
+    refresh()
+  },
+  onPullDownRefresh: function () {
     refresh()
   },
 
@@ -72,6 +74,12 @@ Page({
 
   showContactPD: function (e) {
     //Todo: Display infomation on how to contact PD
+    wx.showModal({
+      title: 'Contact PD',
+      content: 'Please contact Xiaoman at 98765432',
+      confirmText: 'OK',
+      showCancel: false,
+    })
   },
 
 

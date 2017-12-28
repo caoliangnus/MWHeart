@@ -181,16 +181,16 @@ function createEvent(e) {
     }, {
         success: function (result) {
           that.setData({loading: false})
-          common.showTip('Success');
           wx.navigateBack({
             delta: 1
           })
+          common.showTip('Success');
         },
         error: function (result, error) {
           common.showTip('Fail');
           console.log("failed to create event", error)
         }
-      });
+      })
   }
 }
 

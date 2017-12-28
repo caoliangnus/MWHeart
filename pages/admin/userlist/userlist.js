@@ -164,14 +164,15 @@ function modify(e) {
         success: function (result) {
           result.set('realName', modyName);
           result.set('phone', modyPhone);
-          result.save();
-          common.showTip('Success', 'success', function () {
-            that.onShow();
-            that.setData({
-              isModifyUser: false,
-              loading: false,
-            })
-            console.log("*****UserListPage: End uploading Edited UserInfo to Bmob *****");
+          result.save().then(function (result) {
+            common.showTip('Success', 'success', function () {
+              that.onShow();
+              that.setData({
+                isModifyUser: false,
+                loading: false,
+              })
+              console.log("*****UserListPage: End uploading Edited UserInfo to Bmob *****");
+            });
           });
         },
         error: function (object, error) {

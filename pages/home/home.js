@@ -3,6 +3,8 @@ var Bmob = require('../../utils/bmob.js');  // Initialize cloud server Bmob
 const app = getApp(); //get app instance
 var that;
 
+var curIndex = 0;
+
 Page({
 
   /**
@@ -15,6 +17,9 @@ Page({
     bonusArray: [],
     time: "",
     location: "",    
+
+    autoplay: false,
+    curIndex: 0,
 
     //Moral welfare home 301 henderson road
     markers: [{
@@ -32,6 +37,9 @@ Page({
     that = this;
     getEventList();
     setUpContent();
+    this.setData({
+      autoplay: true,
+    })
   },
 
 
@@ -39,7 +47,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.fetchTopThreePosts(); //Start swiper
   },
   click: function (e) {
     wx.openLocation({
@@ -50,6 +58,34 @@ Page({
       address: '301 henderson road'
     })
   }, 
+  //Swiper 
+  onSwiperChange: function (event) {
+    curIndex = event.detail.current
+    this.changeCurIndex()
+  },
+  changeCurIndex: function () {
+    this.setData({
+      curIndex: curIndex
+    })
+  },
+  onHide: function () {
+    this.setData({
+      autoplay: false
+    })
+  },
+  click_activity: function (e) {
+    var objectId = e.target.dataset.id;
+    console.log(objectId);
+    wx.navigateTo({
+      url: '../eventDetail/eventDetail?isMyEvent=true&objectId=' + objectId,
+    })
+  },
+  //获取轮播图的文章,点赞数最多的前3个
+  fetchTopThreePosts: function () {
+    getSwiperPic();
+  },
+
+
 })
 
 function setUpContent(){
@@ -109,6 +145,45 @@ function getEventLocation(){
         longitude: longitude,
         scale: 28
       })
+    }
+  })
+}
+
+function getSwiperPic(){
+  var molist = new Array();
+  var Event = Bmob.Object.extend("event");
+  var query = new Bmob.Query(Event);
+  //Select past event
+  var yesterday = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
+  query.equalTo("date", { "$lte": { "__type": "Date", "iso": yesterday } });
+  query.limit(3);
+  query.find({
+    success: function (results) {
+      console.log(results);
+      for (var i = 0; i < results.length; i++) {
+        var id = results[i].id;
+        var createdAt = results[i].createdAt;
+        var _url
+        var actpic = results[i].get("pic");
+        if (actpic) {
+          _url = results[i].get("pic")._url;
+        } else {
+          _url = "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/01/89a6eba340008dce801381c4550787e4.png";
+        }
+
+        var jsonA;
+        jsonA = {
+          "id": id || '',
+          "actPic": _url || '',
+        }
+        molist.push(jsonA);
+      }
+      that.setData({
+        postsShowSwiperList: molist
+      })
+    },
+    error: function (error) {
+      console.log(error)
     }
   })
 }
