@@ -75,8 +75,8 @@ Page({
   showContactPD: function (e) {
     //Todo: Display infomation on how to contact PD
     wx.showModal({
-      title: 'Contact PD',
-      content: 'Please contact Xiaoman at 98765432',
+      title: 'Contact Project Director',
+      content: 'Name: Chen Xiaoman; Phone or whatsapp: 98643467; WeChat ID: Chen Xiaomann',
       confirmText: 'OK',
       showCancel: false,
     })
