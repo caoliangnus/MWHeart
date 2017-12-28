@@ -4,8 +4,6 @@
     "pages/home/home",
     "pages/me/me",
     "pages/eventDetail/eventDetail",
-    "pages/eventAbout/eventAbout",
-    "pages/pastEvent/pastEvent",
     "pages/about/about",
     "pages/admin/admin/admin",
     "pages/admin/event/event",
