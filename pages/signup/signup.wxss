@@ -1,23 +1,15 @@
 @import '/style/weui.wxss';
 @import '/style/zanui.wxss';
 
-.weui-agree{
-  display:block;
-padding:.5em 15px;
-font-size:17px;
-background-color:#fff
+
+
+.page__desc{
+  padding-left: 30rpx;
 }
 
-.weui-agree__checkbox-icon{
-  position:relative;
-  top:2px;
-  display:inline-block;
-  border:1px solid #d1d1d1;
-  background-color:#fff;
-  border-radius:3px;
-  width:17px;
-  height:17px
-  }
+.weui-form-preview{
+  margin-bottom: 25px;
+}
 
 
 
@@ -111,7 +103,6 @@ background-color:#fff
   border-radius: 40rpx;
   border: 2rpx solid rgb(180, 180, 180);
   float: left;
-  margin-right: 10px;
 }
 
 .nickTime {
@@ -136,11 +127,4 @@ background-color:#fff
 
 .nick, .postTime {
   font-size: 28rpx;
-}
-
-.volunteerBlock {
-  margin-top: 10px;
-}
-.waitlingBlock {
-  margin-top: 20px;
 }
