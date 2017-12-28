@@ -14,6 +14,12 @@
       <view class="weui-cell">
         <view class="weui-cell__bd">Event Name</view>
         <view class="weui-cell__ft">MWH (Moral Welfare Home)</view>
+    <view class="weui-form-preview" style="padding-bottom:20rpx" wx:if="{{hasUpcomingEvent}}">
+      <view class="weui-form-preview__hd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label">Event Name</view>
+          <view class="weui-form-preview__value">MWH (Moral Welfare Home)</view>
+        </view>
       </view>
 
       <!-- Upcoming Event Information -->

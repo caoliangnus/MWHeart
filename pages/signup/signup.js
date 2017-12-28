@@ -82,7 +82,22 @@ Page({
    * User can sign up or quit event
    */
   sighUpBtnClick: function (e) {
-    checkNewUser();
+
+    // Check whether user have deny getting user info
+    if (getApp().globalData.userInfo == null) {
+      // Get user's permission
+      wx.openSetting({
+        success: function(data) {
+          if (data) {
+            if (data.authSetting["scope.userInfo"] == true) {
+              app.getUserInfo(checkNewUser)
+            }
+          }
+        }
+      })
+    } else {
+      checkNewUser()
+    }      
   },
   quitBtnClick: function (e) {
     quitEvent();
@@ -139,6 +154,10 @@ function submitUserInfoForm(e) {
   var realName = e.detail.value.realName;
   var phone = e.detail.value.phone;
 
+  // Remove leading or trailing white space
+  realName = realName.replace(/^\s+|\s+$/g, "");
+  phone = phone.replace(/^\s+|\s+$/g, "");
+
   if (isInvalidRealName(realName)) {
     wx.showModal({
       title: 'Invalid name',
@@ -149,7 +168,7 @@ function submitUserInfoForm(e) {
   } else if (!isInvalidPhone(phone)) {
     wx.showModal({
       title: 'Invalid phone number',
-      content: 'Please enter valid phone number.',
+      content: 'Please enter valid Singapore phone number (8 digit).',
       confirmText: 'OK',
       showCancel: false
     })
@@ -468,17 +487,18 @@ function updateBtnText(isDeadlineOver, isClosed) {
 }
 
 function isInvalidRealName(realName) {
-  //Todo
-  var str = String(realName);
-  console.log(str.trim())
-  return false;
+  console.log("\'" + realName + "\'")
+  var isInvalid = realName == null || realName.toString().length < 4
+  console.log("Is real name invalid? " + isInvalid)
+  return isInvalid;
 }
 
 function isInvalidPhone(phoneNum) {
-  //Todo
   phoneNum = Number(phoneNum);
+  var isInvalid = !Number.isInteger(phoneNum) || phoneNum < 0 || phoneNum.toString().length != 8;
+  console.log("Is phone number invalid? "+isInvalid)
   //Phone length must be 8 and must be num only
-  return Number.isInteger(phoneNum) && phoneNum >= 0 && phoneNum.toString().length == 8;
+  return isInvalid
 }
 
 function getVolunteerList() {
