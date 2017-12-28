@@ -79,7 +79,22 @@ Page({
    * User can sign up or quit event
    */
   sighUpBtnClick: function (e) {
-    checkNewUser();
+
+    // Check whether user have deny getting user info
+    if (getApp().globalData.userInfo == null) {
+      // Get user's permission
+      wx.openSetting({
+        success: function(data) {
+          if (data) {
+            if (data.authSetting["scope.userInfo"] == true) {
+              app.getUserInfo(checkNewUser)
+            }
+          }
+        }
+      })
+    } else {
+      checkNewUser()
+    }      
   },
   quitBtnClick: function (e) {
     quitEvent();
@@ -150,7 +165,7 @@ function submitUserInfoForm(e) {
   } else if (isInvalidPhone(phone)) {
     wx.showModal({
       title: 'Invalid phone number',
-      content: 'Please enter valid phone number.',
+      content: 'Please enter valid Singapore phone number (8 digit).',
       confirmText: 'OK',
       showCancel: false
     })
@@ -470,7 +485,7 @@ function updateBtnText(isDeadlineOver, isClosed) {
 
 function isInvalidRealName(realName) {
   console.log("\'" + realName + "\'")
-  var isInvalid = realName == null || realName.toString().length == 0
+  var isInvalid = realName == null || realName.toString().length < 4
   console.log("Is real name invalid? " + isInvalid)
   return isInvalid;
 }
