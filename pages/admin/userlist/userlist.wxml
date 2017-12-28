@@ -30,7 +30,8 @@
 
 <!-- Modify User Panel -->
 <view class="notice" id="notice" style="opacity: 1;" wx:if="{{isModifyUser}}">
-  <view class='box'>
+<view class='box-out'> 
+<view class='box'>
     <view class="weui-mask"></view>
     <view class="weui-dialog weui-skin_android">
       <view class="weui-dialog__hd">
@@ -63,6 +64,8 @@
       </form>
     </view>
   </view>
+</view>
+  
 </view>
 
 
