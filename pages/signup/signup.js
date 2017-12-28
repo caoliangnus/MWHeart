@@ -136,6 +136,10 @@ function submitUserInfoForm(e) {
   var realName = e.detail.value.realName;
   var phone = e.detail.value.phone;
 
+  // Remove leading or trailing white space
+  realName = realName.replace(/^\s+|\s+$/g, "");
+  phone = phone.replace(/^\s+|\s+$/g, "");
+
   if (isInvalidRealName(realName)) {
     wx.showModal({
       title: 'Invalid name',
@@ -465,15 +469,18 @@ function updateBtnText(isDeadlineOver, isClosed) {
 }
 
 function isInvalidRealName(realName) {
-  //Todo
-  return false;
+  console.log("\'" + realName + "\'")
+  var isInvalid = realName == null || realName.toString().length == 0
+  console.log("Is real name invalid? " + isInvalid)
+  return isInvalid;
 }
 
-function isInvalidPhone(phone) {
-  //Todo
+function isInvalidPhone(phoneNum) {
   phoneNum = Number(phoneNum);
+  var isInvalid = !Number.isInteger(phoneNum) || phoneNum < 0 || phoneNum.toString().length != 8;
+  console.log("Is phone number invalid? "+isInvalid)
   //Phone length must be 8 and must be num only
-  return Number.isInteger(phoneNum) && phoneNum >= 0 && phoneNum.toString().length == 8;
+  return isInvalid
 }
 
 function getVolunteerList() {

@@ -6,7 +6,7 @@
   <view class="page__desc">Upcoming Event</view>
 
   <view class="page__bd">
-    <view class="weui-form-preview" wx:if="{{hasUpcomingEvent}}">
+    <view class="weui-form-preview" style="padding-bottom:20rpx" wx:if="{{hasUpcomingEvent}}">
       <view class="weui-form-preview__hd">
         <view class="weui-form-preview__item">
           <view class="weui-form-preview__label">Event Name</view>
