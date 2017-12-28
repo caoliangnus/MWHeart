@@ -154,7 +154,7 @@
           </view>
           <view class="notice-q">4. Be patient</view>
           <view class="notice-a">
-            <text>Some of the residents have mental illness. Talking with them using sign language wounld be useful sometimes.</text>
+            <text>Some of the residents have mental illness. Talking with them using sign language would be useful sometimes.</text>
           </view>
           <view class="weui-btn-area">
             <button class="weui-btn" type="primary" bindtap="hideNotice">Got it!</button>

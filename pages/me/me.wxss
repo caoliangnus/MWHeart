@@ -1,4 +1,4 @@
-@import '/style/weui.wxss'
+@import '/style/weui.wxss';
 
 /**index.wxss**/
 .userinfo {
@@ -27,9 +27,7 @@
 
 .userinfo-point {
   color: #aaa;
-  margin-top: 100rpx;
-  margin-left: -36rpx;
-  
+  margin-top: 10rpx;
 }
 
 /* pages/me/me.wxss */
