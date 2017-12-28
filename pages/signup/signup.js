@@ -9,6 +9,8 @@ Page({
   data: {
     loading: false,
 
+    today: util.formatTimeDMY(new Date()),
+
     numPeopleJoined: null,
     picUrl: null,
     oldPicUrl: null,
@@ -31,10 +33,11 @@ Page({
 
   onShow: function (options) {
     that = this;
-
     refresh()
   },
-
+  onPullDownRefresh: function () {
+    refresh()
+  },
 
   //Agree checkbox
   bindAgreeChange: function (e) {
@@ -162,7 +165,7 @@ function submitUserInfoForm(e) {
       confirmText: 'OK',
       showCancel: false
     })
-  } else if (isInvalidPhone(phone)) {
+  } else if (!isInvalidPhone(phone)) {
     wx.showModal({
       title: 'Invalid phone number',
       content: 'Please enter valid Singapore phone number (8 digit).',
