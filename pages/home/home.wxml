@@ -9,33 +9,49 @@
         <!-- Brief Description -->
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">Event Description</view>
-          <view class="weui-media-box__desc">{{eventDescription}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{eventDescription}}</view>
+          <view class="weui-media-box__desc">{{eventDescription2}}</view>
+
         </view>
+
+
+        <!-- Image display -->
+        <swiper duration="300" interval="3500" autoplay="{{autoplay}}" bindchange="onSwiperChange" current="{{ curIndex }}" style="overflow: visible;height:400rpx">
+          <swiper-item wx:for="{{ postsShowSwiperList }}" style="overflow: visible;" wx:key="actpic">
+            <image src="{{ item }}" style="width: 100%; height: 100%; background: #fff; box-shadow: 0 10rpx 15rpx rgba(0, 0, 0, .1); -webkit-transform: scale({{ curIndex == index ? 0.9 : 0.65 }}) translate({{ (curIndex == index - 1 || curIndex == index + 1) ? (curIndex - index) * 30 : 0 }}%, 0); -webkit-transition: .3s; position: relative;"
+              data-id="{{item.id}}" mode="aspectFill" />
+          </swiper-item>
+        </swiper>
 
         <!-- Time and Location -->
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">Time</view>
           <view class="weui-media-box__desc">{{time}}</view>
-
-          <!-- New Line -->
-          <text>\n</text>
-
+</view>
+<view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">Location</view>
           <view class="location">
-            <view class="weui-media-box__desc">{{location}}</view>
+            <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{location}}</view>
           </view>
           <!-- map.wxml -->
-          <map id="map" longitude="103.812195" latitude="1.272070" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" polyline="{{polyline}}" bindregionchange="regionchange" show-location style="width: 100%; height: 300px;"
+          <map id="map" longitude="103.812195" latitude="1.272070" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" polyline="{{polyline}}" bindregionchange="regionchange" show-location style="width: 100%; height: 200px;"
             bindtap="click"></map>
 
         </view>
 
+        <!-- What we do -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">What we do?</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{whatWeDo}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{whatWeDo2}}</view>
+          <view class="weui-media-box__desc">{{whatWeDo3}}</view>
+          </view>
+
         <!-- Bonus Description -->
         <view class="weui-media-box weui-media-box_text">
-          <view class="weui-media-box__title weui-media-box__title_in-text">Bonus</view>
-          <view class="weui-media-box__desc">{{bonusDescription}}</view>
+          <view class="weui-media-box__title weui-media-box__title_in-text">What's in it for you?</view>
           <view class="weui-media-box__desc" wx:for="{{bonusArray}}" wx:key="unique">
-            {{index}}: {{item.msg}}
+            {{index + 1}}. {{item.msg}}
           </view>
         </view>
       </view>
@@ -43,17 +59,14 @@
   </view>
 
   <!-- Past Event -->
-  <view class="page__desc">Past Event</view>
+  <view class="page__desc" style="padding-left:25rpx">Past Events</view>
   <view class="page">
     <view class="weui-panel__bd">
       <block wx:if="{{eventList.length > 0}}">
         <navigator class="weui-media-box weui-media-box_text" wx:for="{{eventList}}" wx:key="eventItem" url="../eventDetail/eventDetail?isMyEvent=true&objectId={{item.objectId}}">
           <view class="weui-media-box__title weui-media-box__title_in-text">
             {{item.fullDate}}</view>
-          <view class="weui-media-box__desc">{{item.fullDeadline}}</view>
-          <view class="weui-media-box__info">
-            <view class="weui-media-box__desc">Event Status: {{statusArray[item.eventStatus]}}</view>
-          </view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">Time: {{item.time}}, Duration: {{item.duration}}</view>
 
           <view wx:if="{{item.pic._url != null}}" class="image_box">
             <view class="picPre">
@@ -71,18 +84,4 @@
       </block>
     </view>
   </view>
-</view>
-
-
-
-<!-- Past Activity -->
-<view class="weui-article__h1">Past Events</view>
-<swiper duration="300" interval="3500" autoplay="{{autoplay}}" bindchange="onSwiperChange" current="{{ curIndex }}" style="overflow: visible;">
-  <swiper-item wx:for="{{ postsShowSwiperList }}" style="overflow: visible;" wx:key="actpic">
-    <image src="{{ item.actPic }}" style="width: 100%; height: 100%; background: #fff; box-shadow: 0 10rpx 15rpx rgba(0, 0, 0, .1); -webkit-transform: scale({{ curIndex == index ? 0.9 : 0.65 }}) translate({{ (curIndex == index - 1 || curIndex == index + 1) ? (curIndex - index) * 30 : 0 }}%, 0); -webkit-transition: .3s; position: relative;"
-      data-id="{{item.id}}" bindtap="click_activity" mode="aspectFill" />
-  </swiper-item>
-</swiper>
-<view class="horizontal">
-  <navigator class="tag" url='../pastEvent/pastEvent'>More Past Events</navigator>
 </view>

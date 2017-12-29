@@ -20,6 +20,11 @@ Page({
 
     autoplay: false,
     curIndex: 0,
+    postsShowSwiperList: [
+"http://bmob-cdn-15793.b0.upaiyun.com/2017/12/29/a712a0bb4013e73080e3700f3f35dc20.jpg",      "http://bmob-cdn-15793.b0.upaiyun.com/2017/12/29/b180e0824004dd6580adece2aca64da2.jpeg",     "http://bmob-cdn-15793.b0.upaiyun.com/2017/12/29/023c52924012f954806e99a0a26a79e3.png",   "http://bmob-cdn-15793.b0.upaiyun.com/2017/12/29/5d77378240eec6e380ce5f4f55b96fea.jpeg",
+    ],
+
+    isShowingDetails: false,
 
     //Moral welfare home 301 henderson road
     markers: [{
@@ -42,13 +47,6 @@ Page({
     })
   },
 
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    this.fetchTopThreePosts(); //Start swiper
-  },
   click: function (e) {
     wx.openLocation({
       latitude: 1.272070,
@@ -80,33 +78,36 @@ Page({
       url: '../eventDetail/eventDetail?isMyEvent=true&objectId=' + objectId,
     })
   },
-  //获取轮播图的文章,点赞数最多的前3个
-  fetchTopThreePosts: function () {
-    getSwiperPic();
-  },
-
+  showProjectDetails: function (e) {
+    this.setData({
+      isShowingDetails: false
+    });
+  }
 
 })
 
 function setUpContent(){
 that.setData({
-  eventDescription: "Moral Welfare House是NUS Volunteer Action Committee" +
-  "旗下的一个volunteer project",
-  bonusDescription: "参与活动认真积极的同学下学期可升级为project director，" +
-  "获得更多福利，提升leadership skills, 甚至享受pgp保房特权。",
+  eventDescription: "Moral Welfare Home (MWH) is a volunteer project under NUS Volunteer Action Committee (NVAC). ",
+  eventDescription2: "MWH is also the name of the purpose built Home that cares for destitute residents suffering from multiple disabilities, where we do our service.",
   bonusArray: [{
     msg: "方便日积月累攒CIP"
   }, {
     msg: "活动轻松，不占用太多时间"
   }, {
-    msg: "时间固定，地点方便"
+    msg: "时间固定"
+  }, {
+    msg: "地点方便"
   }, {
     msg: "活动有趣又有爱"
   }, {
-    msg: "后续更多福利"
+      msg: "福利: 参与活动认真积极的同学下学期可升级为project director, 提升leadership skills, 甚至享受pgp保房特权。"
   }],
-  time: "Every Saturday 2pm - 4pm",
-  location: "Moral Welfare House",
+  time: "Every Saturday 1pm - 3pm",
+  location: "Moral Welfare Home. Near Telok Blangah MRT station which is only 4 stops away from Kent Ridge MRT station.",
+  whatWeDo: "志愿者们会推着老人的轮椅带他们在附近food center吃饭，附近小店里购物。",
+  whatWeDo2: "活动轻松，不需要过重的体力劳动或脑力活动。而且老人吃饭的时候义工们也能吃饭，不占用午饭时间；老人们购物时义工们也能顺便把自己生活必需品买了，为自己的生活也提供了便利。",
+  whatWeDo3: "这是个能收获友谊和人脉，收获欢乐与笑声的地方，想要一个有趣又有爱的活动的你一定不能错过。"
 })
 }
 
@@ -145,45 +146,6 @@ function getEventLocation(){
         longitude: longitude,
         scale: 28
       })
-    }
-  })
-}
-
-function getSwiperPic(){
-  var molist = new Array();
-  var Event = Bmob.Object.extend("event");
-  var query = new Bmob.Query(Event);
-  //Select past event
-  var yesterday = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
-  query.equalTo("date", { "$lte": { "__type": "Date", "iso": yesterday } });
-  query.limit(3);
-  query.find({
-    success: function (results) {
-      console.log(results);
-      for (var i = 0; i < results.length; i++) {
-        var id = results[i].id;
-        var createdAt = results[i].createdAt;
-        var _url
-        var actpic = results[i].get("pic");
-        if (actpic) {
-          _url = results[i].get("pic")._url;
-        } else {
-          _url = "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/01/89a6eba340008dce801381c4550787e4.png";
-        }
-
-        var jsonA;
-        jsonA = {
-          "id": id || '',
-          "actPic": _url || '',
-        }
-        molist.push(jsonA);
-      }
-      that.setData({
-        postsShowSwiperList: molist
-      })
-    },
-    error: function (error) {
-      console.log(error)
     }
   })
 }
