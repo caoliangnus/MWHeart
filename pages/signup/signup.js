@@ -3,6 +3,7 @@ var common = require('../../utils/common.js');
 var Bmob = require('../../utils/bmob.js');  // Initialize cloud server Bmob
 const app = getApp(); //get app instance
 var that;
+var saturday;
 
 Page({
 
@@ -93,7 +94,7 @@ Page({
     if (getApp().globalData.userInfo == null) {
       // Get user's permission
       wx.openSetting({
-        success: function(data) {
+        success: function (data) {
           if (data) {
             if (data.authSetting["scope.userInfo"] == true) {
               app.getUserInfo(checkNewUser)
@@ -103,7 +104,7 @@ Page({
       })
     } else {
       checkNewUser()
-    }      
+    }
   },
   quitBtnClick: function (e) {
     quitEvent();
@@ -369,8 +370,7 @@ function getUpComingEvent(f) {
     success: function (results) {
       if (results.length == 0) {
         console.log("Have no upcoming event")
-        that.setData({ hasUpcomingEvent: false,
-          loading: false })
+        createNewEvent()
       } else {
         console.log("Upcoming Event", results);
         app.globalData.eventId = results[0].id;
@@ -504,7 +504,7 @@ function isInvalidRealName(realName) {
 function isInvalidPhone(phoneNum) {
   phoneNum = Number(phoneNum);
   var isInvalid = !Number.isInteger(phoneNum) || phoneNum < 0 || phoneNum.toString().length != 8;
-  console.log("Is phone number invalid? "+isInvalid)
+  console.log("Is phone number invalid? " + isInvalid)
   //Phone length must be 8 and must be num only
   return isInvalid
 }
@@ -563,4 +563,61 @@ function getWaitingList(f) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });
+}
+
+function createNewEvent() {
+  /**Create Event Page */
+  saturday = getNextSaturday();
+  //Default Deadline is Wednesday
+  var deadline = new Date(new Date().setDate(saturday.getDate() - 3))
+  var fullDeadline = util.formatDate(deadline);
+
+  var date = saturday;
+  var fullDate = util.formatDate(new Date(date));
+  var time = "1pm - 3pm";
+  var limit = 16;
+  var duration = 2;
+  var eventStatus = 0
+
+  //Upload Event information to Bmob
+  var Event = Bmob.Object.extend("event");
+  var event = new Event();
+
+  event.save({
+    date: date,
+    fullDate: fullDate,
+    deadline: deadline,
+    fullDeadline: fullDeadline,
+    time: time,
+    limit: limit,
+    duration: duration,
+    eventStatus: eventStatus
+  }, {
+      success: function (result) {
+        that.setData({ loading: false })
+        console.log("Event created successfully")
+        refresh()
+      },
+      error: function (result, error) {
+        that.setData({
+          hasUpcomingEvent: false,
+          loading: false
+        })
+        console.log("failed to create event", error.message)
+      }
+    })
+}
+
+/**
+ * Get next Saturday Date
+ */
+function getNextSaturday() {
+  var day = Number(new Date().getDay());
+  var offSet = 0;
+  while (day !== 6) {
+    offSet++;
+    day++;
+  }
+  saturday = new Date(new Date().setDate(new Date().getDate() + offSet));
+  return saturday
 }

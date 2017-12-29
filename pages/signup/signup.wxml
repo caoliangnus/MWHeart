@@ -35,7 +35,7 @@
 
       <!-- *****Terms of service***** -->
       <!-- show info if the event is not open yet -->
-      <label class="weui-agree" wx:if="{{isNotYet}}">
+      <label class="weui-agree" wx:if="{{isNotYet && !isClosed}}">
         <view>Sign up for upcoming event is not open yet. Please be patient :)</view>
         <view>You can also contact project director if you have any questions.
           <view bindtap="showContactPD" class="weui-agree__link">How?</view>
