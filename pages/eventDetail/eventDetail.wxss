@@ -4,3 +4,28 @@
 
 .picPre{width:100%;margin:0 auto;position:relative;box-sizing:border-box;}
 .picPre image{width:100%;height:100%rpx;}
+.userInfo {
+  padding-right: 25rpx;
+  padding-top: 5rpx;
+  background-color: rgb(255, 255, 255);
+}
+
+.avatar {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 40rpx;
+  border: 2rpx solid rgb(180, 180, 180);
+  float: left;
+}
+
+.nickTime {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 0 30rpx;
+}
+
+.nick, .postTime {
+  font-size: 28rpx;
+}

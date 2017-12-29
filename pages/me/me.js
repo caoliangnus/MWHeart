@@ -18,7 +18,7 @@ Page({
     showAdminLogIn: false,
   },
 
-  onLoad: function () {
+  onShow: function () {
     that = this
     getUserCIPHour();
     setUpAccountLoginPage();

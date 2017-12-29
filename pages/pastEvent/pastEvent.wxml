@@ -22,7 +22,7 @@
     <block wx:else>
       <view class="weui-media-box weui-media-box_text">
         <view class="weui-media-box__title weui-media-box__title_in-text">
-          暂无内容</view>
+          You haven't joined any events yet. Join us asap!</view>
         <view class="weui-media-box__desc"></view>
       </view>
     </block>

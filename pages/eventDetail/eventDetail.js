@@ -71,7 +71,8 @@ function getVolunteerList() {
   query.find({
     success: function (results) {
       for (var i = 0; i < results.length; i++) {
-        volunteerList = volunteerList.concat(results[i].attributes.user);
+        var user = [{ user: results[i].attributes.user, updatedAt: results[i].updatedAt }]
+        volunteerList = volunteerList.concat(user);
       }
       that.setData({
         volunteerList: volunteerList,
