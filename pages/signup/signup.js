@@ -22,6 +22,7 @@ Page({
     isClosed: false,
     isAgree: false,
     isSignUpAllowed: false,
+    hasUpcomingEvent: true,
 
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
     volunteerList: [],
@@ -367,7 +368,9 @@ function getUpComingEvent(f) {
   event.find({
     success: function (results) {
       if (results.length == 0) {
-        that.setData({ hasUpcomingEvent: false })
+        console.log("Have no upcoming event")
+        that.setData({ hasUpcomingEvent: false,
+          loading: false })
       } else {
         console.log("Upcoming Event", results);
         app.globalData.eventId = results[0].id;
