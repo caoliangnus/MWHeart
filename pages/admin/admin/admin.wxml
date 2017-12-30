@@ -21,5 +21,11 @@
     <navigator url='/pages/admin/userlist/userlist?isAllUserList=true' open-type="navigate">
       <button class="weui-btn" type="default">Manager All User List</button>
     </navigator>
+
+        <!-- New Line -->
+    <text>\n</text>
+    <navigator url='/pages/admin/description/description' open-type="navigate">
+      <button class="weui-btn" type="default">Edit Descriptions</button>
+    </navigator>
   </view>
 </view>

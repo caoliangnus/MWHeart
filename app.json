@@ -8,8 +8,8 @@
     "pages/admin/admin/admin",
     "pages/admin/event/event",
     "pages/admin/userlist/userlist",
-    "pages/admin/eventList/eventList"
-    
+    "pages/admin/eventList/eventList",
+    "pages/admin/description/description"
   ],
   "window":{
     "backgroundTextStyle":"light",

@@ -88,3 +88,11 @@
   align-items: center;
   justify-content: center;
 }
+
+
+.weui-media-box__title_lines {
+  font-weight:400;
+  font-size:17px;
+  overflow:hidden;
+  word-wrap:break-word;
+}

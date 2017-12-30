@@ -10,7 +10,7 @@
       <view class="weui-form-preview__hd">
         <view class="weui-form-preview__item">
           <view class="weui-form-preview__label">Event Name</view>
-          <view class="weui-form-preview__value">MWH (Moral Welfare Home)</view>
+          <view class="weui-form-preview__value">{{eventName}}</view>
         </view>
       </view>
       <view class="weui-form-preview__bd">
@@ -140,20 +140,20 @@
         <text class="box-title">Terms of Service</text>
       </view>
       <view class="box-bd">
-        <view class="notice-q">1. When & where to gather?</view>
+        <view class="notice-q">1. {{terms[0].q}}</view>
         <view class="notice-a">
-          <text>Please gather at Kent Ridge MRT station entrance (near the ATM machine) at 12:15 pm on the day of event you've signed up. </text>
-          <view class="notice-q">2. Do not pay for the residents</view>
+          <text>{{terms[0].a}} </text>
+          <view class="notice-q">2. {{terms[1].q}}</view>
           <view class="notice-a">
-            <text>Every resident going out with us already has 5 or 10 dollars given by MWH. This money is for lunch and shopping. Volunteers only need to assist them to pay by their own money.</text>
+            <text>{{terms[1].a}}</text>
           </view>
-          <view class="notice-q">3. Safety first</view>
+          <view class="notice-q">3. {{terms[2].q}}</view>
           <view class="notice-a">
-            <text>A staff from MWH will go along with us. Please approach the staff or porject director if you encounter any problem (e.g. difficulty in understanding the resident).</text>
+            <text>{{terms[2].a}}</text>
           </view>
-          <view class="notice-q">4. Be patient</view>
+          <view class="notice-q">4. {{terms[3].q}}</view>
           <view class="notice-a">
-            <text>Some of the residents have mental illness. Talking with them using sign language would be useful sometimes.</text>
+            <text>{{terms[3].a}}</text>
           </view>
           <view class="weui-btn-area">
             <button class="weui-btn" type="primary" bindtap="hideNotice">Got it!</button>
