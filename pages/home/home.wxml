@@ -9,8 +9,8 @@
         <!-- Brief Description -->
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">Event Description</view>
-          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{eventDescription}}</view>
-          <view class="weui-media-box__desc">{{eventDescription2}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{eventDesc[0].p}}</view>
+          <view class="weui-media-box__desc">{{eventDesc[1].p}}</view>
 
         </view>
 
@@ -42,9 +42,9 @@
         <!-- What we do -->
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">What we do?</view>
-          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{whatWeDo}}</view>
-          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{whatWeDo2}}</view>
-          <view class="weui-media-box__desc">{{whatWeDo3}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{whatWeDo[0].p}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{whatWeDo[1].p}}</view>
+          <view class="weui-media-box__desc">{{whatWeDo[2].p}}</view>
           </view>
 
         <!-- Bonus Description -->

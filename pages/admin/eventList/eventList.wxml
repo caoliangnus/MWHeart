@@ -17,9 +17,8 @@
     </block>
     <block wx:else>
       <view class="weui-media-box weui-media-box_text">
-        <view class="weui-media-box__title weui-media-box__title_in-text">
-          You haven't joined any events yet. 
-          Looking forward to you joining us!</view>
+        <view class="weui-media-box__title_lines">
+          You haven't joined any events yet. Looking forward to you joining us!</view>
         <view class="weui-media-box__desc"></view>
       </view>
     </block>

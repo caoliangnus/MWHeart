@@ -1,0 +1,283 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="page__hd"> </view>
+  <view class="page__bd">
+    <form bindsubmit="submitForm">
+      <!-- Edit Signup Page Description -->
+      <view class="weui-media-box__title">Edit Sign Up Page Description</view>
+
+      <!-- Edit Event Name -->
+      <view class="weui-cells__title">Event Name</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Event Name</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder='Event Name' name="name" value='{{eventName}}' />
+          </view>
+        </view>
+      </view>
+      <!-- Edit ContactPD -->
+      <view class="weui-cells__title">Contact PD</view>
+      <view class="weui-cells weui-cells_after-title">
+
+        <!-- Edit Contact PD Name -->
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Name</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder='Name' name="contact1" value='{{contactPD.name}}' />
+          </view>
+        </view>
+
+        <!-- Edit Contact PD Phone -->
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Phone/Whatsapp</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder='Phone/Whatsapp' name="contact2" value='{{contactPD.phone}}' />
+          </view>
+        </view>
+
+        <!-- Edit Contact PD WechatID -->
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">WechatID</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder='WechatID' name="contact3" value='{{contactPD.wechatID}}' />
+          </view>
+        </view>
+      </view>
+
+      <!-- Edit Terms of Service -->
+      <view class="weui-cells__title">Terms of Service</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Q1</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="tsq1" value='{{terms[0].q}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">A1</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="tsa1" value='{{terms[0].a}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Q2</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="tsq2" value='{{terms[1].q}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">A2</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="tsa2" value='{{terms[1].a}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Q3</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="tsq3" value='{{terms[2].q}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">A3</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="tsa3" value='{{terms[2].a}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Q4</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="tsq4" value='{{terms[3].q}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">A4</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="tsa4" value='{{terms[3].a}}' />
+          </view>
+        </view>
+
+      </view>
+      <!-- End Signup Page -->
+
+      <!-- New Line -->
+      <text>\n</text>
+
+      <!-- Edit Home Page Description -->
+      <view class="weui-media-box__title">Edit Home Page Description</view>
+
+      <!-- Edit Event Description -->
+      <view class="weui-cells__title">Event Description</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">para 1</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="descp1" value='{{eventDesc[0].p}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">para 2</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="descp2" value='{{eventDesc[1].p}}' />
+          </view>
+        </view>
+      </view>
+
+
+      <!-- Edit Event Time Description-->
+      <view class="weui-cells__title">Event Time Description</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Time</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="time" value='{{time}}' />
+          </view>
+        </view>
+      </view>
+
+      <!-- Edit Event Location Description-- -->
+      <view class="weui-cells__title">Event Location Description</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Location</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="location" value='{{location}}' />
+          </view>
+        </view>
+      </view>
+
+      <!-- Edit What we do Description -->
+      <view class="weui-cells__title">What We Do Description</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">para 1</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="wedop1" value='{{whatWeDo[0].p}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">para 2</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="wedop2" value='{{whatWeDo[1].p}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">para 3</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="wedop3" value='{{whatWeDo[2].p}}' />
+          </view>
+        </view>
+      </view>
+
+
+      <!-- Edit Bonus Description -->
+      <view class="weui-cells__title">Bonus Description</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Benefit 1</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="bonus1" value='{{bonusArray[0].msg}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Benefit 2</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="bonus2" value='{{bonusArray[1].msg}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Benefit 3</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="bonus3" value='{{bonusArray[2].msg}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Benefit 4</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="bonus4" value='{{bonusArray[3].msg}}' />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Benefit 5</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="bonus5" value='{{bonusArray[4].msg}}' />
+          </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">Benefit 6</view>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" auto-height='true' name="bonus6" value='{{bonusArray[5].msg}}' />
+          </view>
+        </view>
+      </view>
+      <!-- End Home Page -->
+
+      <view class="weui-btn-area">
+        <button class="weui-btn" type="primary" formType="submit">Submit</button>
+      </view>
+    </form>
+  </view>
+</view>

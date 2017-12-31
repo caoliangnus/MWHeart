@@ -6,10 +6,11 @@
     "pages/eventDetail/eventDetail",
     "pages/about/about",
     "pages/admin/admin/admin",
+    "pages/admin/register/register",
     "pages/admin/event/event",
     "pages/admin/userlist/userlist",
-    "pages/admin/eventList/eventList"
-    
+    "pages/admin/eventList/eventList",
+    "pages/admin/description/description"
   ],
   "window":{
     "backgroundTextStyle":"light",

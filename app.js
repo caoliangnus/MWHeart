@@ -6,14 +6,14 @@ Bmob.initialize("dd7e3fb3803d26291a1867bd44df6986", "0efefcfe6a0c92f7abf501a7d44
 
 App({
   onLaunch: function () {
-
+    this.getDescription();
   },
 
   getOpenIdUserIdRealNameAndPhone: function (f) {
     console.log("***** AppPage: Start get Openid *****");
     var that = this;
     that.getUserInfo()
-
+    
     if (this.globalData.openid) {
       //openid already loaded before
       console.log("Have already openid: " + this.globalData.openid)
@@ -113,6 +113,39 @@ App({
       });
     }
   },
+  getDescription: function () {
+    var Description = Bmob.Object.extend("desc");
+    var description = new Bmob.Query(Description);
+
+    description.descending("updatedAt");
+
+    description.first({
+      success: function (results) {
+        
+        if (typeof (results) != "undefined") {
+          console.log("get Description" , results);
+          var contactPDSeparated = String(results.attributes.contactPD).split(";");
+          var contactPD = {
+            name: contactPDSeparated[0],
+            phone: contactPDSeparated[1],
+            wechatID: contactPDSeparated[2],
+          }
+          //Load Event information
+          getApp().globalData.eventName = results.attributes.eventName;
+          getApp().globalData.contactPD = contactPD;
+          getApp().globalData.terms = results.attributes.terms;
+          getApp().globalData.eventDesc = results.attributes.eventDesc;
+          getApp().globalData.time = results.attributes.time;
+          getApp().globalData.location = results.attributes.location;
+          getApp().globalData.whatWeDo = results.attributes.whatWeDo;
+          getApp().globalData.bonusArray = results.attributes.bonusArray;
+        }
+      },
+      error: function (object, error) {
+        // 查询失败
+      }
+    })
+  },
   globalData: {
     userInfo: null,
     realName: null,
@@ -120,6 +153,16 @@ App({
     openid: null,
 
     userId: null,
-    eventId: null
+    eventId: null,
+
+    eventName: null,
+    contactPD: null,
+    terms: null,
+    eventDesc: null,
+    time: null,
+    location: null,
+    whatWeDo: null,
+    bonusArray: null,
   }
 })
+

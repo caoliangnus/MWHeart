@@ -48,7 +48,7 @@
   padding: 15rpx 40rpx 30rpx;
 }
 .notice {
-  position: absolute;
+  position: fixed;
   z-index: 100;
   top: 0;
   left: 10%;

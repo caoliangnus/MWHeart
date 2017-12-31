@@ -10,6 +10,10 @@ Page({
   data: {
     loading: false,
 
+    eventName: null,
+    contactPD: null,
+    terms: null,
+
     numPeopleJoined: null,
     picUrl: null,
     oldPicUrl: null,
@@ -75,10 +79,12 @@ Page({
 
 
   showContactPD: function (e) {
+    var contact = that.data.contactPD;
+    var content = "Name: " + contact.name + "; Phone/Whatsapp: " + contact.phone + "; WeChat ID: " + contact.wechatID;
     //Todo: Display infomation on how to contact PD
     wx.showModal({
       title: 'Contact Project Director',
-      content: 'Name: Chen Xiaoman; Phone or whatsapp: 98643467; WeChat ID: Chen Xiaomann',
+      content: content,
       confirmText: 'OK',
       showCancel: false,
     })
@@ -127,7 +133,10 @@ Page({
 // Refresh the entire page
 // Including upcoming event, event's lists, user sign up status
 function refresh() {
-  that.setData({ loading: true })
+  that.setData({
+    loading: true,
+  })
+  
   // First ensure event id is loaded
   // Then ensure user info needed is completedly loaded in app.js
   getUpComingEvent(
@@ -393,6 +402,11 @@ function getUpComingEvent(f) {
           isDeadlineOver: isDeadlineOver,
           isSignUpAllowed: isSignUpAllowed,
           hasUpcomingEvent: true,
+
+          // Description
+          eventName: app.globalData.eventName,
+          contactPD: app.globalData.contactPD,
+          terms: app.globalData.terms,
         })
         if (isNotYet) {
           // Do nothing
