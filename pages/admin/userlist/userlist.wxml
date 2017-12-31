@@ -12,7 +12,7 @@
           <view class="weui-media-box__info__meta weui-media-time">Date：{{item.updatedAt}}</view>
           <view class="weui-media-box__info__meta weui-media-box__info__operate">
             <button class="del weui-btn mini-btn" type="default" size="mini" catchtap="deleteUserBtnClick" data-id="{{item.objectId}}">delete</button>
-            <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="modifyUserBtnClick" data-id="{{item.objectId}}" data-name="{{item.realName}}" data-phone="{{item.phone}}">edit</button>
+            <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="modifyUserBtnClick" data-id="{{item.objectId}}" data-name="{{item.realName}}" data-phone="{{item.phone}}" wx:if="{{isAllUserList}}">edit</button>
           </view>
         </view>
       </view>
