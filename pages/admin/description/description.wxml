@@ -60,7 +60,7 @@
             <view class="weui-label">Q1</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="tsq1" value='{{terms[0].q}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="tsq1" value='{{terms[0].q}}' />
           </view>
         </view>
 
@@ -69,7 +69,7 @@
             <view class="weui-label">A1</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="tsa1" value='{{terms[0].a}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="tsa1" value='{{terms[0].a}}' />
           </view>
         </view>
 
@@ -78,7 +78,7 @@
             <view class="weui-label">Q2</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="tsq2" value='{{terms[1].q}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="tsq2" value='{{terms[1].q}}' />
           </view>
         </view>
 
@@ -87,7 +87,7 @@
             <view class="weui-label">A2</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="tsa2" value='{{terms[1].a}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="tsa2" value='{{terms[1].a}}' />
           </view>
         </view>
 
@@ -96,7 +96,7 @@
             <view class="weui-label">Q3</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="tsq3" value='{{terms[2].q}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="tsq3" value='{{terms[2].q}}' />
           </view>
         </view>
 
@@ -105,7 +105,7 @@
             <view class="weui-label">A3</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="tsa3" value='{{terms[2].a}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="tsa3" value='{{terms[2].a}}' />
           </view>
         </view>
 
@@ -114,7 +114,7 @@
             <view class="weui-label">Q4</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="tsq4" value='{{terms[3].q}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="tsq4" value='{{terms[3].q}}' />
           </view>
         </view>
 
@@ -123,7 +123,7 @@
             <view class="weui-label">A4</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="tsa4" value='{{terms[3].a}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="tsa4" value='{{terms[3].a}}' />
           </view>
         </view>
 
@@ -144,7 +144,7 @@
             <view class="weui-label">para 1</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="descp1" value='{{eventDesc[0].p}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="descp1" value='{{eventDesc[0].p}}' />
           </view>
         </view>
 
@@ -153,7 +153,7 @@
             <view class="weui-label">para 2</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="descp2" value='{{eventDesc[1].p}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="descp2" value='{{eventDesc[1].p}}' />
           </view>
         </view>
       </view>
@@ -167,7 +167,7 @@
             <view class="weui-label">Time</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="time" value='{{time}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="time" value='{{time}}' />
           </view>
         </view>
       </view>
@@ -180,7 +180,7 @@
             <view class="weui-label">Location</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="location" value='{{location}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="location" value='{{location}}' />
           </view>
         </view>
       </view>
@@ -193,7 +193,7 @@
             <view class="weui-label">para 1</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="wedop1" value='{{whatWeDo[0].p}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="wedop1" value='{{whatWeDo[0].p}}' />
           </view>
         </view>
 
@@ -202,7 +202,7 @@
             <view class="weui-label">para 2</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="wedop2" value='{{whatWeDo[1].p}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="wedop2" value='{{whatWeDo[1].p}}' />
           </view>
         </view>
 
@@ -211,7 +211,7 @@
             <view class="weui-label">para 3</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="wedop3" value='{{whatWeDo[2].p}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="wedop3" value='{{whatWeDo[2].p}}' />
           </view>
         </view>
       </view>
@@ -225,7 +225,7 @@
             <view class="weui-label">Benefit 1</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="bonus1" value='{{bonusArray[0].msg}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="bonus1" value='{{bonusArray[0].msg}}' />
           </view>
         </view>
 
@@ -234,7 +234,7 @@
             <view class="weui-label">Benefit 2</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="bonus2" value='{{bonusArray[1].msg}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="bonus2" value='{{bonusArray[1].msg}}' />
           </view>
         </view>
 
@@ -243,7 +243,7 @@
             <view class="weui-label">Benefit 3</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="bonus3" value='{{bonusArray[2].msg}}' />
+            <textarea class="weui-textarea" auto-height='true'maxlength='-1'  name="bonus3" value='{{bonusArray[2].msg}}' />
           </view>
         </view>
 
@@ -252,7 +252,7 @@
             <view class="weui-label">Benefit 4</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="bonus4" value='{{bonusArray[3].msg}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="bonus4" value='{{bonusArray[3].msg}}' />
           </view>
         </view>
         <view class="weui-cell weui-cell_input">
@@ -260,7 +260,7 @@
             <view class="weui-label">Benefit 5</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="bonus5" value='{{bonusArray[4].msg}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="bonus5" value='{{bonusArray[4].msg}}' />
           </view>
         </view>
 
@@ -269,7 +269,7 @@
             <view class="weui-label">Benefit 6</view>
           </view>
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" auto-height='true' name="bonus6" value='{{bonusArray[5].msg}}' />
+            <textarea class="weui-textarea" auto-height='true' maxlength='-1' name="bonus6" value='{{bonusArray[5].msg}}' />
           </view>
         </view>
       </view>

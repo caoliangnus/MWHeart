@@ -80,7 +80,7 @@ Page({
 
   showContactPD: function (e) {
     var contact = that.data.contactPD;
-    var content = "Name: " + contact.name + "; Phone/Whatsapp: " + contact.phone + "; WeChat ID: " + contact.wechatID;
+    var content = "Name: " + String(contact.name) + "; Phone/Whatsapp: " + String(contact.phone) + "; WeChat ID: " + String(contact.weChatID);
     //Todo: Display infomation on how to contact PD
     wx.showModal({
       title: 'Contact Project Director',
