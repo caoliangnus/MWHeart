@@ -146,6 +146,7 @@ Page({
 })
 
 function createEvent(e) {
+  var t = that;
   that.setData({ loading: true })
   // Event information
   var date = new Date((e.detail.value.date));
@@ -192,6 +193,7 @@ function createEvent(e) {
         }
       })
   }
+  that.setData({ loading: false })
 }
 
 /*

@@ -14,7 +14,7 @@ Page({
     phone: null,
     windowHeight: null,
     windowWidth: null,
-    adminStatus: true,
+    adminStatus: false,
     showAdminLogIn: false,
   },
 
@@ -29,7 +29,8 @@ Page({
           userInfo: getApp().globalData.userInfo,
           realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
           phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
-        }) });  
+        })
+      });
   },
 
   adminBtnClick: function (e) {
@@ -53,34 +54,12 @@ Page({
   formSubmit: function (e) {
     var account = e.detail.value.account;
     var password = e.detail.value.password;
-
-    if (account === "xiaoman" && password === "liang") {
-      if (true) {
-        that.setData({
-          adminStatus: true,
-          showAdminLogIn: false,
-        });
-        wx.showToast({
-          title: 'Welcome',
-          icon: 'success',
-          duration: 1000
-        })
-        wx.navigateTo({
-          url: '../admin/admin/admin'
-        })
-      } else {
-        wx.showToast({
-          title: 'Log in Fail',
-          icon: 'error',
-          duration: 1000
-        })
-      }
-    }
+    checkUser(account, password);
   }
 })
 
 function getUserCIPHour() {
-  that.setData({loading: true})
+  that.setData({ loading: true })
 
   var P = Bmob.Object.extend("p");
   var query = new Bmob.Query(P);
@@ -114,7 +93,7 @@ function getUserCIPHour() {
   });
 }
 
-function setUpAccountLoginPage(){
+function setUpAccountLoginPage() {
   wx.getSystemInfo({
     success: (res) => {
       that.setData({
@@ -122,5 +101,48 @@ function setUpAccountLoginPage(){
         windowWidth: res.windowWidth
       })
     }
+  })
+}
+
+function checkUser(account, password) {
+  that.setData({ loading: true })
+  var Admin = Bmob.Object.extend("admin");
+  var admin = new Bmob.Query(Admin);
+
+  admin.find({
+    success: function (results) {
+      for (var i = 0; i < results.length; i++) {
+        var ac = String(results[i].attributes.account);
+        var pw = String(results[i].attributes.password);
+        if (ac == account && pw == password) {
+          that.setData({
+            adminStatus: true,
+            showAdminLogIn: false,
+          });
+        }
+      }
+    },
+    error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  }).then(function (results){
+    that.setData({ loading: false })
+      if(that.data.adminStatus) {
+        wx.navigateTo({
+          url: '../admin/admin/admin'
+        })
+        wx.showToast({
+          title: 'Welcome',
+          icon: 'success',
+          duration: 1000
+        })
+      }else{
+        wx.showToast({
+          title: 'Log in Fail',
+          icon: 'error',
+          duration: 1000
+        })
+      }
+      
   })
 }
