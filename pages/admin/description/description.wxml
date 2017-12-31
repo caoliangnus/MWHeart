@@ -47,7 +47,7 @@
             <view class="weui-label">WechatID</view>
           </view>
           <view class="weui-cell__bd">
-            <input class="weui-input" placeholder='WechatID' name="contact3" value='{{contactPD.wechatID}}' />
+            <input class="weui-input" placeholder='WechatID' name="contact3" value='{{contactPD.weChatID}}' />
           </view>
         </view>
       </view>
