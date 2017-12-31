@@ -62,8 +62,9 @@ Page({
     } else {
       /**Create Event Page */
       saturday = getNextSaturday(); 
-      //Default Deadline is Wednesday
-      var deadline = new Date(new Date().setDate(saturday.getDate() - 3))
+      // Default Deadline is Wednesday
+      var deadline = getNextSaturday();
+      deadline.setDate(deadline.getDate() - 3);
       var fullDeadline = util.formatDate(deadline);
 
       this.setData({
@@ -417,6 +418,6 @@ function getNextSaturday() {
     offSet++;
     day++;
   }
-  saturday = new Date(new Date().setDate(new Date().getDate() + offSet));
+  var saturday = new Date(new Date().setDate(new Date().getDate() + offSet));
   return saturday
 }

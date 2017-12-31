@@ -22,7 +22,7 @@ Page({
     contactPD: {
       name: "Chen Xiaoman",
       phone: "98643467",
-      wechatID: "Chen Xiaomann"
+      weChatID: "Chen Xiaomann"
     },
     terms: [
       {
@@ -124,7 +124,14 @@ function updateDescription(e) {
   that.setData({ loading: true })
   // Event information
   var eventName = e.detail.value.name;
-  var contactPD = e.detail.value.contact1 + ";" + e.detail.value.contact2 + ";" + e.detail.value.contact3;
+  var name = e.detail.value.contact1;
+  var phone = e.detail.value.contact2;
+  var weChatID = e.detail.value.contact3;
+  var contactPD = {
+    name: name,
+    phone: phone,
+    weChatID: weChatID
+  }
   var terms = getTerms(e);
   var eventDesc = getEventDesc(e);
   var time = e.detail.value.time;
@@ -266,17 +273,11 @@ function getDescription() {
     success: function (results) {
       if (typeof (results) !="undefined") {
         console.log(results);
-        var contactPDSeparated = String(results.attributes.contactPD).split(";");
-        var contactPD = {
-          name: contactPDSeparated[0],
-          phone: contactPDSeparated[1],
-          wechatID: contactPDSeparated[2],
-        }
         that.setData({
           loading: false,
           //Load Event information
           eventName: results.attributes.eventName,
-          contactPD: contactPD,
+          contactPD: results.attributes.contactPD,
           terms: results.attributes.terms,
           eventDesc: results.attributes.eventDesc,
           time: results.attributes.time,

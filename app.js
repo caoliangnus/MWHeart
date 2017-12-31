@@ -124,15 +124,10 @@ App({
         
         if (typeof (results) != "undefined") {
           console.log("get Description" , results);
-          var contactPDSeparated = String(results.attributes.contactPD).split(";");
-          var contactPD = {
-            name: contactPDSeparated[0],
-            phone: contactPDSeparated[1],
-            wechatID: contactPDSeparated[2],
-          }
+
           //Load Event information
           getApp().globalData.eventName = results.attributes.eventName;
-          getApp().globalData.contactPD = contactPD;
+          getApp().globalData.contactPD = results.attributes.contactPD;
           getApp().globalData.terms = results.attributes.terms;
           getApp().globalData.eventDesc = results.attributes.eventDesc;
           getApp().globalData.time = results.attributes.time;
