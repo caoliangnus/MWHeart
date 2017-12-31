@@ -22,7 +22,7 @@ Page({
     contactPD: {
       name: "Chen Xiaoman",
       phone: "98643467",
-      wechatID: "Chen Xiaomann"
+      weChatID: "Chen Xiaomann"
     },
     terms: [
       {
