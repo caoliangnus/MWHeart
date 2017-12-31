@@ -388,6 +388,7 @@ function getUpComingEvent(f) {
         var isOngoing = results[0].attributes.eventStatus == 1 ? true : false;
         var isClosed = results[0].attributes.eventStatus == 2 ? true : false;
         var isDeadlineOver = new Date(results[0].attributes.deadline) <= today ? true : false;
+        console.log(isClosed, isDeadlineOver, isNotYet, results[0].attributes.deadline )
         isClosed = isClosed || isDeadlineOver
         var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && that.data.isAgree;
         updateBtnText(isDeadlineOver, isClosed);
@@ -582,8 +583,9 @@ function getWaitingList(f) {
 function createNewEvent() {
   /**Create Event Page */
   saturday = getNextSaturday();
-  //Default Deadline is Wednesday
-  var deadline = new Date(new Date().setDate(saturday.getDate() - 3))
+  // Default Deadline is Wednesday
+  var deadline = getNextSaturday();
+  deadline.setDate(deadline.getDate() - 3);
   var fullDeadline = util.formatDate(deadline);
 
   var date = saturday;
@@ -632,6 +634,6 @@ function getNextSaturday() {
     offSet++;
     day++;
   }
-  saturday = new Date(new Date().setDate(new Date().getDate() + offSet));
+  var saturday = new Date(new Date().setDate(new Date().getDate() + offSet));
   return saturday
 }
