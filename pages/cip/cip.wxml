@@ -1,0 +1,61 @@
+<view class="page">
+  <view class="page__bd">
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__bd">
+
+        <!-- url -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Get a CIP form</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{url1}}</view>
+          <view class="weui-media-box__desc">{{url2}}</view>
+
+        </view>
+        <!-- organiser -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Name of organiser</view>
+           <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{organiser1}}</view>
+          <view class="weui-media-box__desc">{{organiser2}}</view>
+        </view>
+
+        <!-- sm2 -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Name of scholarship</view>
+           <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{sm21}}</view>
+          <view class="weui-media-box__desc">{{sm22}}</view>
+        </view>
+
+        <!-- collection -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Collection of CIP form</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{collection1}}</view>
+          <view class="weui-media-box__desc">{{collection2}}</view>
+        </view>
+
+        <!-- hour -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">CIP hour</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{hour1}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{hour2}}</view>
+          <view class="weui-media-box__desc">{{hour3}}</view>
+        </view>
+
+        <!-- NUS authority -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Who's in charge?</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{auth1}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{auth2}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{auth3}}</view>
+          <view class="weui-media-box__desc">{{auth4}}</view>
+        </view>
+
+        <!-- more -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">More about CIP</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{more1}}</view>
+          <view class="weui-media-box__desc">{{more2}}</view>
+        </view>
+
+      </view>
+    </view>
+  </view>
+</view>
