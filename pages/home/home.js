@@ -21,7 +21,7 @@ Page({
     autoplay: false,
     curIndex: 0,
     postsShowSwiperList: [
-      "http://bmob-cdn-15793.b0.upaiyun.com/2017/12/29/a712a0bb4013e73080e3700f3f35dc20.jpg", "http://bmob-cdn-15793.b0.upaiyun.com/2017/12/29/b180e0824004dd6580adece2aca64da2.jpeg", "http://bmob-cdn-15793.b0.upaiyun.com/2017/12/29/023c52924012f954806e99a0a26a79e3.png", "http://bmob-cdn-15793.b0.upaiyun.com/2017/12/29/5d77378240eec6e380ce5f4f55b96fea.jpeg",
+      "http://bmob-cdn-15793.b0.upaiyun.com/2018/01/01/fe4bc073407e9cdb80f7701441959e23.jpg", "http://bmob-cdn-15793.b0.upaiyun.com/2018/01/01/93a8df8b408f6de280bc4d2ea8b6a33d.jpeg", "http://bmob-cdn-15793.b0.upaiyun.com/2017/12/29/023c52924012f954806e99a0a26a79e3.png", "http://bmob-cdn-15793.b0.upaiyun.com/2018/01/01/5d1713f540b5721e8024e269dbe5e6bb.jpeg",
     ],
 
     isShowingDetails: false,

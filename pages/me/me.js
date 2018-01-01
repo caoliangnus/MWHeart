@@ -18,10 +18,13 @@ Page({
     showAdminLogIn: false,
   },
 
-  onShow: function () {
+  onLoad: function () {
     that = this
-    getUserCIPHour();
     setUpAccountLoginPage();
+    refresh()
+  },
+
+  onShow: function () {
     // Then ensure user info needed is completedly loaded in app.js
     app.getOpenIdUserIdRealNameAndPhone(
       function () {
@@ -33,7 +36,7 @@ Page({
       });
   },
   onPullDownRefresh: function () {
-    that.onShow()
+    refresh()
   },
 
   adminBtnClick: function (e) {
@@ -58,8 +61,26 @@ Page({
     var account = e.detail.value.account;
     var password = e.detail.value.password;
     checkUser(account, password);
+  },
+
+  getCIPForm: function (e) {
+    console.log("Get CIP form")
+    
   }
 })
+
+function refresh() {
+  // Then ensure user info needed is completedly loaded in app.js
+  app.getOpenIdUserIdRealNameAndPhone(
+    function () {
+      that.setData({
+        userInfo: getApp().globalData.userInfo,
+        realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
+        phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
+      })
+    });
+  getUserCIPHour();
+}
 
 function getUserCIPHour() {
   that.setData({ loading: true })
@@ -91,6 +112,9 @@ function getUserCIPHour() {
       })
     },
     error: function (error) {
+      that.setData({
+        loading: false
+      })
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });

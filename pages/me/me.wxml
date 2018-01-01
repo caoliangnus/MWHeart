@@ -7,7 +7,7 @@
     <view>
       <view class="userinfo-nickname">{{userInfo.nickName}}</view>
       <view class="userinfo-point">MWH CIP Hour: {{cipHour}}</view>
-      </view>
+    </view>
   </view>
 
   <!-- New Line -->
@@ -34,9 +34,18 @@
   <!-- New Line -->
   <text>\n</text>
 
+  <view class="weui-cells weui-cells_after-title"bindtap="getCIPForm">
+    <navigator url="/pages/me/me"class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">Get a CIP form</view>
+    </navigator>
+  </view>
+
+  <!-- New Line -->
+  <text>\n</text>
+
   <view class="weui-cells weui-cells_after-title">
     <navigator url="../about/about" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-      <view class="weui-cell__bd">About</view>
+      <view class="weui-cell__bd">FAQ</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
     <view class="weui-cell weui-cell_access">
@@ -76,7 +85,7 @@
         </view>
         <view class="weui-btn-area">
           <button class="weui-btn" type="primary" formType="submit">Login</button>
-          <button class="weui-btn" type="primary" bindtap="cancelBtnClick">Cancel</button>
+          <button class="weui-btn" type="default" bindtap="cancelBtnClick">Cancel</button>
         </view>
       </view>
     </view>

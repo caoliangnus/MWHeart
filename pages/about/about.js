@@ -1,91 +1,14 @@
-// pages/publish/publish.js
+
 Page({
-
-    /**
-     * 页面的初始数据
-     */
     data: {
-
-        //活动名字
-        name: '高等数学',
-        //活动地点
-        place: '上海',
-        //活动时间
-        start: '2017/07/10 ',
-        end: ' 2017/08/30'
+      when1: "A sign up process of an event is divided into three process: not yet, ongoing and closed. You can only sign up in the ongoing stage.",
+      when2: "An event will be closed after it reach the sign up deadline stated. If you want to know when the sign up is ongoing, you can contact the project director.(or keep an eye on this app!)",
+      quit: "Yes, but only when the sign up is ongoing. If you want to quit when the sign up is closed, you need to contact the project director and explain why.",
+      waiting1: "An waiting list is for the volunteers who fail to sign up due to the limited quota of each event. And the volunteer list is for volunteers who have succesfully signed up.",
+      waiting2: "The sign up is a first-come-first-served process.",
+      waiting3: "Anyone in the waiting list can still get a quota if someone from the volunteer list quits during the sign up process.",
+      developer1: "Chen Xiaoman (also the project director in 2017-2018) & Cao Liang",
+      developer2: "You are welcomed to check out the GitHub repo and contribute to us!",
+      developer3: "https://github.com/ChenXiaoman/MWHeart"
     },
-
-    cut: function () {
-        wx.showModal({
-            title: '微信号复制成功',
-            content: '粘贴到 “添加朋友” 即可添加我为好友',
-            showCancel: false
-        })
-        wx.setClipboardData({
-            data: 'Owen_tp',
-            success: function (res) {
-                wx.getClipboardData({
-                    success: function (res) {
-                        console.log(res.data) // data
-                    }
-                })
-            }
-        })
-    },
-
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onLoad: function (options) {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload: function () {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh: function () {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom: function () {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function () {
-
-    }
 })
