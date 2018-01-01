@@ -35,16 +35,16 @@ Page({
     }],
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
+  onShow: function (options) {
     that = this;
     getEventList();
     setUpContent();
-    this.setData({
+    that.setData({
       autoplay: true,
     })
+  },
+  onPullDownRefresh: function () {
+    that.onShow()
   },
 
   click: function (e) {

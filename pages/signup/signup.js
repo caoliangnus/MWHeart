@@ -368,8 +368,9 @@ function getUpComingEvent(f) {
    * By setting today to be yesterday
    * Upcoming event will only be updated after 8am 24/12/2017
    */
-  var today = new Date(new Date().setDate(new Date().getDate() - 1));
-  var yesterday = util.formatTime(new Date(new Date().setDate(new Date().getDate() - 1)));
+  var today = new Date();
+  today.setDate(today.getDate() - 1);
+  var yesterday = util.formatTime(today);
 
   //Select Upcoming event
   event.equalTo("date", { "$gte": { "__type": "Date", "iso": yesterday } });
