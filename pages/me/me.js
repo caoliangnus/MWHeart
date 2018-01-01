@@ -73,13 +73,13 @@ function refresh() {
   // Then ensure user info needed is completedly loaded in app.js
   app.getOpenIdUserIdRealNameAndPhone(
     function () {
+      getUserCIPHour();
       that.setData({
         userInfo: getApp().globalData.userInfo,
         realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
         phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
       })
     });
-  getUserCIPHour();
 }
 
 function getUserCIPHour() {
