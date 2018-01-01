@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="page__bd">
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__bd">
+
+        <!-- url -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Get a CIP form</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{url1}}</view>
+          <view class="weui-media-box__desc">{{url2}}</view>
+
+        </view>
+        <!-- organiser -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Name of organiser</view>
+           <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{organiser1}}</view>
+          <view class="weui-media-box__desc">{{organiser2}}</view>
+        </view>
+
+        <!-- sm2 -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Name of scholarship</view>
+           <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{sm21}}</view>
+          <view class="weui-media-box__desc">{{sm22}}</view>
+        </view>
+
+        <!-- collection -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Collection of CIP form</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{collection1}}</view>
+          <view class="weui-media-box__desc">{{collection2}}</view>
+        </view>
+
+      </view>
+    </view>
+  </view>
+</view>
