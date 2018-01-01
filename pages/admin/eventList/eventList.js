@@ -12,10 +12,10 @@ Page({
    */
   data: {
     loading: false,
-    eventList:null,
-    url:null,
+    eventList: null,
+    url: null,
 
-    isUpdate:false
+    isUpdate: false
   },
 
   /**
@@ -23,7 +23,7 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    
+
     //To determine MyPastEvent or EventList Page
     var isMyEvent = options.isMyEvent == "true" ? true : false;
     this.setData({
@@ -37,15 +37,15 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-      if (that.data.isMyEvent) {
-        that.setData({ url: "../../eventDetail/eventDetail?isMyEvent=true" })
-        //Display event list for specific user only
-        getMyEventList();
-      } else {
-        that.setData({ url: "../event/event?isUpdateEvent=true" })
-        //Display all events in the list
-        getEventList();
-      }
+    if (that.data.isMyEvent) {
+      that.setData({ url: "../../eventDetail/eventDetail?isMyEvent=true" })
+      //Display event list for specific user only
+      getMyEventList();
+    } else {
+      that.setData({ url: "../event/event?isUpdateEvent=true" })
+      //Display all events in the list
+      getEventList();
+    }
   },
 })
 
@@ -78,7 +78,7 @@ function getEventList() {
 * Get My Event List from Bmob
 */
 function getMyEventList(t) {
-  that.setData({loading: true})
+  that.setData({ loading: true })
   var userId = app.globalData.userId;
 
   var P = Bmob.Object.extend("p");
@@ -105,7 +105,6 @@ function getMyEventList(t) {
       that.setData({
         loading: false,
       })
-     
     },
     error: function (error) {
       that.setData({

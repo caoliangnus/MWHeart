@@ -35,6 +35,9 @@ Page({
         })
       });
   },
+  onPullDownRefresh: function () {
+    refresh()
+  },
 
   adminBtnClick: function (e) {
     if (that.data.adminStatus) {
