@@ -76,7 +76,7 @@
         </view>
         <view class="weui-btn-area">
           <button class="weui-btn" type="primary" formType="submit">Login</button>
-          <button class="weui-btn" type="primary" bindtap="cancelBtnClick">Cancel</button>
+          <button class="weui-btn" type="default" bindtap="cancelBtnClick">Cancel</button>
         </view>
       </view>
     </view>
