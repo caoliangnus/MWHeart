@@ -143,6 +143,5 @@ function checkUser(account, password) {
           duration: 1000
         })
       }
-      
   })
 }

@@ -326,6 +326,7 @@ function deleteEvent(){
         //创建查询对象，入口参数是对象类的实例
         var event = new Bmob.Query(Event);
         event.equalTo("objectId", eventId);
+        
         event.destroyAll({
           success: function () {
             wx.navigateBack({
@@ -336,7 +337,7 @@ function deleteEvent(){
           error: function (err) {
             common.showTip('Fail', 'loading');
           }
-        });
+        })
       }
     }
   })

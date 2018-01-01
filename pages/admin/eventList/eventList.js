@@ -13,8 +13,9 @@ Page({
   data: {
     loading: false,
     eventList:null,
-    url:null
+    url:null,
 
+    isUpdate:false
   },
 
   /**
@@ -25,22 +26,26 @@ Page({
     
     //To determine MyPastEvent or EventList Page
     var isMyEvent = options.isMyEvent == "true" ? true : false;
-    if(isMyEvent){
-      this.setData({ url: "../../eventDetail/eventDetail?isMyEvent=true", })
-      //Display event list for specific user only
-      getMyEventList(this);
-    }else{
-      this.setData({ url: "../event/event?isUpdateEvent=true"})
-      //Display all events in the list
-      getEventList(this);
-    }
+    this.setData({
+      isMyEvent: isMyEvent
+    })
+
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
- 
+      if (that.data.isMyEvent) {
+        that.setData({ url: "../../eventDetail/eventDetail?isMyEvent=true" })
+        //Display event list for specific user only
+        getMyEventList();
+      } else {
+        that.setData({ url: "../event/event?isUpdateEvent=true" })
+        //Display all events in the list
+        getEventList();
+      }
   },
 })
 
@@ -54,6 +59,7 @@ function getEventList() {
 
   event.find({
     success: function (results) {
+      console.log(results);
       that.setData({
         eventList: results,
         loading: false,
@@ -80,20 +86,24 @@ function getMyEventList(t) {
   var eventList = [];
   query.find({
     success: function (results) {
+      console.log(results);
       for (var i = 0; i < results.length; i++) {
+        that.setData({ loading: true })
         var eventDate = new Date(results[i].attributes.event.attributes.date);
-        var today = new Date(new Date().setDate(new Date().getDate() - 1));
+        var today = new Date();
+        today.setDate(today.getDate() - 1);
         if (eventDate <= today) {
           eventList = eventList.concat(results[i].attributes.event);
+          that.setData({
+            eventList: eventList,
+            loading: false,
+          })
         }
       }
-      that.setData({
-        eventList: eventList,
-        loading: false,
-      })
+     
     },
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
-  });
+  })
 }
