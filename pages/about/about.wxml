@@ -1,17 +1,37 @@
-<view class="container">
-  <image src="/images/meBack.jpg" class="img"></image>
-  <text class="txt">MWHeart</text>
-  <text class="men">Liang and Xiaoman</text>
+<view class="page">
+  <view class="page__bd">
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__bd">
 
+        <!-- sign up -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">When can I sign up?</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{when1}}</view>
+          <view class="weui-media-box__desc">{{when2}}</view>
 
-  <image src="/images/icon/line.png" class="line"></image>
+        </view>
+        <!-- quit -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Can I quit an event that I've signed up?</view>
+          <view class="weui-media-box__desc">{{quit}}</view>
+        </view>
 
-  <view class="area">
-    <text class='a'> Merry Chrismas To You</text>
-  </view>
+        <!-- waiting list -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">What is waiting list?</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{waiting1}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{waiting2}}</view>
+          <view class="weui-media-box__desc">{{waiting3}}</view>
+        </view>
 
-  <view bindlongtap="cut">
-    <image src="/images/icon/wechat.jpeg" class="img1"></image>
-    <text class="txt1">25 Dec 2017</text>
+        <!-- developer -->
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">Who built such an awesome app?</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{developer1}}</view>
+          <view class="weui-media-box__desc" style="padding-bottom:20rpx">{{developer2}}</view>
+          <view class="weui-media-box__desc">{{developer3}}</view>
+        </view>
+      </view>
+    </view>
   </view>
 </view>
