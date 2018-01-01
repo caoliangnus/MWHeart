@@ -66,6 +66,9 @@ function getEventList() {
       })
     },
     error: function (error) {
+      that.setData({
+        loading: false,
+      })
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });
@@ -95,14 +98,19 @@ function getMyEventList(t) {
         if (eventDate <= today) {
           eventList = eventList.concat(results[i].attributes.event);
           that.setData({
-            eventList: eventList,
-            loading: false,
+            eventList: eventList
           })
         }
       }
+      that.setData({
+        loading: false,
+      })
      
     },
     error: function (error) {
+      that.setData({
+        loading: false,
+      })
       console.log("查询失败: " + error.code + " " + error.message);
     }
   })
