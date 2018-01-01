@@ -38,23 +38,18 @@ Page({
       isVolunteerList: isVolunteerList,
       isWaitingList: isWaitingList,
       eventId: eventId,
-    })
-
-    if(isVolunteerList) {
-      getVolunteerList();
-    } else if(isWaitingList) {
-      getWaitingList();
-    }else{
-      getList(this);
-    }
-    
+    })    
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (that.data.isAllUserList) {
+    if (that.data.isVolunteerList) {
+      getVolunteerList();
+    } else if (that.data.isWaitingList) {
+      getWaitingList();
+    } else {
       getList();
     }
     
@@ -68,7 +63,12 @@ Page({
 
   //Delete User After clicked Delete Button
   deleteUserBtnClick: function (event) {
-    deleteUser(event)
+    if (that.data.isAllUserList){
+      deleteUser(event);
+    }else{
+      deleteUserFromEvent(event);
+    }
+    
   },
 
 
@@ -109,6 +109,34 @@ function deleteUser(event) {
           success: function () {
             common.showTip('Success');
             that.onShow();
+          },
+          error: function (err) {
+            common.showTip('Fail', 'loading');
+          }
+        });
+      }
+    }
+  })
+}
+
+function deleteUserFromEvent(event) {
+  var id = that.data.eventId;
+  wx.showModal({
+    title: 'Alert',
+    content: 'Delete User from Event？',
+    success: function (res) {
+      if (res.confirm) {
+        that.setData({ loading: true })
+        //delete user
+        var P = Bmob.Object.extend("p");
+        var query = new Bmob.Query(P);
+        var eventId = that.data.eventId;
+        query.equalTo("event", eventId);
+        query.destroyAll({
+          success: function () {
+            common.showTip('Success');
+            that.onShow();
+            that.setData({ loading: false })
           },
           error: function (err) {
             common.showTip('Fail', 'loading');
