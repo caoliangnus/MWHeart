@@ -21,19 +21,12 @@ Page({
   onLoad: function () {
     that = this
     setUpAccountLoginPage();
-    refresh()
+    refresh();
   },
 
   onShow: function () {
     // Then ensure user info needed is completedly loaded in app.js
-    app.getOpenIdUserIdRealNameAndPhone(
-      function () {
-        that.setData({
-          userInfo: getApp().globalData.userInfo,
-          realName: getApp().globalData.realName == null ? "" : getApp().globalData.realName,
-          phone: getApp().globalData.phone == null ? "" : getApp().globalData.phone,
-        })
-      });
+    refresh();
   },
   onPullDownRefresh: function () {
     refresh()
@@ -65,7 +58,7 @@ Page({
 
   getCIPForm: function (e) {
     console.log("Get CIP form")
-    
+
   }
 })
 
@@ -100,8 +93,12 @@ function getUserCIPHour() {
       console.log("My Event: ", results);
       var cipHour = 0;
       for (var i = 0; i < results.length; i++) {
-        var eventDate = new Date(results[i].attributes.event.attributes.date);
-        var today = new Date(new Date().setDate(new Date().getDate() - 1));
+        var dateString = String(results[i].attributes.event.attributes.date);
+        dateString = dateString.replace(/-/g, '/');
+        var eventDate = new Date(dateString);
+        var today = new Date();
+        today.setDate(today.getDate() - 1);
+
         if (eventDate <= today) {
           cipHour += results[i].attributes.event.attributes.duration;
         }
@@ -152,23 +149,23 @@ function checkUser(account, password) {
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
-  }).then(function (results){
+  }).then(function (results) {
     that.setData({ loading: false })
-      if(that.data.adminStatus) {
-        wx.navigateTo({
-          url: '../admin/admin/admin'
-        })
-        wx.showToast({
-          title: 'Welcome',
-          icon: 'success',
-          duration: 1000
-        })
-      }else{
-        wx.showToast({
-          title: 'Log in Fail',
-          icon: 'error',
-          duration: 1000
-        })
-      }
+    if (that.data.adminStatus) {
+      wx.navigateTo({
+        url: '../admin/admin/admin'
+      })
+      wx.showToast({
+        title: 'Welcome',
+        icon: 'success',
+        duration: 1000
+      })
+    } else {
+      wx.showToast({
+        title: 'Log in Fail',
+        icon: 'error',
+        duration: 1000
+      })
+    }
   })
 }

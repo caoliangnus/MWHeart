@@ -388,7 +388,12 @@ function getUpComingEvent(f) {
         var isNotYet = results[0].attributes.eventStatus == 0 ? true : false;
         var isOngoing = results[0].attributes.eventStatus == 1 ? true : false;
         var isClosed = results[0].attributes.eventStatus == 2 ? true : false;
-        var isDeadlineOver = new Date(results[0].attributes.deadline) <= today ? true : false;
+
+        var dateString = String(results[0].attributes.deadline);
+        dateString = dateString.replace(/-/g, '/');
+        var deadline = new Date(dateString);
+
+        var isDeadlineOver = deadline <= today ? true : false;
         isClosed = isClosed || isDeadlineOver
         var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && that.data.isAgree;
         updateBtnText(isDeadlineOver, isClosed);

@@ -92,7 +92,9 @@ function getMyEventList(t) {
       console.log(results);
       for (var i = 0; i < results.length; i++) {
         that.setData({ loading: true })
-        var eventDate = new Date(results[i].attributes.event.attributes.date);
+        var dateString = String(results[i].attributes.event.attributes.date);
+        dateString = dateString.replace(/-/g, '/');
+        var eventDate = new Date(dateString);
         var today = new Date();
         today.setDate(today.getDate() - 1);
         if (eventDate <= today) {
