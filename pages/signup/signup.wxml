@@ -37,7 +37,7 @@
       <!-- show info if the event is not open yet -->
       <label class="weui-agree" wx:if="{{isNotYet && !isClosed}}">
         <view>Sign up for upcoming event is not open yet. Please be patient :)</view>
-        <view>You can also contact project director if you have any questions (e.g. When the sign up will be open). 
+        <view>You can also contact project director if you have any questions (e.g. When the sign up will be open).
           <view bindtap="showContactPD" class="weui-agree__link">How?</view>
         </view>
       </label>
@@ -165,7 +165,7 @@
 </view>
 
 <!-- Sumbit User information Panel -->
-<view class="noticePanel" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}">
+ <view class="noticePanel" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}"> 
   <view class='box'>
     <view class="weui-mask"></view>
     <view class="page_container">
@@ -193,6 +193,14 @@
               </view>
             </view>
           </view>
+
+          <label class="weui-agree">
+            Please enter your real name and real phone number.
+          </label>
+
+          <label class="weui-agree">Noted that once your name and number is submited, you can't change it by yourself. You need to contact project director if you want to make any changes.
+          </label>
+
           <view class="weui-btn-area">
             <button class="weui-btn" type="default" bindtap="cancelBtnClick">Cancel</button>
             <button class="weui-btn" type="primary" formType="submit">Submit</button>
