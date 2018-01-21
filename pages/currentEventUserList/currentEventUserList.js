@@ -14,7 +14,7 @@ Page({
     contactPD: null,
     terms: null,
 
-    numPeopleJoined: null,
+    numPeopleJoined: 0,
     picUrl: null,
     oldPicUrl: null,
 
@@ -26,7 +26,9 @@ Page({
     hasUpcomingEvent: true,
 
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
-    volunteerList: []
+    volunteerList: [],
+
+    numPeopleCheck: 0
   },
 
 
@@ -37,6 +39,15 @@ Page({
   onPullDownRefresh: function () {
     refresh()
   },
+
+  checkboxChange: function (e) {
+    var numPeopleCheck = that.data.numPeopleCheck
+    if (e.detail.value.length == 1) {
+      that.setData({numPeopleCheck : numPeopleCheck + 1})
+    } else {
+      that.setData({ numPeopleCheck : numPeopleCheck - 1})
+    }
+  }
 
 })
 
