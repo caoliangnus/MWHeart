@@ -2,12 +2,12 @@
   loading...
 </loading>
 <view class="page">
-  <!-- New Line -->
-  <text>\n</text>
-  <view class="page__bd page__bd_spacing">
 
-    <navigator url='/pages/admin/register/register' open-type="navigate">
-      <button class="weui-btn" type="default">Register Admin</button>
+<!-- New Line -->
+   <text>\n</text>
+
+    <navigator url='/pages/eventDetail/eventDetail?isMyEvent=false' open-type="navigate">
+      <button class="weui-btn" type="default">Check attendance</button>
     </navigator>
     
 <!-- New Line -->
@@ -26,7 +26,7 @@
     <!-- New Line -->
     <text>\n</text>
     <navigator url='/pages/admin/userlist/userlist?isAllUserList=true' open-type="navigate">
-      <button class="weui-btn" type="default">Manager All User List</button>
+      <button class="weui-btn" type="default">Manager All Users</button>
     </navigator>
 
     <!-- New Line -->
@@ -35,4 +35,12 @@
       <button class="weui-btn" type="default">Edit Descriptions</button>
     </navigator>
   </view>
+
+  <!-- New Line -->
+  <text>\n</text>
+  <view class="page__bd page__bd_spacing">
+
+    <navigator url='/pages/admin/register/register' open-type="navigate">
+      <button class="weui-btn" type="default">Register Admin</button>
+    </navigator>
 </view>

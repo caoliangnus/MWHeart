@@ -1,0 +1,56 @@
+<loading hidden="{{!loading}}">
+  loading...
+</loading>
+<view class="page">
+  <view class="page__desc" style="padding-left:25rpx">Check attendance</view>
+
+  <view class="page__bd">
+    <view class="weui-form-preview__hd">
+      <view class="weui-form-preview__item">
+        <view class="weui-form-preview__label">Event Name</view>
+        <view class="weui-form-preview__value">MWH (Moral Welfare Home)</view>
+      </view>
+    </view>
+    <view class="weui-form-preview__bd">
+      <view class="weui-form-preview__item">
+        <view class="weui-form-preview__label">Date</view>
+        <view class="weui-form-preview__value">{{eventItem.fullDate}}</view>
+      </view>
+      <view class="weui-form-preview__item">
+        <view class="weui-form-preview__label">Time</view>
+        <view class="weui-form-preview__value">{{eventItem.time}}</view>
+      </view>
+      <view class="weui-form-preview__item">
+        <view class="weui-form-preview__label">Deadline</view>
+        <view class="weui-form-preview__value">{{eventItem.fullDeadline}}</view>
+      </view>
+      <view class="weui-form-preview__item">
+        <view class="weui-form-preview__label">Limit</view>
+        <view class="weui-form-preview__value">{{eventItem.limit}} people</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- Display volunteer list -->
+  <view class="page__desc" style="color:rgb(100,100,100); padding-left:25rpx"   wx:if="{{volunteerList.length > 0}}">Number of volunteers: {{numPeopleJoined}}</view>
+  <view class="weui-panel__bd">
+    <block wx:if="{{volunteerList.length > 0}}">
+      <view catchtap=''>
+        <view class="weui-media-box weui-media-box_text" wx:for="{{volunteerList}}" wx:key="volunteerItem">
+          <view class="userInfo">
+          <checkbox class=".box"></checkbox>
+            <view>          
+              <image src="{{item.avatarUrl}}" class="avatar" mode="aspectFit"></image>
+            </view>
+            <view class="nickTime">
+              <view class="nickArea">
+                <text class="nick">{{item.realName}}</text>
+              </view>
+              <text class="postTime" style="color:rgb(191,191,191);font-size:40rpx">{{item.phone}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
