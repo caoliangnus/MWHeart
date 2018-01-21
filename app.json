@@ -7,6 +7,7 @@
     "pages/about/about",
     "pages/cip/cip",
     "pages/cipForm/cipForm",
+    "pages/currentEventUserList/currentEventUserList",
     "pages/admin/admin/admin",
     "pages/admin/register/register",
     "pages/admin/event/event",

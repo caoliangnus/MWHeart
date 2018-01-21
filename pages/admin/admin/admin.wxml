@@ -6,7 +6,7 @@
 <!-- New Line -->
    <text>\n</text>
 
-    <navigator url='/pages/eventDetail/eventDetail?isMyEvent=false' open-type="navigate">
+    <navigator url='/pages/currentEventUserList/currentEventUserList' open-type="navigate">
       <button class="weui-btn" type="default">Check attendance</button>
     </navigator>
     
