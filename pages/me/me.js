@@ -23,11 +23,7 @@ Page({
     setUpAccountLoginPage();
     refresh();
   },
-
-  onShow: function () {
-    // Then ensure user info needed is completedly loaded in app.js
-    refresh();
-  },
+  
   onPullDownRefresh: function () {
     refresh()
   },

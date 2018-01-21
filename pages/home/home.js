@@ -35,7 +35,7 @@ Page({
     }],
   },
 
-  onShow: function (options) {
+  onLoad: function (options) {
     that = this;
     getEventList();
     setUpContent();
@@ -44,7 +44,7 @@ Page({
     })
   },
   onPullDownRefresh: function () {
-    that.onShow()
+    that.onLoad()
   },
 
   click: function (e) {
