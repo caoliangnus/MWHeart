@@ -5,11 +5,12 @@
   <view class="weui-panel__bd">
     <block wx:if="{{userList.length > 0}}">
       <view class="weui-media-box weui-media-box_text" wx:for="{{userList}}" wx:key="userItem">
-        <view class="weui-media-box__title weui-media-box__title_in-text">Name: {{item.realName}}
+        <view class="weui-media-box__title weui-media-box__title_in-text">Name: {{item.user.realName}}
         </view>
-        <view class="weui-media-box__desc">Phone: {{item.phone}}</view>
+        <view class="weui-media-box__desc">Phone: {{item.user.phone}}</view>
+        <view class="weui-media-box__desc">Total CIP hour: {{item.CIP}}</view>
         <view class="weui-media-box__info">
-          <view class="weui-media-box__info__meta weui-media-time">Date：{{item.updatedAt}}</view>
+          <view class="weui-media-box__info__meta weui-media-time">Date：{{item.user.updatedAt}}</view>
           <view class="weui-media-box__info__meta weui-media-box__info__operate">
             <button class="del weui-btn mini-btn" type="default" size="mini" catchtap="deleteUserBtnClick" data-id="{{item.objectId}}">delete</button>
             <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="modifyUserBtnClick" data-id="{{item.objectId}}" data-name="{{item.realName}}" data-phone="{{item.phone}}" wx:if="{{isAllUserList}}">edit</button>

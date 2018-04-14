@@ -20,7 +20,7 @@ Page({
     isVolunteerList: false,
     isWaitingList: false,
 
-    userList:null,
+    userList:[],
   },
 
   /**
@@ -156,12 +156,58 @@ function getList() {
   user.ascending('updatedAt');
   user.find({
     success: function (results) {
+      var i;
+      for (i = 0; i < results.length; i++) {
+        getUserCIPHour(results[i].id, results[i], function (user, CIP) {
+          console.log(CIP);
+          var userPlusCIP = [{ user: user, CIP: CIP }]
+          that.setData({
+            userList: that.data.userList.concat(userPlusCIP),
+          })
+        })        
+      }
       that.setData({
-        userList: results,
         loading: false,
       })
     },
     error: function (error) {
+      console.log("查询失败: " + error.code + " " + error.message);
+    }
+  });
+}
+
+function getUserCIPHour(userId, user, f) {
+
+  var P = Bmob.Object.extend("p");
+  var query = new Bmob.Query(P);
+
+  query.equalTo("user", userId);
+  query.equalTo("status", 1);
+
+  query.include("event");
+  query.include("user");
+
+  query.find({
+    success: function (results) {
+      var cipHour = 0;
+      for (var i = 0; i < results.length; i++) {
+        var dateString = String(results[i].attributes.event.attributes.date);
+        dateString = dateString.replace(/-/g, '/');
+        var eventDate = new Date(dateString);
+        var today = new Date();
+        today.setDate(today.getDate() - 1);
+
+        if (eventDate <= today) {
+          cipHour += results[i].attributes.event.attributes.duration;
+        }
+      }
+      f(user, cipHour);
+      
+    },
+    error: function (error) {
+      that.setData({
+        loading: false
+      })
       console.log("查询失败: " + error.code + " " + error.message);
     }
   });
