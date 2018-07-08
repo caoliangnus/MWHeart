@@ -141,6 +141,23 @@ App({
       }
     })
   },
+
+  getAutoCreate: function (f) {
+    var Event = Bmob.Object.extend("ifAutoUpdate");
+    var event = new Bmob.Query(Event);
+    event.first({
+      success: function (object) {
+        var autoCreate = object.attributes.ifAutoUpdate
+        getApp().globalData.auto = autoCreate
+        console.log("Auto Creating: " + autoCreate)
+        f();
+        
+      },
+      error: function (err) {
+        console.log(err.code, err.message)
+      }
+    });
+  },
   globalData: {
     userInfo: null,
     realName: null,
@@ -158,6 +175,8 @@ App({
     location: null,
     whatWeDo: null,
     bonusArray: null,
+
+    auto: false,
   }
 })
 

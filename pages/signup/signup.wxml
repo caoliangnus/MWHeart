@@ -3,10 +3,10 @@
   loading...
 </loading>
 <view class="page">
-  <view class="page__desc">Upcoming Event</view>
+  <view class="page__desc"></view>
 
   <view class="page__bd">
-    <view class="weui-form-preview" style="padding-bottom:20rpx" wx:if="{{hasUpcomingEvent}}">
+    <view class="weui-form-preview" style="padding-bottom:20rpx">
       <view class="weui-form-preview__hd">
         <view class="weui-form-preview__item">
           <view class="weui-form-preview__label">Event Name</view>
@@ -76,9 +76,6 @@
 
       <!-- After Sign Up: Button set to Quit-->
       <button class="weui-form-preview__btn weui-form-preview__btn_primary " type="default" bindtap="quitBtnClick" disabled="" wx:else> Quit </button>
-    </view>
-    <view class="weui-form-preview__bd" wx:else>
-      <view class="weui-form-preview__value_in-hd">No Upcoming Event</view>
     </view>
   </view>
 
@@ -165,7 +162,7 @@
 </view>
 
 <!-- Sumbit User information Panel -->
- <view class="noticePanel" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}"> 
+<view class="noticePanel" style="opacity: 1;" wx:if="{{isSubmitingUserInfo}}">
   <view class='box'>
     <view class="weui-mask"></view>
     <view class="page_container">

@@ -79,8 +79,8 @@
 
       <!-- upload event picture area -->
       <view class="page-body" wx:if="{{isUpdateEvent}}">
-        <view class="weui-btn-area">
-          <view class="add_pic" catchtap="upPic" wx-if="{{picUrl == null}}">
+        <view class="weui-btn-area" catchtap="upPic">
+          <view class="add_pic" wx-if="{{picUrl == null}}">
             <view>Upload image (optinal)</view>
           </view>
           <view wx:if="{{picUrl != null}}" class="image_box">

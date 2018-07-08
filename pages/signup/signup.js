@@ -15,8 +15,6 @@ Page({
     terms: null,
 
     numPeopleJoined: null,
-    picUrl: null,
-    oldPicUrl: null,
 
     isSubmitingUserInfo: false,
     isSignedUp: false,
@@ -27,7 +25,6 @@ Page({
     isClosed: false,
     isAgree: false,
     isSignUpAllowed: false,
-    hasUpcomingEvent: true,
 
     statusArray: ['Not Yet', 'Ongoing', 'Closed'],
     volunteerList: [],
@@ -37,7 +34,10 @@ Page({
 
   onShow: function (options) {
     that = this;
-    refresh()
+    app.getAutoCreate(
+      function () {
+        refresh();
+      });
   },
   onPullDownRefresh: function () {
     refresh()
@@ -133,14 +133,17 @@ Page({
 // Refresh the entire page
 // Including upcoming event, event's lists, user sign up status
 function refresh() {
+  console.log("REFRESHINGINGINGINGINIGNIGNIG")
   that.setData({
     loading: true,
   })
-  
-  // First ensure event id is loaded
+
+  // Fist ensure event id is loaded
   // Then ensure user info needed is completedly loaded in app.js
   getUpComingEvent(
-    function () { app.getOpenIdUserIdRealNameAndPhone(getUserSignUpStatus) });
+    function () {
+      app.getOpenIdUserIdRealNameAndPhone(getUserSignUpStatus);
+    });
 }
 
 function checkNewUser() {
@@ -370,62 +373,71 @@ function getUpComingEvent(f) {
    */
   var today = new Date();
   today.setDate(today.getDate() - 1);
-  var yesterday = util.formatTime(today);
 
   //Select Upcoming event
-  event.equalTo("date", { "$gte": { "__type": "Date", "iso": yesterday } });
-  event.ascending('date');
+  event.descending('date');
 
   event.find({
     success: function (results) {
-      if (results.length == 0) {
+      console.log("Upcoming Event", results);
+      app.globalData.eventId = results[0].id;
+
+      var dateString = String(results[0].attributes.deadline);
+      dateString = dateString.replace(/-/g, '/');
+      var eventDate = new Date(dateString);
+      var hasUpcomingEvent = eventDate >= today;
+
+      if (!hasUpcomingEvent && getApp().globalData.auto) {
         console.log("Have no upcoming event")
-        createNewEvent()
-      } else {
-        console.log("Upcoming Event", results);
-        app.globalData.eventId = results[0].id;
-        var limit = results[0].attributes.limit;
-        var isNotYet = results[0].attributes.eventStatus == 0 ? true : false;
-        var isOngoing = results[0].attributes.eventStatus == 1 ? true : false;
-        var isClosed = results[0].attributes.eventStatus == 2 ? true : false;
 
-        var dateString = String(results[0].attributes.deadline);
-        dateString = dateString.replace(/-/g, '/');
-        var deadline = new Date(dateString);
-
-        var isDeadlineOver = deadline <= today ? true : false;
-        isClosed = isClosed || isDeadlineOver
-        var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && that.data.isAgree;
-        updateBtnText(isDeadlineOver, isClosed);
+          createNewEvent()
 
         that.setData({
-          loading: false,
-          eventItem: results[0],
-          limit: limit,
-          isNotYet: isNotYet,
-          isOngoing: isOngoing,
-          isClosed: isClosed,
-          isDeadlineOver: isDeadlineOver,
-          isSignUpAllowed: isSignUpAllowed,
-          hasUpcomingEvent: true,
-
-          // Description
-          eventName: app.globalData.eventName,
-          contactPD: app.globalData.contactPD,
-          terms: app.globalData.terms,
+          loading: false
         })
-        if (isNotYet) {
-          // Do nothing
-          console.log("Event sign up not yet.")
-        } else {
-          countPeopleInEvent();
-          getVolunteerList();
-          getWaitingList();
-          // Execute function parameter passed in
-          f();
-        }
+      } else {
+       
+      // Display event data
+      var limit = results[0].attributes.limit;
+      var isNotYet = results[0].attributes.eventStatus == 0 ? true : false;
+      var isOngoing = results[0].attributes.eventStatus == 1 ? true : false;
+      var isClosed = results[0].attributes.eventStatus == 2 ? true : false;
+
+      var dateString = String(results[0].attributes.deadline);
+      dateString = dateString.replace(/-/g, '/');
+      var deadline = new Date(dateString);
+
+      var isDeadlineOver = deadline <= today ? true : false;
+      isClosed = isClosed || isDeadlineOver
+      var isSignUpAllowed = !isNotYet && isOngoing && !isClosed && !isDeadlineOver && that.data.isAgree;
+      updateBtnText(isDeadlineOver, isClosed);
+
+      that.setData({
+        loading: false,
+        eventItem: results[0],
+        limit: limit,
+        isNotYet: isNotYet,
+        isOngoing: isOngoing,
+        isClosed: isClosed,
+        isDeadlineOver: isDeadlineOver,
+        isSignUpAllowed: isSignUpAllowed,
+
+        // Description
+        eventName: app.globalData.eventName,
+        contactPD: app.globalData.contactPD,
+        terms: app.globalData.terms,
+      })
+      if (isNotYet) {
+        // Do nothing
+        console.log("Event sign up not yet.")
+      } else {
+        countPeopleInEvent();
+        getVolunteerList();
+        getWaitingList();
+        // Execute function parameter passed in
+        f();
       }
-    },
+    }},
     error: function (error) {
       console.log("查询失败: " + error.code + " " + error.message);
     }
@@ -615,13 +627,28 @@ function createNewEvent() {
     eventStatus: eventStatus
   }, {
       success: function (result) {
-        that.setData({ loading: false })
+        that.setData({ 
+          loading: false,
+          isNotYet: true,
+          numPeopleJoined: null,
+
+          isSubmitingUserInfo: false,
+          isSignedUp: false,
+          isWaiting: false,
+
+          isOngoing: false,
+          isClosed: false,
+          isAgree: false,
+          isSignUpAllowed: false,
+
+          volunteerList: [],
+          waitingList: [] 
+        })
         console.log("Event created successfully")
         refresh()
       },
       error: function (result, error) {
         that.setData({
-          hasUpcomingEvent: false,
           loading: false
         })
         console.log("failed to create event", error.message)

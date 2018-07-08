@@ -3,44 +3,49 @@
 </loading>
 <view class="page">
 
-<!-- New Line -->
-   <text>\n</text>
+  <!-- New Line -->
+  <text>\n</text>
 
-    <navigator url='/pages/currentEventUserList/currentEventUserList' open-type="navigate">
-      <button class="weui-btn" type="default">Check attendance</button>
-    </navigator>
-    
-<!-- New Line -->
-   <text>\n</text>
-
-    <navigator url='/pages/admin/event/event?isUpdateEvent=false' open-type="navigate">
-      <button class="weui-btn" type="default">Create Event</button>
-    </navigator>
-
-    <!-- New Line -->
-    <text>\n</text>
-    <navigator url='/pages/admin/eventList/eventList' open-type="navigate">
-      <button class="weui-btn" type="default">Update/Delete Event</button>
-    </navigator>
-
-    <!-- New Line -->
-    <text>\n</text>
-    <navigator url='/pages/admin/userlist/userlist?isAllUserList=true' open-type="navigate">
-      <button class="weui-btn" type="default">Manager All Users</button>
-    </navigator>
-
-    <!-- New Line -->
-    <text>\n</text>
-    <navigator url='/pages/admin/description/description' open-type="navigate">
-      <button class="weui-btn" type="default">Edit Descriptions</button>
-    </navigator>
-  </view>
+  <navigator url='/pages/currentEventUserList/currentEventUserList' open-type="navigate">
+    <button class="weui-btn" type="default">Check attendance</button>
+  </navigator>
 
   <!-- New Line -->
   <text>\n</text>
-  <view class="page__bd page__bd_spacing">
+
+  <navigator url='/pages/admin/event/event?isUpdateEvent=false' open-type="navigate">
+    <button class="weui-btn" type="default">Create Event</button>
+  </navigator>
+
+  <!-- New Line -->
+  <text>\n</text>
+  <navigator url='/pages/admin/eventList/eventList' open-type="navigate">
+    <button class="weui-btn" type="default">Update/Delete Event</button>
+  </navigator>
+
+  <!-- New Line -->
+  <text>\n</text>
+  <navigator url='/pages/admin/userlist/userlist?isAllUserList=true' open-type="navigate">
+    <button class="weui-btn" type="default">Manager All Users</button>
+  </navigator>
+
+  <!-- New Line -->
+  <text>\n</text>
+  <navigator url='/pages/admin/description/description' open-type="navigate">
+    <button class="weui-btn" type="default">Edit Descriptions</button>
+  </navigator>
+
+  <!-- New Line -->
+  <text>\n</text>
 
     <navigator url='/pages/admin/register/register' open-type="navigate">
       <button class="weui-btn" type="default">Register Admin</button>
     </navigator>
+
+    <!-- New Line -->
+    <text>\n</text>
+
+    <button class="weui-btn" type="default" wx-if="{{!auto}}" bindtap="autoEventBtnClick">Turn on auto create event</button>
+
+    <button class="weui-btn" type="default" wx-if="{{auto}}" bindtap="autoEventBtnClick">Turn off auto create event</button>
 </view>
