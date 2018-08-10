@@ -136,6 +136,7 @@ Page({
   },
 
   upPic: function (e) {
+    console.log("click!!")
     upPic(this);
   },
 
@@ -357,7 +358,6 @@ function upPic(t, e) {
   var that = t;
   wx.chooseImage({
     count: 1,
-    sourceType: 'album',
     success: function (res) {
       wx.showNavigationBarLoading()
       that.setData({
@@ -366,6 +366,7 @@ function upPic(t, e) {
       var tempFilePaths = res.tempFilePaths;
       console.log(tempFilePaths)
       var url;
+      console.log(tempFilePaths);
       if (tempFilePaths.length > 0) {
         // Set file name to date.png
         var extension = /\.([^.]*)$/.exec(tempFilePaths[0]);
