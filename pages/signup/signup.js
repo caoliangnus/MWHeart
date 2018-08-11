@@ -382,15 +382,16 @@ function getUpComingEvent(f) {
       console.log("Upcoming Event", results);
       app.globalData.eventId = results[0].id;
 
-      var dateString = String(results[0].attributes.deadline);
+      var dateString = String(results[0].attributes.date);
       dateString = dateString.replace(/-/g, '/');
       var eventDate = new Date(dateString);
       var hasUpcomingEvent = eventDate >= today;
 
       if (!hasUpcomingEvent && getApp().globalData.auto) {
         console.log("Have no upcoming event")
-
-          createNewEvent()
+        console.log(eventDate)
+        console.log(today)
+        createNewEvent()
 
         that.setData({
           loading: false
