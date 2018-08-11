@@ -14,7 +14,7 @@ Page({
     phone: null,
     windowHeight: null,
     windowWidth: null,
-    adminStatus: true,
+    adminStatus: false,
     showAdminLogIn: false,
   },
 
