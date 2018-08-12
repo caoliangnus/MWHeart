@@ -159,7 +159,6 @@ function getList() {
       var i;
       for (i = 0; i < results.length; i++) {
         getUserCIPHour(results[i].id, results[i], function (user, CIP) {
-          console.log(CIP);
           var userPlusCIP = [{ user: user, CIP: CIP }]
           that.setData({
             userList: that.data.userList.concat(userPlusCIP),
@@ -287,6 +286,7 @@ function getVolunteerList() {
       for (var i = 0; i < results.length; i++) {
         userList = userList.concat(results[i].attributes.user);
       }
+      console.log(userList);
       that.setData({
         userList: userList,
         loading: false

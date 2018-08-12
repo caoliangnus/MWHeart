@@ -23,7 +23,7 @@
           <view class="weui-form-preview__value">{{eventItem.time}}</view>
         </view>
         <view class="weui-form-preview__item">
-          <view class="weui-form-preview__label">Deadline</view>
+          <view class="weui-form-preview__label">Sign up deadline</view>
           <view class="weui-form-preview__value">{{eventItem.fullDeadline}}</view>
         </view>
         <view class="weui-form-preview__item">

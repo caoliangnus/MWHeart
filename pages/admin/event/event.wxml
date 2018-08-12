@@ -23,7 +23,7 @@
         <!-- Deadline -->
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
-            <view class="weui-label">Deadline</view>
+            <view class="weui-label">Sign up deadline</view>
           </view>
           <view class="weui-cell__bd">
             <picker name="deadline" mode="date" value="{{deadline}}" start="2017-11-18" end="2024-12-31" bindchange="bindDeadlineChange">
@@ -67,7 +67,7 @@
         <!-- Event Status -->
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
-            <view class="weui-label">Status</view>
+            <view class="weui-label">Sign up status</view>
           </view>
           <view class="weui-cell__bd">
             <picker mode="selector" name="eventStatus" value="{{eventStatus}}" bindchange="onPickerChange" range="{{statusArray}}">
