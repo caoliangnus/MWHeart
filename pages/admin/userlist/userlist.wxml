@@ -19,6 +19,7 @@
         <view class="weui-media-box__info">
           <view class="weui-media-box__info__meta weui-media-box__info__operate">
             <button class="del weui-btn mini-btn" type="default" size="mini" catchtap="deleteUserBtnClick" data-id="{{item.objectId}}">delete</button>
+            <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="moveBtnClick" data-id="{{item.objectId}}"wx:if="{{isWaitingList}}">Move to Volunteer list</button>
             <button class="edit weui-btn mini-btn" type="default" size="mini" catchtap="modifyUserBtnClick" data-id="{{item.objectId}}" data-name="{{item.realName}}" data-phone="{{item.phone}}" wx:if="{{isAllUserList}}">edit</button>
           </view>
         </view>
@@ -27,7 +28,7 @@
     <block wx:else>
       <view class="weui-media-box weui-media-box_text">
         <view class="weui-media-box__title weui-media-box__title_in-text">
-          暂无内容</view>
+          Nothing here... </view>
         <view class="weui-media-box__desc"></view>
       </view>
     </block>

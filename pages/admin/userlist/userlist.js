@@ -89,7 +89,62 @@ Page({
   modifyUserForm: function (e) {
     modify(e)
   },
+
+  moveBtnClick: function (event) {
+    moveUser(event);
+  }
 })
+
+function moveUser(event) {
+  var userId = event.target.dataset.id;
+  wx.showModal({
+    title: 'Alert',
+    content: 'Move User to Volunteer List？',
+    success: function (res) {
+      if (res.confirm) {
+        that.setData({ loading: true })
+        //modify user
+        var P = Bmob.Object.extend("p");
+        var query = new Bmob.Query(P);
+        var eventId = that.data.eventId;
+        console.log(eventId);
+        query.equalTo("event", eventId);
+        query.equalTo("user", userId);
+        query.first({
+          success: function (object) {
+            var participationId = object.id
+            console.log("participation id for candidate: " + participationId)
+
+            // Update status of candidate to 1
+            var P2 = Bmob.Object.extend("p");
+            var query2 = new Bmob.Query(P2);
+            query2.get(participationId, {
+              success: function (result) {
+                // Change status to be in volunteer list
+                result.set('status', 1);
+                result.save().then(function() {
+                  that.onShow();
+                });
+
+                console.log("Put candidate into volunteer list")
+                common.showTip('Success');
+                
+              },
+              error: function (object, error) {
+                console.log(error.code, error.message)
+                that.setData({ loading: false })
+              }
+            });
+          },
+          error: function (err) {
+            console.log(err.code, err.message)
+            that.setData({ loading: false })
+          }
+        });
+      }
+    }
+  })
+}
 
 /**
  * Delete User from list
@@ -112,6 +167,7 @@ function deleteUser(event) {
           },
           error: function (err) {
             common.showTip('Fail', 'loading');
+            that.setData({ loading: false })
           }
         });
       }
@@ -120,7 +176,7 @@ function deleteUser(event) {
 }
 
 function deleteUserFromEvent(event) {
-  var id = that.data.eventId;
+  var userId = event.target.dataset.id;
   wx.showModal({
     title: 'Alert',
     content: 'Delete User from Event？',
@@ -131,7 +187,11 @@ function deleteUserFromEvent(event) {
         var P = Bmob.Object.extend("p");
         var query = new Bmob.Query(P);
         var eventId = that.data.eventId;
+        console.log(eventId);
         query.equalTo("event", eventId);
+        query.equalTo("user", userId);
+        query.limit(1);
+
         query.destroyAll({
           success: function () {
             common.showTip('Success');
@@ -140,6 +200,7 @@ function deleteUserFromEvent(event) {
           },
           error: function (err) {
             common.showTip('Fail', 'loading');
+            that.setData({ loading: false })
           }
         });
       }
@@ -270,23 +331,24 @@ function isPhoneValid(phoneNum) {
   return Number.isInteger(phoneNum) && phoneNum >= 0 && phoneNum.toString().length == 8;
 }
 
-function getVolunteerList() {
+function getUserList(type) {
   that.setData({ loading: true })
   //One user for One Event
   var P = Bmob.Object.extend("p");
   var query = new Bmob.Query(P);
   var eventId = that.data.eventId;
   query.equalTo("event", eventId);
-  query.equalTo("status", 1)
+  query.equalTo("status", type)
   query.ascending('updatedAt');
   query.include("user");
   var userList = [];
   query.find({
     success: function (results) {
       for (var i = 0; i < results.length; i++) {
-        userList = userList.concat(results[i].attributes.user);
+        var item = results[i].attributes.user;
+        userList = userList.concat(item);
       }
-      console.log(userList);
+      console.log(userList)
       that.setData({
         userList: userList,
         loading: false
@@ -298,29 +360,10 @@ function getVolunteerList() {
   });
 }
 
+function getVolunteerList() {
+  getUserList(1);
+}
+
 function getWaitingList() {
-  that.setData({ loading: true })
-  //One user for One Event
-  var P = Bmob.Object.extend("p");
-  var query = new Bmob.Query(P);
-  var eventId = that.data.eventId;
-  query.equalTo("event", eventId);
-  query.equalTo("status", 0)
-  query.ascending('updatedAt');
-  query.include("user");
-  var userList = [];
-  query.find({
-    success: function (results) {
-      for (var i = 0; i < results.length; i++) {
-        userList = userList.concat(results[i].attributes.user);
-      }
-      that.setData({
-        userList: userList,
-        loading: false
-      })
-    },
-    error: function (error) {
-      console.log("查询失败: " + error.code + " " + error.message);
-    }
-  });
+  getUserList(0);
 }
